@@ -8,7 +8,13 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "dropzone-vue": "^0.1.11",
     "vue": "^2.6.14",
+    "vue-axios": "^3.5.2",
+    "vue-form-wizard": "^0.8.4",
+    "vue-meta": "^2.4.0",
+    "vue-navigation-bar": "^5.0.2",
+    "vue-perfect-scrollbar": "^0.2.1",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
   },
