@@ -1,0 +1,199 @@
+// jshint esversion:6
+
+//Para el uso del axios en las acciones
+import axios from "axios";
+
+//Para el uso de rutas en las acciones
+import router from "../../router/index.js";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
+
+const state = {
+  idToken: null,
+  user: null,
+  typeUser: null,
+  loadingSession: false,
+};
+
+const getters = {
+  // Para la obtención de datos del usuario y el loading de carga
+  user: (state) => {
+    return state.user;
+  },
+  typeUser: (state) => {
+    return state.typeUser;
+  },
+  loading: (state) => {
+    return state.loadingSession;
+  },
+};
+
+const mutations = {
+  //SESIÓN QUE SE CONVERTIRÁ EN UN MÓDULO
+  setAuthUser: (state, userData) => {
+    state.idToken = userData.idToken;
+  },
+  clearAuthData: (state) => {
+    state.idToken = null;
+  },
+  setUser: (state, user) => {
+    state.user = user;
+  },
+  setTypeUser: (state, typeUser) => {
+    state.typeUser = typeUser;
+  },
+  setLoading: (state, value) => {
+    state.loadingSession = value;
+  },
+  clearUser: (state) => {
+    state.user = null;
+  },
+  clearTypeUser: (state) => {
+    state.typeUser = null;
+  },
+};
+
+const actions = {
+  setLogoutTimer: ({ dispatch }, expirationDateTime) => {
+    setTimeout(() => {
+      dispatch("logOut");
+    }, expirationDateTime);
+  },
+  logIn: ({ commit, dispatch }, userData) => {
+    commit("setLoading", true);
+    axios
+      .post("/Account/login", userData)
+      .then((res) => {
+        commit("setLoading", false);
+
+        /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
+        const DateNow = new Date();
+       
+        let DateExpiration = new Date(res.data.expiration);
+        const expirationTime = DateExpiration - DateNow;
+
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("esCliente", userData.isCliente);
+        localStorage.setItem("expirationDate", DateExpiration);
+
+        commit("setAuthUser", {
+          idToken: res.data.token,
+        });
+
+        dispatch("setLogoutTimer", expirationTime);
+        (userData.isCliente) ? router.replace('/cliente') : router.replace('/');
+      })
+      .catch((error) => {
+        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Credenciales Incorrectas",
+          text: "Verificar los campos ingresados",
+        });
+        commit("setLoading", false);
+      });
+  },
+  tryAutoLogin: ({ commit, dispatch }) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return;
+    }
+
+    const expirationDate = localStorage.getItem("expirationDate");
+    const DateNow = new Date();
+
+    if (DateNow >= expirationDate) {
+      return;
+    }
+
+    commit("setAuthUser", {
+      idToken: token,
+    });
+
+    const expirationTime = new Date(expirationDate) - DateNow;
+
+    dispatch("setLogoutTimer", expirationTime);
+  },
+  logOut: ({ commit }) => {
+    const isCliente = localStorage.getItem("esCliente");
+    console.log("logout: " +isCliente);
+    commit("clearAuthData");
+    commit("clearUser");
+    commit("clearTypeUser");
+    localStorage.removeItem("token");
+    localStorage.removeItem("esCliente");
+    localStorage.removeItem("expirationDate");
+    localStorage.removeItem("glob_id_project");
+    localStorage.removeItem("GlobProyecto");
+
+    (isCliente === 'true') ? router.replace('/cliente/login') : router.replace('/login');
+  },
+  async fetchUser ({ commit, state }, userData) {
+    const isCliente = localStorage.getItem("esCliente")
+    commit("setTypeUser", {
+      nameSis: "Bienvenido",
+      type:"Paciente"
+    });
+   /* await axios
+      .get(`/Account/user?isCliente=${isCliente}`)
+      .then((res) => {
+        commit("setUser", res.data);
+        
+      })
+      .catch((error) => {
+        console.log(error);
+        localStorage.removeItem("token");
+        localStorage.removeItem("esCliente");
+        localStorage.removeItem("expirationDate");
+        localStorage.removeItem("glob_id_project");
+        localStorage.removeItem("GlobProyecto");
+        (isCliente === 'true') ? router.replace('/cliente/login') : router.replace('/login');
+      });*/
+  },
+  indirectLogIn: ({ commit, dispatch }, userData) => {
+    commit("setLoading", true);
+
+    axios
+      .post("/Account/login", userData)
+      .then((res) => {
+        //console.log("userData");
+        //console.log(userData);
+        commit("setLoading", false);
+
+        /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
+        const DateNow = new Date();
+
+        let DateExpiration = new Date(res.data.expiration);
+        const expirationTime = DateExpiration - DateNow;
+
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("expirationDate", DateExpiration);
+
+        commit("setAuthUser", {
+          idToken: res.data.token,
+        });
+
+        dispatch("setLogoutTimer", expirationTime);
+
+        // router.replace('/');
+      })
+      .catch((error) => {
+        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Credenciales Incorrectas",
+          text: "Intente nuevamente",
+        });
+        commit("setLoading", false);
+      });
+  },
+};
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions,
+};
