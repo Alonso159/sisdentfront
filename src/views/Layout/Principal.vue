@@ -1,7 +1,7 @@
 <template>
     <div id="pagePrincipal">
       <template>
-        <v-app class="app app-admin-wrap-layout-6" style="background-color:#f2f3f8">
+        <v-app class="app app-admin-wrap-layout-6" style="background-color:#C1DFE2">
           <app-drawer :drawer="drawer"></app-drawer>
           <app-toolbar class="app--toolbar"></app-toolbar>
           <base-view />

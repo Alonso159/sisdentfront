@@ -43,13 +43,14 @@
     <v-list dense expand >
       <template v-for="item in computedItems">
         <v-list-item
+          color=primary
           class="list-item"
           :to="item.href ? item.href : null"
           ripple="ripple"
           :disabled="item.disabled"
           :target="item.target"
           rel="noopener"
-          :key="item.name"
+          
         >
           <v-list-item-action v-if="item.icon">
             <v-icon>{{ item.icon }}</v-icon>
@@ -66,9 +67,19 @@
     </v-list>
       <v-divider></v-divider>
       <div class="px-6 mb-6 mt-6">
-        <v-btn block class="text-capitalize" color="primary" @click="logOut()">
-          Cerrar Sesión
-        </v-btn>
+        <v-btn
+        depressed
+        class="ma-1"
+        color="error"
+        plain
+        @click=logOut()
+        absolute
+      >
+      <v-icon left>
+        mdi-logout
+      </v-icon> 
+        Cerrar Sesion
+      </v-btn>
       </div>
     </vue-perfect-scrollbar>
   </v-navigation-drawer>
@@ -77,6 +88,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { items, itemsCliente } from "../../data/Navigation/navigationThree";
 import { mdiTooth } from '@mdi/js';
+import { mdiLogout } from '@mdi/js';
 export default {
   data() {
     return {
@@ -111,23 +123,18 @@ export default {
         href: "/gestionarCronograma",
       },
        {
-        title: "Visualizar Citas Programadas",
+        title: "Visualizar Citas",
         icon: mdiTooth,
         name: "GestionarCitasProgramadas",
-        href: "/gestionarCronograma",
+        href: "/gestionar",
       },
        {
-        title: "Gestionar Especialidades",
+        title: "Gestionar Medicos",
         icon: mdiTooth,
         name: "GestionarEspecialida<<",
         href: "/gestionarEspecialidades",
       },
-       {
-        title: "Gestionar Especialidades",
-        icon: mdiTooth,
-        name: "GestionarEspecialidad",
-        href: "/gestionarEspecialidada",
-      },
+      
       ];
       return permisos;
     },
@@ -143,18 +150,6 @@ export default {
       this.expandOnHover = !this.expandOnHover;
       // this.$emit("update:mini-variant");
       // console.log("check");
-    },
-    mapItem(item) {
-      return {
-        ...item,
-        hide: 
-          (item.identifier === "cotizacion-item" || 
-          item.identifier === "cronograma-item" ||
-          item.identifier === "dashboard-proy-item" ) 
-          ? false
-          : item.hide
-        // to: !item.to ? undefined : `/app/${this.item.group}/${item.to}`,
-      };
     },
   }
 };

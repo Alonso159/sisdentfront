@@ -7,14 +7,14 @@
         </transition>
       </v-container>
       <div class="flex-grow-1"></div>
-      <app-footer></app-footer>
+     <!--  <app-footer></app-footer> -->
     </div>
   </v-main>
 </template>
 <script>
 export default {
   components: {
-    AppFooter: () => import("./Footer.vue"),
+    //AppFooter: () => import("./Footer.vue"),
   },
 };
 </script>

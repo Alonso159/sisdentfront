@@ -1,8 +1,9 @@
 <template>
   <div>
-    <v-card class="card" style="margin: 80px auto 0; width: 80%">
-      <v-card-title> Gestionar Cronograma </v-card-title>
+    <v-card height:10px class="card" style="margin: 10px auto 0; width: 100%">
+     
       <v-data-table
+        expand-icon="$expand"
         :headers="headers"
         :items="ListCrono"
         :search="search"
@@ -16,7 +17,8 @@
               append-icon="mdi-magnify"
               label="Search"
               single-line
-              hide-details
+              solo
+              reverse
             ></v-text-field>
             <v-col cols="12" sm="6" md="4">
               <v-toolbar flat>
@@ -25,7 +27,7 @@
                   color="white darken-1"
                   @click="ejecutaMetodos()"
                 >
-                  <span>Registrar nuevo cronograma</span>
+                  <span>Registrar nuevo Paciente</span>
                 </v-btn>
               </v-toolbar>
             </v-col>
@@ -109,7 +111,6 @@
 <script>
 import RegistrarCronograma from "@/components/ComponenteGestionarCronograma/RegistrarCronograma.vue";
 import ModificarCronograma from "@/components/ComponenteGestionarCronograma/ModificarCronograma.vue";
-
 import VisualizarCronograma from "@/components/ComponenteGestionarCronograma/VisualizarCronograma.vue";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
@@ -119,7 +120,6 @@ export default {
     RegistrarCronograma,
     ModificarCronograma,
     VisualizarCronograma,
-    
   },
   data() {
     return {
@@ -186,9 +186,9 @@ export default {
   methods: {
     ...mapActions("Cronograma", ["setListaCronograma"]),
     ...mapActions("Global", ["setGlobIdProjectWhenStart"]),
-
+    
     async obtenerEstado() {
-      await axios
+    /*  await axios
         .get(
           "/Cronograma/BusquedaEstadoCreador?usuario_creador=" +
             this.user.infoUser.id +
@@ -197,7 +197,7 @@ export default {
         .then((res) => {
           this.sefija = res.data[0].estado;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err));*/
       this.meaburri(this.sefija);
     },
 
@@ -275,18 +275,15 @@ export default {
         .catch((err) => console.log(err));*/
     },
     async registraCronograma() {
-      var idProyecto = {};
-      this.cronogramas.fecha_creacion = new Date().toISOString();
-      this.cronogramas.id_usuario_creador = this.user.infoUser.id;
+    
+     
+     
+    //  this.cronogramas.id_usuario_creador = this.user.infoUser.id;
       await axios
         .post("/Cronograma/RegistrarCronograma", this.cronogramas)
         .then((res) => {
         
-          this.idCronograma = res.data.id;
-          this.abrirDialogo(this.idCronograma);
-          this.cargaRegistro = false;
-          idProyecto = res.data.id_proyecto;
-          this.actualizaProyecto(idProyecto);
+         
         })
         .catch((err) => console.log(err));
     },
@@ -314,34 +311,19 @@ export default {
      
     },
     async ejecutaMetodos() {
-      //trae la info si es que hay un cronograma sin terminar
-      await axios
-        .get(
-          "/Cronograma/BusquedaEstadoCreador?usuario_creador=" +
-            this.user.infoUser.id +
-            "&estado=Borrador"
-        )
-        .then((res) => {
-          this.sefija = res.data[0].estado;
-          this.idCronogramaIncompleto = res.data[0].id;
-        })
-        .catch((err) => console.log(err));
-      if (this.sefija == "a") {
-        //se elimina el cronograma sin terminar
-        // this.eliminaCronograma(this.idCronogramaIncompleto);
-        //ahora toca crear uno desde 0
+    +
+      console.log("AAAAAAAAAAAAA")
+   
         this.registraCronograma();
-      }
-      //sino tiene un crongrama sin terminar se crea uno desde 0
-      else {
-        this.registraCronograma();
-      }
+      
+    
+    
     },
 
     async obtenerInfoCronogramaporId(id) {
       var user = {};
       await axios
-        .get("/Cronograma/BusquedaPorId?id_cronograma=" + id)
+        .get("/Cita/GetAllCitas?id_paciente=" + id)
         .then((res) => {
           user = res.data;
         })
@@ -390,7 +372,7 @@ export default {
       this.dialogocambio = !this.dialogocambio;
     },
     async abrirDialogo(id) {
-      this.Cronograma = await this.obtenerInfoCronogramaporId(id);
+      this.Paciente = await this.obtenerInfoCronogramaporId(id);
       console.log(this.Cronograma)
       this.dialogoRegistrar = !this.dialogoRegistrar;
     },
@@ -441,6 +423,6 @@ export default {
 </script>
 <style scoped>
 .card {
-  margin: 20px;
+  margin: 200 px;
 }
 </style>

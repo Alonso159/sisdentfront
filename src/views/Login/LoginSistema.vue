@@ -6,9 +6,7 @@
                 <v-card-text style="text-align:center;padding-left:25px;padding-right:25px">
                     <div style="padding-top:5%; padding-bottom:10%">
                         <h3 class="font-weight-bold">SISDENT</h3>
-                        <p class="text--disabled font-weight-medium" style="margin-top:10px">
-                            Inicia sesión para acceder a las funciones del sistema
-                        </p>
+                        
                     </div>
                     <v-text-field
                         label="Email"
@@ -28,30 +26,17 @@
                         v-model="ePassword"
                         @click:append="show = !show"
                     ></v-text-field>
-                    <v-checkbox
-                        class="mt-5"
-                        v-model="checkbox1"
-                        label="Recordar en este equipo"
-                    ></v-checkbox>
+                    
                     <v-btn
                         :loading="loading"
                         @click="submit"
                         block
                         style="background-color:#2492fd; color:#fefefe;"
                         dark
+                       
                         >Iniciar Sesión</v-btn
                     >
-                    <div class="mt-5 mb-2">
-                        <span>¿Olvidó su contraseña?</span>
-                        <v-btn
-                            text
-                            small
-                            style="margin-top:10px;"
-                            color="primary"
-                            to="/app/sessions/sign-in-two"
-                            >Restablecer contraseña</v-btn
-                        >
-                    </div>
+                    
                 </v-card-text>
 
                 <!-- error password snackbar  -->
@@ -108,7 +93,7 @@ export default {
           let model = {
             username: this.email,
             password: this.ePassword,
-            isCliente: false
+            isCliente: true
           }
           this.logIn(model)
       } else {
@@ -123,7 +108,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .page-wrap {
-    background-color: #242939 !important;
+    background-color: #74CCD4 !important;
     display: flex;
     align-items: center;
     padding: 40px 1rem;
