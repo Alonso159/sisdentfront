@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import GestionarEspecialidades from '../views/Especialidades/GestionarEspecialidades.vue';
+import GestionarEspecialidades from '../views/Especialidades/Tratamientos.vue';
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,9 +36,9 @@ const routes = [
         component: () => import("@/views/gestionarCronograma/gestionarCronograma"),
       },
       {
-        path: '/gestionarEspecialidad',
-        name: 'GestionarEspecialidades',
-        component: () => import('@/views/Especialidades/GestionarEspecialidades.vue')
+        path: '/Tratamientos',
+        name: 'Tratamientos',
+        component: () => import('@/views/Especialidades/Tratamientos.vue')
     
     },
       

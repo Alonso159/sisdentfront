@@ -1,9 +1,12 @@
 <template>
   <v-row>
-    <v-col cols="12" md="12" lg="8">
+    <v-col >
       <div class="home-columns">
-        <div class="item-left">
-        </div>
+        <CardReserva :user="this.user" />
+      
+      </div>
+      <div class="home-columns">
+       
         <CardCitas :user="this.user" />
       </div>
     </v-col>
@@ -11,13 +14,8 @@
 </template>
 <script>
 
-
-import {
-  welcomeProgressChart,
-  studyChart,
-} from "@/data/DashboardManagement/WelcomeProgressChart";
+import CardReserva from "@/components/CardReserva.vue";
 import CardCitas from "@/components/CardCitas.vue";
-import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -27,7 +25,8 @@ export default {
     title: "Dashboard",
   },
   components: {
-    CardCitas,
+    CardReserva,
+    CardCitas
   },
   data() {
     return {

@@ -1,31 +1,5 @@
 <template>
-  <v-row>
-    <v-col cols="12" lg="12">
-      <HeaderTitle
-        :title-text= this.titulo
-        :list-redirections="listRedirections"
-      />
-    </v-col>
-    <v-col cols="12" lg="9" class="pt-0 pb-0">
-      <v-row>
-        <v-col cols="12" md="5" class="pb-0">
-          <DashboardProjectState
-            :bg-card-color="bgCardColor"
-            heading="Estado del proyecto"
-            :sub-heading="this.proyecto.etapa"
-            :main-icon-text-color="mainIconTextColor"
-            main-icon-name="mdi-thumbs-up-down"
-          />
-        </v-col>
-        <v-col cols="12" md="7" class="pb-0">
-          <!-- Aquí debería ir algún porcentaje de avance o señalización de etapa actual -->
-        </v-col>
-      </v-row>
-    </v-col>
-    <v-col cols="6" lg="8" class="pt-0">
-      <DatosEstadoNegociacion :colorState="colorState" :etapas="etapas" :proyecto="proyecto"/>
-    </v-col>
-  </v-row>
+ 
 </template>
 <script>
 import DatosEstadoNegociacion from '@/components/Dashboard/DatosEstadoNegociacion'

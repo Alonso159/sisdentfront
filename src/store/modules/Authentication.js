@@ -70,7 +70,6 @@ const actions = {
         const DateNow = new Date();        
         let DateExpiration = new Date(res.data.expiration);
         const expirationTime = DateExpiration - DateNow;
-        console.log({res})
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("esCliente", userData.isCliente);
         localStorage.setItem("expirationDate", DateExpiration);
@@ -116,7 +115,7 @@ const actions = {
     dispatch("setLogoutTimer", expirationTime);
   },
   logOut: ({ commit }) => {
-    const isCliente = localStorage.getItem("esCliente");
+   
     console.log("logout");
     commit("clearAuthData");
     commit("clearUser");
@@ -129,51 +128,37 @@ const actions = {
    
   },
   async fetchUser ({ commit, state },userData) {
-   
-    commit("setTypeUser", {
-      nameSis: "Bienvenido",
-      type:"Paciente"
-    });
-    
+ 
+    console.log("antes del fetch")
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
         await axios
         .get(`/Account/user?isClient=true`)
         .then((res) => {
           commit("setUser", res.data);
-          console.log("AAAAAAAAAAAAAAAAAAAAAAA")
-         console.log({res})
+            
+    commit("setTypeUser", {
+      nameSis: "Bienvenido",
+      type:"Paciente"
+    });
         })
         .catch((error) => {
-          console.log(error);
-          console.log("ERRRRRRRRRRRRRRRROR")
-        //  localStorage.removeItem("token");
-       //   localStorage.removeItem("esCliente");
-       //   localStorage.removeItem("expirationDate");
-        // router.replace('/login');
-        });
-    
        
-        // router.replace('/');
-     // })
-   /* await axios
-    .get(`/Usuario/GetUserbyId?id=`+res.data.id)
-    .then((res) => {
-      commit("setUser", res.data);
-      console.log(res.data)
-    })
-    .catch((error) => {
-      console.log(error);
-    
-    });*/
+          localStorage.removeItem("token");
+          localStorage.removeItem("esCliente");
+          localStorage.removeItem("expirationDate");
+          router.replace('/login');
+        });
+        console.log("despues del fetch")
   },
   indirectLogIn: ({ commit, dispatch }, userData) => {
     commit("setLoading", true);
 
     axios
       .post("/Account/login", userData)
-      .then(async (res) => {
+      .then((res) => {
+
         commit("setLoading", false);
-       
+
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
         const DateNow = new Date();
 
@@ -183,9 +168,13 @@ const actions = {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("expirationDate", DateExpiration);
 
+        commit("setAuthUser", {
+          idToken: res.data.token,
+        });
+
         dispatch("setLogoutTimer", expirationTime);
 
-        // router.replace('/');
+   
       })
       .catch((error) => {
         console.log(error);

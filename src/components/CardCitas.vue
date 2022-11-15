@@ -1,120 +1,113 @@
 <template>
-  <v-card elevation="3" class="card-c">
-    <div class="div_reservar">
-
-      <v-btn
-      class=""
-      absolute
-      @click="reservarCita()">
-      RESERVE SU CITA
-
-      </v-btn>
-    </div>
-    <div>
-      
-      <div v-for="citaItem in listaCitas" :key="citaItem.id">
-        <CardCita :cita="citaItem" class="item-cita" />
-      </div>
-      <div v-if="listaCitas == []" class="item-cita">
-        <v-alert
-          text
-          outlined
-          border="left"
-          color="#3C5186"
-          width="97%"
-          class="ml-3"
-          icon="info"          
-        >
-          No has reservado citas el día de hoy
-        </v-alert>
-      </div>
-    </div>
-  </v-card>
+  <v-card height:10px class="card" style="margin: 10px auto 0; width: 100%">
+      <v-data-table
+        expand-icon="$expand"
+        :headers="headers"
+        :items="listaCitas"
+        :search="search"
+        class="elevation-1"
+      >
+         <template v-slot:item.estado_cita="{ item }">
+            <v-chip
+        :color="getColor(item.estado_cita)"
+        dark
+      >
+        {{ item.estado_cita }}
+      </v-chip>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-row>
+            <v-btn
+              color="info"
+              small
+              dark
+              :disabled="verificaEstado(item.estado_cita)"
+              class="ml-4"
+              @click="abrirModalVisualizarReunion(item.cronograma.id)"
+            >
+              <v-icon left> mdi-file-eye </v-icon>
+              <span>Pagar</span>
+            </v-btn>
+          </v-row>
+        </template>
+      </v-data-table>
+    </v-card>
 </template>
 
 <script>
+
 import axios from "axios";
-import moment from "moment";
-import "moment/locale/es";
-import CardCita from "@/components/GestionarCitas/CardCita.vue";
+import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "CardCitas",
+  name: "GestionarCronograma",
   components: {
-    CardCita, 
+   
   },
-  props: ["user"],
-  data: () => ({
-    dialogReservarCita: false,
-    listaCitas: [],
-    hoy: moment().format("L").replaceAll("/", "-"),
-    fecha: "",
-  }),
+  data() {
+    return {
+      search: "",
+      headers: [
+
+        { text: "Estado", value: "estado_cita" },
+        { text: "Tratamiento", value: "id_tratamiento" },
+        { text: "Fecha", value: "fecha_cita" },
+        { text: "Acciones", value: "actions", sortable: false },
+
+      ],
+      dialogoRegistrar: false,
+      dialogoactualizacion: false,
+       dialogocambio: false,
+      dialogodetalle: false,
+    };
+  },
   async created() {
-    this.fecha = moment(this.hoy, "DD-MM-YYYY").format();
-    this.obtenerCitas();
+    await this.obtenerCitas();
+  },
+  async mounted(){
   },
   methods: {
-    openDialogReservarCita() {
-      this.dialogReservarCita = true;
-    },
-    closeDialogReservarCita() {
-      this.dialogReservarCita = false;
-    },
-    reservarCita() {
-      this.$router.push(`tratamientos`);
-    },
+     ...mapActions("Citas", ["setListaCitas"]),
+          //obtener los citas listados
     async obtenerCitas() {
-   
-      var idUsuario = this.user.id;
-      await axios
-        .get(`/Paciente/usuario?idusuario=${idUsuario}`)
-        .then(async (res) => {
-          var paciente = {};
-          paciente = res.data;
-          await axios
-            .get(
-              `/Cita/citafechapaciente?fecha=${this.fecha}&idPaciente=${paciente.id}`
-            )
-            .then((res) => {
-              var info = {};
-              info = res.data;              
-              for (var x = 0; x < res.data.length; x++) {
-                var fecha = res.data[x].fecha_cita;
-                info[x].fecha_cita = fecha.split("T")[0];
-                info[x].turno.hora_inicio = fecha.split("T")[1].substr(0, 5);
-              }
-              for (var y = 0; y < info.length; y++) {
-                if ((info[y].fecha_cita = this.hoy)) {
-                  this.listaCitas.push(info[y]);
-                }
-              }              
-            })
-            .catch((err) => console.log(err));
+     await axios
+        .get(
+          "/Cita/GetAllCitas?id_paciente=" + this.user.infoUser.id
+        )
+        .then((x) => {
+          const listaCita = x.data;
+          for(var i=0;i<listaCita.length;i++)
+            {listaCita[i].fecha_cita=x.data[i].fecha_cita.split("T")[0]}
+          this.setListaCitas(listaCita);
         })
         .catch((err) => console.log(err));
     },
+     getColor(estadoCita){
+        if(estadoCita=="Sin pagar")  return "red"   
+        else if (estadoCita=="Por atender") return "green"
+        else if(estadoCita==null) "black"
+      },
+      verificaEstado(estadoCita)
+      {
+        if(estadoCita=="Sin pagar")return false;
+        else return true
+      },
+    estadoActual(array) {
+      if (array === "listo") {
+        return false;
+      } else {
+        return true;
+      }
+    },
+  },
+  computed: {
+    ...mapGetters("Authentication", ["user"]),
+    ...mapGetters("Citas", ["listaCitas"])
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.card-c {
-  padding: 1%;
-  border-radius: 20px;
-}
-
-
-
-h2 {
-  font-size: 18px;
-  margin-top: 5%;
-}
-
-.div_reservar {
-  display: flex;
-}
-.item-cita {
-  margin: 4% 0;
+<style scoped>
+.card {
+  margin: 200 px;
 }
 </style>
 

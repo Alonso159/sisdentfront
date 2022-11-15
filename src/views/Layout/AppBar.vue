@@ -28,16 +28,15 @@
         </v-btn>
       </v-badge>
 
-      <v-btn icon @click="searchDrawer = !searchDrawer">
+      <!--<v-btn icon @click="searchDrawer = !searchDrawer">
         <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      </v-btn>-->
 
       <v-chip
         pill
         class="transparent rounded-pill py-6"
         @click="userDrawer = !userDrawer"
       >
-        Hola, Estimado
         <v-avatar class="ml-2">
           <v-img src="@/assets/images/usuario-de-perfil-grey.png"></v-img>
         </v-avatar>
