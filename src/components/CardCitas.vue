@@ -3,6 +3,7 @@
     <div class="div_reservar">
 
       <v-btn
+      class=""
       absolute
       @click="reservarCita()">
       RESERVE SU CITA
@@ -60,7 +61,7 @@ export default {
       this.dialogReservarCita = false;
     },
     reservarCita() {
-      this.$router.push(`especialidades`);
+      this.$router.push(`tratamientos`);
     },
     async obtenerCitas() {
    
@@ -101,6 +102,7 @@ export default {
   padding: 1%;
   border-radius: 20px;
 }
+
 
 
 h2 {

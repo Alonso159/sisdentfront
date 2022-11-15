@@ -67,15 +67,14 @@ const actions = {
         commit("setLoading", false);
 
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
-        const DateNow = new Date();
-      
-        
+        const DateNow = new Date();        
         let DateExpiration = new Date(res.data.expiration);
         const expirationTime = DateExpiration - DateNow;
+        console.log({res})
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("esCliente", userData.isCliente);
         localStorage.setItem("expirationDate", DateExpiration);
-
+        
         commit("setAuthUser", {
           idToken: res.data.token,
         });
@@ -125,12 +124,11 @@ const actions = {
     localStorage.removeItem("token");
     localStorage.removeItem("esCliente");
     localStorage.removeItem("expirationDate");
-    localStorage.removeItem("glob_id_project");
-    localStorage.removeItem("GlobProyecto");
+
         router.replace('/login')
    
   },
-  async fetchUser ({ commit, state }, userData) {
+  async fetchUser ({ commit, state },userData) {
    
     commit("setTypeUser", {
       nameSis: "Bienvenido",
@@ -139,7 +137,7 @@ const actions = {
     
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
         await axios
-        .get(`/Account/user?isClient=${true}`)
+        .get(`/Account/user?isClient=true`)
         .then((res) => {
           commit("setUser", res.data);
           console.log("AAAAAAAAAAAAAAAAAAAAAAA")
@@ -147,11 +145,10 @@ const actions = {
         })
         .catch((error) => {
           console.log(error);
-          localStorage.removeItem("token");
-          localStorage.removeItem("esCliente");
-          localStorage.removeItem("expirationDate");
-          localStorage.removeItem("glob_id_project");
-          localStorage.removeItem("GlobProyecto");
+          console.log("ERRRRRRRRRRRRRRRROR")
+        //  localStorage.removeItem("token");
+       //   localStorage.removeItem("esCliente");
+       //   localStorage.removeItem("expirationDate");
         // router.replace('/login');
         });
     

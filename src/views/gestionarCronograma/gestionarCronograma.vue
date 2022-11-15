@@ -179,35 +179,14 @@ export default {
     };
   },
   async created() {
+    console.log(this.user)
     await this.setGlobIdProjectWhenStart();
     this.obtenerCronograma();
     this.obtenerEstado();
   },
   methods: {
     ...mapActions("Cronograma", ["setListaCronograma"]),
-    ...mapActions("Global", ["setGlobIdProjectWhenStart"]),
-    
-    async obtenerEstado() {
-    /*  await axios
-        .get(
-          "/Cronograma/BusquedaEstadoCreador?usuario_creador=" +
-            this.user.infoUser.id +
-            "&estado=Borrador"
-        )
-        .then((res) => {
-          this.sefija = res.data[0].estado;
-        })
-        .catch((err) => console.log(err));*/
-      this.meaburri(this.sefija);
-    },
 
-    meaburri() {
-      if (this.sefija == "Borrador") {
-        return true;
-      } else {
-        return false;
-      }
-    },
     obtenerEstadoModificar(estado) {
       if (estado == "Rechazado" || estado == "Borrador") {
         return false;
@@ -215,75 +194,13 @@ export default {
         return true;
       }
     },
-    async verificaSolicitudes(id){
-        await axios
-        .get("/Cronograma/Existe_Solicitud?id_cronograma=" + id)
-        .then((x) => {    
-          this.verifica = x.data;         
-        });
-       
-    },
-    verificaSolicitud(id,estado){  
-      console.log(this.verifica)
-      if(estado=="Activo"){return false}else{return true}
-    },
-    //obtener los cronogramas listados
-    async obtenerCronograma() {
-      var listaE = [];
-      //trae la info del proyecto y setea su id en cronogramas y el nombre en Proyecto
-      await axios
-        .get("/Proyecto/BusquedaPorId?id_proyecto=" + this.GlobIdProject)
-        .then((x) => {
-          this.listaE = x.data;
-          this.cronogramas.id_proyecto = this.GlobIdProject;
-        });
-      //trae la info del cliente y setea su id en cronogramas y el nombre en Proyecto
-      await axios
-        .get("/Cliente/BusquedaPorId?id_cliente=" + this.listaE.id_cliente)
-        .then((x) => {
-          var listaF = x.data;
-        })
-        .catch((err) => console.log(err));
 
-      this.cronogramas.id_cliente = this.listaE.id_cliente;
-      //trae la info del proyecto y setea su id en cronogramas y el nombre en Proyecto
-      await axios
-      .get(
-          "/Cronograma/Get_CronogramaxProyecto?id_proyecto=" + this.GlobIdProject
-        )
-        .then((x) => {
-        
-         
-         const listaCrono = x.data;
-         for(let i=0;i<listaCrono.length;i++){
-        listaCrono[i].gestion.fecha_de_inicio_programada =
-            x.data[i].gestion.fecha_de_inicio_programada.split("T")[0];
-         }
-          this.setListaCronograma(listaCrono);
-        })
-        .catch((err) => console.log(err));
-     /* await axios
-        .get(
-          "/Cronograma/BusquedaPorId?id_cronograma=" + this.listaE.idcronograma
-        )
-        .then((x) => {
-          const listaCrono = x.data;
-          var listaParaHeader = [];
-          listaParaHeader.push(listaCrono);
-          this.setListaCronograma(listaParaHeader);
-        })
-        .catch((err) => console.log(err));*/
-    },
+    //obtener los cronogramas listados
     async registraCronograma() {
-    
-     
-     
     //  this.cronogramas.id_usuario_creador = this.user.infoUser.id;
       await axios
         .post("/Cronograma/RegistrarCronograma", this.cronogramas)
-        .then((res) => {
-        
-         
+        .then((res) => {         
         })
         .catch((err) => console.log(err));
     },
@@ -311,13 +228,8 @@ export default {
      
     },
     async ejecutaMetodos() {
-    +
       console.log("AAAAAAAAAAAAA")
-   
         this.registraCronograma();
-      
-    
-    
     },
 
     async obtenerInfoCronogramaporId(id) {
@@ -339,20 +251,7 @@ export default {
         return true;
       }
     },
-    async loadCronograma(id) {
-      let reunion = {};
-      await axios
-        .get("/Cronograma/BusquedaPorId?id_cronograma=" + id)
-        .then((res) => {
-          reunion = res.data;
-          reunion.gestion.fecha_de_inicio_programada =
-            res.data.gestion.fecha_de_inicio_programada.split("T")[0];
-             reunion.gestion.fecha_de_fin_programada =
-            res.data.gestion.fecha_de_fin_programada.split("T")[0];
-        })
-        .catch((err) => console.log(err));
-      return reunion;
-    },
+
     async abrirDialogoDetalle(id) {
      
       console.log(id)
@@ -376,29 +275,7 @@ export default {
       console.log(this.Cronograma)
       this.dialogoRegistrar = !this.dialogoRegistrar;
     },
-     async obtenerSubModulos(){
-      
-      var user = {};
-      await axios
-        .get("/Cronograma/Get_SubModulos?idCronograma=" + this.Cronograma.id)
-        .then((res) => {
-          user = res.data;
-        })
-        .catch((err) => console.log(err));
-      return user;
 
-    },
-    async obtenerActividades() {
-      var user = {};
-      await axios
-        .get("/Cronograma/Get_Actividad?id=" + this.Cronograma.id)
-        .then((res) => {
-          user = res.data;
-        })
-        .catch((err) => console.log(err));
-      return user;
-    },
-    
     closeDialogRegistrar() {
        this.dialogocambio = false;
       this.dialogoRegistrar = false;
@@ -416,7 +293,6 @@ export default {
 
   computed: {
     ...mapGetters("Cronograma", ["ListCrono"]),
-    ...mapGetters("Global", ["GlobIdProject"]),
     ...mapGetters("Authentication", ["user"]),
   },
 };
