@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import GestionarEspecialidades from '../views/Especialidades/Tratamientos.vue';
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,11 +35,22 @@ const routes = [
         component: () => import("@/views/gestionarCronograma/gestionarCronograma"),
       },
       {
+        path: "reservaCita",
+        name: "reservaCita",
+        component: () => import("@/components/GestionarCitas"),
+      },
+      {
         path: '/Tratamientos',
         name: 'Tratamientos',
         component: () => import('@/views/Especialidades/Tratamientos.vue')
     
     },
+    {
+      path: '/Pagar',
+      name: 'PagarCita',
+      component: () => import('@/views/Pagar.vue')
+  
+  },
       
       
     ]

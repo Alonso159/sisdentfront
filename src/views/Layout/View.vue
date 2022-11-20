@@ -1,7 +1,7 @@
 <template>
   <v-main app >
-    <div class="d-flex flex-column flex-grow-1 h-full">
-      <v-container class="pt-6" style="width: 90%">
+    <div class="d-flex flex-column h-full">
+      <v-container class="" style="width: fit-content">
         <transition mode="out-in">
           <router-view />
         </transition>

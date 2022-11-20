@@ -107,6 +107,12 @@ export default {
           href: "/dashboard-management",
         },
         {
+          title: "Gestionar Citas",
+          icon: mdiTooth,
+          name: "Dashboard",
+          href: "/reservaCita",
+        },
+        {
           title: "Visualizar Cronograma",
           icon: mdiTooth,
           name: "GestionarCronograma",

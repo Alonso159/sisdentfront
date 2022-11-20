@@ -62,7 +62,7 @@ export default {
   transition: .3s linear, color 0s, background-color 0s;
   outline: var(--b) solid #0000;
   outline-offset: .6em;
-  font-size: 16px;
+  font-size: 30px;
 
   border: 0;
 

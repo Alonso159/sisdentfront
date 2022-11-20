@@ -28,6 +28,17 @@
               <v-icon left> mdi-file-eye </v-icon>
               <span>Pagar</span>
             </v-btn>
+            <v-btn
+              color="info"
+              small
+              dark
+              
+              class="ml-4"
+              @click="abrirModalVisualizarReunion(item.cronograma.id)"
+            >
+              <v-icon left> mdi-file-eye </v-icon>
+              <span>Visualizar</span>
+            </v-btn>
           </v-row>
         </template>
       </v-data-table>

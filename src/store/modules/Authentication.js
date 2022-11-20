@@ -127,9 +127,9 @@ const actions = {
         router.replace('/login')
    
   },
-  async fetchUser ({ commit, state },userData) {
+  async fetchUser ({ commit, state }) {
  
-    console.log("antes del fetch")
+   
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
         await axios
         .get(`/Account/user?isClient=true`)
@@ -148,7 +148,7 @@ const actions = {
           localStorage.removeItem("expirationDate");
           router.replace('/login');
         });
-        console.log("despues del fetch")
+       
   },
   indirectLogIn: ({ commit, dispatch }, userData) => {
     commit("setLoading", true);

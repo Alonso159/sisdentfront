@@ -1,152 +1,328 @@
 <template>
-<div class="post d-flex flex-column-fluid text-right p-0" id="kt_post">
-    <div id="kt_content_container" class="container-xxl">
-      <h2 class="text-muted mb-4">Principales</h2>
-        <div class="bg-white pt-7 pb-7 text-left" style="border-radius: 2rem;">
-            
-            <div class="d-flex flex-wrap justify-content-center align-items-flex-start">
-                <a asp-controller="RegistrationRequest" asp-action="Index" class="btn btn-light-success btn-hover-scale m-2 d-flex flex-column align-items-center justify-content-center" style="border-radius: 2.5rem;width: 10rem; height: 8.5rem;">
-                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.3" d="M18 22C19.7 22 21 20.7 21 19C21 18.5 20.9 18.1 20.7 17.7L15.3 6.30005C15.1 5.90005 15 5.5 15 5C15 3.3 16.3 2 18 2H6C4.3 2 3 3.3 3 5C3 5.5 3.1 5.90005 3.3 6.30005L8.7 17.7C8.9 18.1 9 18.5 9 19C9 20.7 7.7 22 6 22H18Z" fill="currentColor" />
-                        <path d="M18 2C19.7 2 21 3.3 21 5H9C9 3.3 7.7 2 6 2H18Z" fill="currentColor" />
-                        <path d="M9 19C9 20.7 7.7 22 6 22C4.3 22 3 20.7 3 19H9Z" fill="currentColor" />
-                    </svg>
-                    <spam class="mt-2" style="line-height: 0.9rem"><small>Solicitudes de Inscripción</small></spam>
-                </a>
-                <a asp-controller="RegistrationRequest" asp-action="RejectedRequests" class="btn btn-light-success btn-hover-scale m-2 d-flex flex-column align-items-center justify-content-center" style="border-radius: 2.5rem; width: 10rem; height: 8.5rem;">
-                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.3" d="M18 22C19.7 22 21 20.7 21 19C21 18.5 20.9 18.1 20.7 17.7L15.3 6.30005C15.1 5.90005 15 5.5 15 5C15 3.3 16.3 2 18 2H6C4.3 2 3 3.3 3 5C3 5.5 3.1 5.90005 3.3 6.30005L8.7 17.7C8.9 18.1 9 18.5 9 19C9 20.7 7.7 22 6 22H18Z" fill="currentColor" />
-                        <path d="M18 2C19.7 2 21 3.3 21 5H9C9 3.3 7.7 2 6 2H18Z" fill="currentColor" />
-                        <path d="M9 19C9 20.7 7.7 22 6 22C4.3 22 3 20.7 3 19H9Z" fill="currentColor" />
-                    </svg>
-                    <spam class="mt-2" style="line-height: 0.9rem"><small>Solicitud Rechazadas</small></spam>
-                </a>
-                <a asp-controller="Error" asp-action="Index" class="btn btn-light-success btn-hover-scale m-2 d-flex flex-column align-items-center justify-content-center" style="border-radius: 2.5rem; width: 10rem; height: 8.5rem;">
-                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.3" d="M18 22C19.7 22 21 20.7 21 19C21 18.5 20.9 18.1 20.7 17.7L15.3 6.30005C15.1 5.90005 15 5.5 15 5C15 3.3 16.3 2 18 2H6C4.3 2 3 3.3 3 5C3 5.5 3.1 5.90005 3.3 6.30005L8.7 17.7C8.9 18.1 9 18.5 9 19C9 20.7 7.7 22 6 22H18Z" fill="currentColor" />
-                        <path d="M18 2C19.7 2 21 3.3 21 5H9C9 3.3 7.7 2 6 2H18Z" fill="currentColor" />
-                        <path d="M9 19C9 20.7 7.7 22 6 22C4.3 22 3 20.7 3 19H9Z" fill="currentColor" />
-                    </svg>
-                    <spam class="mt-2" style="line-height: 0.9rem"><small>Inscripcioness</small></spam>
-                </a>
-                <a asp-controller="Competitor" asp-action="Index" class="btn btn-light-success btn-hover-scale m-2 d-flex flex-column align-items-center justify-content-center" style="border-radius: 2.5rem; width: 10rem; height: 8.5rem;">
-                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16.0173 9H15.3945C14.2833 9 13.263 9.61425 12.7431 10.5963L12.154 11.7091C12.0645 11.8781 12.1072 12.0868 12.2559 12.2071L12.6402 12.5183C13.2631 13.0225 13.7556 13.6691 14.0764 14.4035L14.2321 14.7601C14.2957 14.9058 14.4396 15 14.5987 15H18.6747C19.7297 15 20.4057 13.8774 19.912 12.945L18.6686 10.5963C18.1487 9.61425 17.1285 9 16.0173 9Z" fill="currentColor" />
-                        <rect opacity="0.3" x="14" y="4" width="4" height="4" rx="2" fill="currentColor" />
-                        <path d="M4.65486 14.8559C5.40389 13.1224 7.11161 12 9 12C10.8884 12 12.5961 13.1224 13.3451 14.8559L14.793 18.2067C15.3636 19.5271 14.3955 21 12.9571 21H5.04292C3.60453 21 2.63644 19.5271 3.20698 18.2067L4.65486 14.8559Z" fill="currentColor" />
-                        <rect opacity="0.3" x="6" y="5" width="6" height="6" rx="3" fill="currentColor" />
-                    </svg>
-                    <spam class="mt-2" style="line-height: 0.9rem"><small>Participantes</small></spam>
-                </a>
-                
-            </div>
-        </div>
+<v-card
+    class="mx-auto"
+    style="box-shadow: 0 8px 32px rgb(47 60 74 / 1%), 0 8px 16px rgb(47 60 74 / 2%);"
+    :class="{ 'pa-4': padding, cardClass }"
+    :color="$vuetify.theme.dark && color == 'white' ? 'dark' : color"
+    :dark="$vuetify.theme.dark"
+    max-width="100%"
+  >
+    <v-card-title class="">Registrar Cita</v-card-title>
+    <div class="container-Especialidad">
+      <v-form>
+        <v-col cols="12">
+          <v-select
+            :items="Semana"
+            item-text="text"
+            item-value="value"
+            v-model="Cita.fecha_cita"
+            outlined
+            label="Dia de la semana"
+            :required="true"
+          ></v-select>
+        </v-col>
+        <v-col cols="12">
+          <v-select
+            :items="listaTratamiento"
+            item-text="descripcion"
+            item-value="id"
+            v-model="Cita.id_tratamiento"
+            outlined
+            label="Tratamiento"
+            :required="true"
+          ></v-select>
+        </v-col>
+        <v-col cols="12">
+          <v-select
+            :items="listaMedico"
+            item-text="text"
+            item-value="value"
+            v-model="Cita.id_medico"
+            outlined
+            label="Medico"
+            :required="true"
+          ></v-select>
+        </v-col>
+        
+        
+        
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-col cols="12" sm="6" md="6">
+            <v-btn
+              block
+              color="success"
+              elevation="2"
+              @click.prevent="RegistrarCita"
+              >Buscar</v-btn
+            >
+          </v-col>
+        
+        </v-card-actions>
+      </v-form>
     </div>
-</div>
- 
+    <v-dialog width="450px" v-model="cargaRegistro" persistent>
+      <v-card height="300px">
+        <v-card-title class="justify-center"
+          >Registrando Cita</v-card-title
+        >
+        <div>
+          <v-progress-circular
+            style="display: block;margin:40px auto;"
+            :size="90"
+            :width="9"
+            color="blue"
+            indeterminate
+          ></v-progress-circular>
+        </div>
+        <v-card-subtitle
+          class="justify-center"
+          style="font-weight:bold;text-align:center"
+          >En unos momentos finalizaremos...</v-card-subtitle
+        >
+      </v-card>
+    </v-dialog>
+  </v-card>
 </template>
+
 <script>
-
-
 import axios from "axios";
-import { mapMutations , mapActions, mapGetters} from "vuex";
 
-
+import vue2Dropzone from "vue2-dropzone";
+import moment from "moment";
+import "vue2-dropzone/dist/vue2Dropzone.min.css";
+import { mapGetters, mapActions } from "vuex";
+import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
-  name: "Tratamientos",
-  components: {   
+  name: "RegistrarCita",
+  props: { color: {
+      type: String,
+      default: "white",
+    },
+    cardClass: {
+      type: String,
+      default: "",
+    },
+
+    padding: {
+      type: Boolean,
+      default: false,
+    },},
+  components: {
+    vueDropzone: vue2Dropzone,
   },
   data() {
     return {
-      search: "",
-     headers: [
+      
+      Cita:{
+      id_medico:"",
+      id_paciente:"",
+      id_tratamiento:"",
+      fecha_cita:"",
+      estado_cita:"Sin Pagar"
+      },
 
-         {text:"Nombre", align: "start", sortable: false, value:"nombre"},
-        { text: "Código", value: "codigo" },
-        { text: "Estado", value: "estado" },
-        { text: "Descripción", value: "descripcion" },
-        
-        
-         { text: "", value: "actions", sortable: false },
+      listaTratamiento:{},
+      cargaRegistro: false,
+      listaMedico: [
+        {
+          value: "6340f2a9dfe765c0e853e443",
+          text: "Anghelo Flores Fano",
+        },
+        {
+          value: "63742e3c57e81730d4862a35",
+          text: "Victor Castro Chipana",
+        },
       ],
-      dialogoRegistrar: false,
-      dialogoactualizacion: false,
-      dialogodetalle: false,
-     
-             
+      Semana: [
+        {
+          value: 0,
+          text: "Lunes",
+        },
+        {
+          value: 1,
+          text: "Martes",
+        },
+        {
+          value: 2,
+          text: "Miercoles",
+        },
+        {
+          value: 3,
+          text: "Jueves",
+        },
+        {
+          value: 4,
+          text: "Viernes",
+        },
+        
+      ],
+      date:null,
+      listaRango:[
+        8,9,10,11,12,13,14,15,16,17,18     ]
     };
+  },
 
-    
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
   },
   async created() {
-    this.obtenerTratamientos();
-  
+    this.fecha = moment(this.hoy, "DD-MM-YYYY").format();
+    await this.obtenerTratamientos();
   },
-  methods:{
-    ...mapActions("Tratamientos", ["setListaTratamientos"]),
-     //cerrar dialogo 
-      estadoActual(array){
-      if(array === 'listo'){
-        return false
-      }else{
-        return true
-      }
+  methods: {
+    mensaje(icono, titulo, texto, footer, valid) {
+      this.$swal({
+        icon: icono,
+        title: titulo,
+        text: texto,
+        footer: footer,
+      }).then((res) => {
+        if (valid) {
+          this.$emit("modifier-complete");
+        }
+      });
     },
-     async abrirDialogo(id) {
-    //  this.Especialidad = await this.loadUsuarioEspecialidad(id);
-      this.dialogoRegistrar= !this.dialogoRegistrar;
+
+    closeDialog() {
+      this.$emit("close-dialog-Registrar");
     },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    async obtenerTratamientos(){
+      await axios
+          .get("/Tratamiento/GetAllTratamiento")
+          .then((res) => {
+            this.listaTratamiento=res.data
+          })
+          .catch((err) => console.log(err));
+
+    },
+    async RegistrarCita() {
+      this.Cita.id_paciente=this.user.infoUser.id
+      
+     // this.$v.Cita.$touch();
     
- //obtener todos los tratamientos del sistema
-    async obtenerTratamientos() {
-      await axios
-        .get("/Tratamiento/GetAllTratamiento")
-        .then((x) => {
-          let listaE=[];
-          this.listaE = x.data;
-           this.setListaTratamientos(this.listaE);
-        })
-        .catch((err) => console.log(err));
+       
+        //this.cargaRegistro = true;
+        await axios
+          .get ("/Turnos/GetTurnosxMedico?id_medico="+ this.Cita.id_medico)
+          .then((res) => {
+            let listaDia=[];
+          let listaTurnos=res.data;
+          for(var i=0;i<listaTurnos.length;i++){
+            
+           
+            let dia=new Date(listaTurnos[i].dia).getDay();
+            if(dia==this.Cita.fecha_cita){
+              listaDia.push(listaTurnos[i])
+            }
+           
+           
+          }
+          let listaHora=[];
+          for(var j=0;j<listaDia.length;j++){
+            let listaHorafake=[]
+            listaHorafake=new Date(listaDia[j].dia).getHours();
+            listaHora.push(listaHorafake)
+          }
+          let listaFinal=[]
+          for(var k=0;k<listaHora.length;k++){
+            for(var i=0;i<this.listaRango.length;i++)
+              {
+                if(listaHora[k]!=this.listaRango[i]){
+                 listaFinal.push(this.listaRango[i])
+               
+                }
+              }
+            }
+            console.log({listaFinal})
+           // this.$emit("emit-obtener-enfermedades");
+           // this.cargaRegistro = false;
+          //  this.closeDialog();
+          
+          })
+          .catch((err) => console.log(err));
+       // this.obtieneTurnosporMedico();
+         // this.$router.push(`pagar`);
+        await this.mensaje(
+          "success",
+          "Listo",
+          "La cita fue registrada satisfactoriamente",
+        );
+      
     },
-    async loadUsuarioEspecialidad(id) {
-      var user = {};
+    async obtieneTurnosporMedico(){
       await axios
-        .get("/Especialidad/Id?id=" + id)
-        .then((res) => {
-          console.log(res);
-          user = res.data;
-          console.log(user)
-        })
-        .catch((err) => console.log(err));
-      console.log(user);     
-      return user;
-    },    
-   
+          .get ("/Turnos/GetTurnosxMedico?id_medico="+this.Cita.id_medico)
+          .then((res) => {
+          console.log(res.data)
+          })
+      .catch((err) => console.log(err));
+
+    },
   },
- 
+
   computed: {
-     ...mapMutations("Tratamientos", ["ListaTratamientos"]),
-    ...mapGetters("Tratamientos",["listaTratamientos"]),
-  computedItems() {
-      // return this.items.map(this.mapItem);
-      let permisos = [];
-       axios
-        .get("/Tratamiento/GetAllTratamiento")
-        .then((x) => {
-          let listaE=[];
-          listaE = x.data;
-      //    this.setListaTratamientos(listaE);
-           permisos= this.listaE
-           console.log({permisos})
-        })
-        .catch((err) => console.log(err));
-      return permisos;
-    },
-  }
+    ...mapGetters("Authentication", ["user"]),
+  },
+  validations() {
+    return {
+
+    };
+  },
 };
 </script>
-<style scoped>
-.card {
-  margin: 20px;
+
+<style lang="scss" scoped>
+.title-card {
+  font-size: 25px;
+  color: blue;
+  padding-top: 7%;
+  text-align: center;
+}
+
+.v-dialog .v-card .v-card__title {
+  font-size: 25px;
+  font-weight: bold;
+}
+.campos {
+  margin: 2% 10% 5% 10%;
+}
+.filas {
+  margin: 2% 8% 5% 8%;
+}
+.filas2 {
+  margin-top: 4%;
+  margin-bottom: 1%;
+}
+.btn-registrar {
+  background: green;
+  color: white;
+  border-radius: 10px;
+  width: 90%;
+  height: 5vh;
+  font-weight: bold;
+  font-size: 20px;
+}
+.container-Especialidad {
+  margin: 15px;
+}
+.btn-volver {
+  background: blue;
+  color: white;
+  border-radius: 10px;
+  width: 90%;
+  height: 5vh;
+  font-weight: bold;
+  font-size: 20px;
 }
 </style>
