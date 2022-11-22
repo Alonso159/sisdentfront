@@ -1,7 +1,9 @@
 <template>
-<v-card
+  <v-card
     class="mx-auto"
-    style="box-shadow: 0 8px 32px rgb(47 60 74 / 1%), 0 8px 16px rgb(47 60 74 / 2%);"
+    style="
+      box-shadow: 0 8px 32px rgb(47 60 74 / 1%), 0 8px 16px rgb(47 60 74 / 2%);
+    "
     :class="{ 'pa-4': padding, cardClass }"
     :color="$vuetify.theme.dark && color == 'white' ? 'dark' : color"
     :dark="$vuetify.theme.dark"
@@ -43,9 +45,6 @@
             :required="true"
           ></v-select>
         </v-col>
-        
-        
-        
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -54,22 +53,21 @@
               block
               color="success"
               elevation="2"
-              @click.prevent="RegistrarCita"
+              @click.prevent="registrarCita"
               >Buscar</v-btn
             >
           </v-col>
-        
         </v-card-actions>
       </v-form>
     </div>
     <v-dialog width="450px" v-model="cargaRegistro" persistent>
       <v-card height="300px">
         <v-card-title class="justify-center"
-          >Registrando Cita</v-card-title
+          >Buscando horario disponible</v-card-title
         >
         <div>
           <v-progress-circular
-            style="display: block;margin:40px auto;"
+            style="display: block; margin: 40px auto"
             :size="90"
             :width="9"
             color="blue"
@@ -78,10 +76,19 @@
         </div>
         <v-card-subtitle
           class="justify-center"
-          style="font-weight:bold;text-align:center"
+          style="font-weight: bold; text-align: center"
           >En unos momentos finalizaremos...</v-card-subtitle
         >
       </v-card>
+    </v-dialog>
+    <v-dialog persistent v-model="dialogoRegistrar" max-width="300px">
+      <VisualizarHorario
+        v-if="dialogoRegistrar"
+        :Horario="Horario"
+        :Cita="Cita"
+        @close-dialog-Registrar="closeDialogRegistrar()"
+      >
+      </VisualizarHorario>
     </v-dialog>
   </v-card>
 </template>
@@ -94,9 +101,11 @@ import moment from "moment";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
 import { mapGetters, mapActions } from "vuex";
 import { required, minLength, email } from "vuelidate/lib/validators";
+import VisualizarHorario from "@/components/CardHorario.vue";
 export default {
   name: "RegistrarCita",
-  props: { color: {
+  props: {
+    color: {
       type: String,
       default: "white",
     },
@@ -108,22 +117,25 @@ export default {
     padding: {
       type: Boolean,
       default: false,
-    },},
+    },
+  },
   components: {
+    VisualizarHorario,
     vueDropzone: vue2Dropzone,
   },
   data() {
     return {
-      
-      Cita:{
-      id_medico:"",
-      id_paciente:"",
-      id_tratamiento:"",
-      fecha_cita:"",
-      estado_cita:"Sin Pagar"
-      },
+      listaFinal: [],
+      Horario: {},
 
-      listaTratamiento:{},
+      Cita: {
+        id_medico: "",
+        id_paciente: "",
+        id_tratamiento: "",
+        fecha_cita: "",
+        estado_cita: "Sin Pagar",
+      },
+      listaTratamiento: {},
       cargaRegistro: false,
       listaMedico: [
         {
@@ -137,30 +149,29 @@ export default {
       ],
       Semana: [
         {
-          value: 0,
+          value: 1,
           text: "Lunes",
         },
         {
-          value: 1,
+          value: 2,
           text: "Martes",
         },
         {
-          value: 2,
+          value: 3,
           text: "Miercoles",
         },
         {
-          value: 3,
+          value: 4,
           text: "Jueves",
         },
         {
-          value: 4,
+          value: 5,
           text: "Viernes",
         },
-        
       ],
-      date:null,
-      listaRango:[
-        8,9,10,11,12,13,14,15,16,17,18     ]
+      date: null,
+      listaRango: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+      dialogoRegistrar: false,
     };
   },
 
@@ -197,77 +208,80 @@ export default {
         this.editedIndex = -1;
       });
     },
-    async obtenerTratamientos(){
+    async obtenerTratamientos() {
       await axios
-          .get("/Tratamiento/GetAllTratamiento")
-          .then((res) => {
-            this.listaTratamiento=res.data
-          })
-          .catch((err) => console.log(err));
-
+        .get("/Tratamiento/GetAllTratamiento")
+        .then((res) => {
+          this.listaTratamiento = res.data;
+        })
+        .catch((err) => console.log(err));
     },
-    async RegistrarCita() {
-      this.Cita.id_paciente=this.user.infoUser.id
-      
-     // this.$v.Cita.$touch();
-    
-       
-        //this.cargaRegistro = true;
-        await axios
-          .get ("/Turnos/GetTurnosxMedico?id_medico="+ this.Cita.id_medico)
-          .then((res) => {
-            let listaDia=[];
-          let listaTurnos=res.data;
-          for(var i=0;i<listaTurnos.length;i++){
-            
-           
-            let dia=new Date(listaTurnos[i].dia).getDay();
-            if(dia==this.Cita.fecha_cita){
-              listaDia.push(listaTurnos[i])
-            }
-           
-           
-          }
-          let listaHora=[];
-          for(var j=0;j<listaDia.length;j++){
-            let listaHorafake=[]
-            listaHorafake=new Date(listaDia[j].dia).getHours();
-            listaHora.push(listaHorafake)
-          }
-          let listaFinal=[]
-          for(var k=0;k<listaHora.length;k++){
-            for(var i=0;i<this.listaRango.length;i++)
-              {
-                if(listaHora[k]!=this.listaRango[i]){
-                 listaFinal.push(this.listaRango[i])
-               
-                }
+    async registrarCita() {
+      this.Cita.id_paciente = this.user.infoUser.id;
+      //this.cargaRegistro = true;
+      await axios
+        .get("/Turnos/GetTurnosxMedico?id_medico=" + this.Cita.id_medico)
+        .then((res) => {
+          let listaDia = [];
+          let listaTurnos = res.data;
+          for (var i = 0; i < listaTurnos.length; i++) {
+            let dia = new Date(listaTurnos[i].dia).getDay();
+            let a = new Date(listaTurnos[i].dia);
+            let diaHoy = new Date();
+            if (diaHoy <=a ) {
+              let diaSemana = dia + 1;
+              if (diaSemana == this.Cita.fecha_cita) {
+                listaDia.push(listaTurnos[i]);
               }
             }
-            console.log({listaFinal})
-           // this.$emit("emit-obtener-enfermedades");
-           // this.cargaRegistro = false;
-          //  this.closeDialog();
-          
-          })
-          .catch((err) => console.log(err));
-       // this.obtieneTurnosporMedico();
-         // this.$router.push(`pagar`);
-        await this.mensaje(
-          "success",
-          "Listo",
-          "La cita fue registrada satisfactoriamente",
-        );
-      
-    },
-    async obtieneTurnosporMedico(){
-      await axios
-          .get ("/Turnos/GetTurnosxMedico?id_medico="+this.Cita.id_medico)
-          .then((res) => {
-          console.log(res.data)
-          })
-      .catch((err) => console.log(err));
+          }
+          let listaHora = [];
+          for (var j = 0; j < listaDia.length; j++) {
+            let listaHorafake = [];
+            listaHorafake = new Date(listaDia[j].dia).getHours();
+            listaHora.push(listaHorafake);
+          }
 
+          for (var k = 0; k < listaHora.length; k++) {
+            for (var i = 0; i < this.listaRango.length; i++) {
+              if (listaHora[k] != this.listaRango[i]) {
+                this.listaRango = this.listaRango.filter(
+                  (item) => item !== listaHora[k]
+                );
+              }
+            }
+          }
+          this.listaFinal = this.listaRango;
+          this.cargaRegistro = false;
+          this.abrirDialogo(this.listaFinal);
+          //  this.closeDialog();
+        })
+        .catch((err) => console.log(err));
+      // this.obtenerFecha();
+
+      /*    await this.mensaje(
+        "success",
+        "Listo",
+        "La cita fue registrada satisfactoriamente"
+      );*/
+    },
+    /*   async obtenerFecha(){
+      let fechaHoy = new Date().getUTCDay();
+      console.log({fechaHoy})
+    },*/
+    async obtieneTurnosporMedico() {
+      await axios
+        .get("/Turnos/GetTurnosxMedico?id_medico=" + this.Cita.id_medico)
+        .then((res) => {})
+        .catch((err) => console.log(err));
+    },
+    async abrirDialogo(lista) {
+      console.log(this.Cita.fecha_cita);
+      this.dialogoRegistrar = !this.dialogoRegistrar;
+      this.Horario = this.listaFinal;
+    },
+    closeDialogRegistrar() {
+      this.dialogoRegistrar = false;
     },
   },
 
@@ -275,9 +289,7 @@ export default {
     ...mapGetters("Authentication", ["user"]),
   },
   validations() {
-    return {
-
-    };
+    return {};
   },
 };
 </script>
