@@ -60,7 +60,7 @@ export default {
       headers: [
 
         { text: "Estado", value: "estado_cita" },
-        { text: "Tratamiento", value: "id_tratamiento" },
+        { text: "Medico", value: "datos_generales.apellido_paterno" },
         { text: "Fecha", value: "fecha_cita" },
         { text: "Acciones", value: "actions", sortable: false },
 
@@ -93,14 +93,15 @@ export default {
         .catch((err) => console.log(err));
     },
      getColor(estadoCita){
-        if(estadoCita=="Sin pagar")  return "red"   
-        else if (estadoCita=="Por atender") return "green"
-        else if(estadoCita==null) "black"
+        if(estadoCita=="Sin Pagar") {return "yellow"}
+        else if (estadoCita=="Por atender"){ return "green"}
+        else {return "grey" }
       },
       verificaEstado(estadoCita)
       {
-        if(estadoCita=="Sin pagar")return false;
-        else return true
+        console.log(estadoCita)
+        if(estadoCita=="Sin Pagar"){return false}
+        else {return true} 
       },
     estadoActual(array) {
       if (array === "listo") {

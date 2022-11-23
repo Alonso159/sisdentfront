@@ -81,7 +81,7 @@
         >
       </v-card>
     </v-dialog>
-    <v-dialog persistent v-model="dialogoRegistrar" max-width="300px">
+    <v-dialog persistent v-model="dialogoRegistrar" max-width="320px">
       <VisualizarHorario
         v-if="dialogoRegistrar"
         :Horario="Horario"
@@ -229,8 +229,8 @@ export default {
             let a = new Date(listaTurnos[i].dia);
             let diaHoy = new Date();
             if (diaHoy <=a ) {
-              let diaSemana = dia + 1;
-              if (diaSemana == this.Cita.fecha_cita) {
+            
+              if (dia == this.Cita.fecha_cita) {
                 listaDia.push(listaTurnos[i]);
               }
             }
@@ -279,6 +279,8 @@ export default {
       console.log(this.Cita.fecha_cita);
       this.dialogoRegistrar = !this.dialogoRegistrar;
       this.Horario = this.listaFinal;
+      ////////////////////////////////////////////////////////////////////////////////////////
+      //falta limpiar medicos dia y tratamiento
     },
     closeDialogRegistrar() {
       this.dialogoRegistrar = false;
