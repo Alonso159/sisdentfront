@@ -78,6 +78,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    
   </v-card>
 </template>
 
@@ -164,6 +165,7 @@ export default {
       let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
       console.log({ fechaPaciente });
       this.fechaCita = fechaPaciente.split("T")[0];
+      this.$emit("actualiza-turnos");
     },
     async RegistraCita() {
       console.log(this.Cita);
@@ -180,9 +182,10 @@ export default {
             id_cita: infoTurno.id,
             id_tratamiento: infoTurno.id_tratamiento,
           }
-5
+           axios
             .post("/Turnos/CreateTurno", turno)
             .then((res) => {
+              console.log("SE CREO EL TURNO")
               this.closeDialog();
             })
             .catch((err) => console.log(err));

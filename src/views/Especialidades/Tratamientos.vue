@@ -87,6 +87,7 @@
         :Horario="Horario"
         :Cita="Cita"
         @close-dialog-Registrar="closeDialogRegistrar()"
+        @actualiza-turnos="obtieneTurnosporMedico()"
       >
       </VisualizarHorario>
     </v-dialog>
@@ -252,33 +253,25 @@ export default {
             }
           }
           this.listaFinal = this.listaRango;
+          let nuevalistaRango=[8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+          this.listaRango=nuevalistaRango;
           this.cargaRegistro = false;
-          this.abrirDialogo(this.listaFinal);
+          this.abrirDialogo();
           //  this.closeDialog();
         })
         .catch((err) => console.log(err));
-      // this.obtenerFecha();
-
-      /*    await this.mensaje(
-        "success",
-        "Listo",
-        "La cita fue registrada satisfactoriamente"
-      );*/
     },
-    /*   async obtenerFecha(){
-      let fechaHoy = new Date().getUTCDay();
-      console.log({fechaHoy})
-    },*/
     async obtieneTurnosporMedico() {
       await axios
         .get("/Turnos/GetTurnosxMedico?id_medico=" + this.Cita.id_medico)
         .then((res) => {})
         .catch((err) => console.log(err));
     },
-    async abrirDialogo(lista) {
+    async abrirDialogo() {
       console.log(this.Cita.fecha_cita);
       this.dialogoRegistrar = !this.dialogoRegistrar;
       this.Horario = this.listaFinal;
+      
       ////////////////////////////////////////////////////////////////////////////////////////
       //falta limpiar medicos dia y tratamiento
     },

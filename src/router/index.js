@@ -30,13 +30,18 @@ const routes = [
         component: () => import("@/views/Dashboard/Dashboard-project"),
       },   
       {
-        path: "gestionarCronograma",
-        name: "gestionarCronograma",
-        component: () => import("@/views/gestionarCronograma/gestionarCronograma"),
+        path: "gestionarCitaMedico",
+        name: "gestionarCitaMedico",
+        component: () => import("@/views/gestionarCitas/gestionarCitaMedico"),
       },
       {
-        path: "reservaCita",
-        name: "reservaCita",
+        path: "gestionarCitaRecepcionista",
+        name: "gestionarCitaRecepcionista",
+        component: () => import("@/views/gestionarCitas/gestionarCitaRecepcionista"),
+      },
+      {
+        path: "gestionarCitaPaciente",
+        name: "gestionarCitaPaciente",
         component: () => import("@/components/GestionarCitas"),
       },
       {
