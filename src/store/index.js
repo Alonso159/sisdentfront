@@ -7,12 +7,14 @@ import Authentication from './modules/Authentication'
 import Cronograma from './modules/Cronograma'
 import Tratamientos from './modules/Tratamientos'
 import Citas from './modules/Citas'
+import Medico from './modules/Medico'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({ 
   modules: {
     Citas,
+    Medico,
     Tratamientos,
     Cronograma,
     Clientes, 

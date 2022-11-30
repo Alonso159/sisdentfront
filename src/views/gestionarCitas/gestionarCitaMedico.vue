@@ -52,7 +52,7 @@
         headers: [
           { text: "Estado", value: "estado_cita" },
           { text: "Paciente", value: "datos_generales.apellido_paterno" },
-          { text: "Fecha", value: "fecha_cita" },
+          { text: "Hora", value: "fecha_cita" },
           { text: "Acciones", value: "actions", sortable: false },
         ],
         idCita:"",
@@ -79,7 +79,8 @@
             console.log(x.data)
             const listaCita = x.data;
             for (var i = 0; i < listaCita.length; i++) {
-              listaCita[i].fecha_cita = x.data[i].fecha_cita.split("T")[0];
+              listaCita[i].fecha_cita = x.data[i].fecha_cita.split("T")[1];
+            listaCita[i].fecha_cita = listaCita[i].fecha_cita.split("Z")[0];
             }
             this.setListaCitaMedico(listaCita);
           })

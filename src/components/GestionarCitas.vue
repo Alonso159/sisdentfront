@@ -73,7 +73,7 @@ export default {
     //obtener los citas listados
     async obtenerCitas() {
       await axios
-        .get("/Cita/GetAllCitas?id_paciente=" + this.user.infoUser.id)
+        .get("/Cita/GetCitasxPaciente?id_paciente=" + this.user.infoUser.id)
         .then((x) => {
           const listaCita = x.data;
           for (var i = 0; i < listaCita.length; i++) {

@@ -124,12 +124,12 @@ export default {
           name: "GestionarCitaRecepcionista",
           href: "/gestionarCitaRecepcionista",
         },
-        {
+       /* {
           title: "Gestionar Medicos",
           icon: mdiTooth,
           name: "GestionarEspecialida<<",
           href: "/gestionarEspecialidades",
-        },
+        },*/
       ];
       return permisos;
     },
