@@ -12,7 +12,7 @@
 <script>
 
 import CardReserva from "@/components/CardReserva.vue";
-
+import CardTodo from "@/components/Todo.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {

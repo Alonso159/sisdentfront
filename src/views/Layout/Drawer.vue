@@ -23,7 +23,7 @@
         class="pa-3 rounded-lg mx-4 white--text bg-sidebar-six d-flex space-between"
       >
         <div class="flex-1">
-          <p class="subtitle-1 mb-0 text-capitalize">{{ typeUser.nameSis }}</p>
+          <p class="subtitle-1 mb-0 text-capitalize">Bienvenido</p>
           <p class="mt-2 text-subtitle-2 mb-0 grey--text text--lighten-1">
             <span>{{ TituloUsuario }}</span>
           </p>
@@ -98,6 +98,7 @@ export default {
     ...mapGetters("Global", ["GlobIdProject"]),
     ...mapGetters("Authentication", ["user", "typeUser"]),
     computedItems() {
+      console.log(this.user)
       // return this.items.map(this.mapItem);
       let permisos = [
         {
@@ -124,6 +125,7 @@ export default {
           name: "GestionarCitaRecepcionista",
           href: "/gestionarCitaRecepcionista",
         },
+       
        /* {
           title: "Gestionar Medicos",
           icon: mdiTooth,

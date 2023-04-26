@@ -60,18 +60,19 @@ const actions = {
     }, expirationDateTime);
   },
   logIn: ({ commit, dispatch }, userData) => {
+    //console.log({userData})
     commit("setLoading", true);
     axios
       .post("/Account/login", userData)
       .then(async (res) => {
         commit("setLoading", false);
-
+        console.log("ESTA ENTRANDO")
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
         const DateNow = new Date();        
         let DateExpiration = new Date(res.data.expiration);
         const expirationTime = DateExpiration - DateNow;
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("esCliente", userData.isCliente);
+
         localStorage.setItem("expirationDate", DateExpiration);
         
         commit("setAuthUser", {
@@ -79,7 +80,7 @@ const actions = {
         });
 
         dispatch("setLogoutTimer", expirationTime);
-        router.replace('/');
+        router.replace('/dashboard-management');
       })
       .catch((error) => {
         console.log(error);
@@ -121,7 +122,6 @@ const actions = {
     commit("clearUser");
     commit("clearTypeUser");
     localStorage.removeItem("token");
-    localStorage.removeItem("esCliente");
     localStorage.removeItem("expirationDate");
 
         router.replace('/login')
@@ -132,7 +132,7 @@ const actions = {
    
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
         await axios
-        .get(`/Account/user?isClient=true`)
+        .post("/Account/login", userData)
         .then((res) => {
           commit("setUser", res.data);
             
@@ -144,7 +144,6 @@ const actions = {
         .catch((error) => {
        
           localStorage.removeItem("token");
-          localStorage.removeItem("esCliente");
           localStorage.removeItem("expirationDate");
           router.replace('/login');
         });

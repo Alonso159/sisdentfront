@@ -93,9 +93,9 @@ export default {
           let model = {
             username: this.email,
             password: this.ePassword,
-            isCliente: true
           }
           this.logIn(model)
+          console.log({model})
       } else {
           this.snackbar = true
       }

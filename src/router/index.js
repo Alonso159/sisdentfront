@@ -16,7 +16,7 @@ const routes = [
   {
     path: '/',
     name: 'Dashboard',
-    redirect: "/dashboard-management",
+    redirect: "/login",
     component: () =>
       import ('../views/Layout/Principal.vue'),
       children: [{
@@ -24,11 +24,7 @@ const routes = [
         name: "dashboard-management",
         component: () => import("@/views/Dashboard/Dashboard-management"),
       },
-      {
-        path: "dashboard-project",
-        name: "dashboard-project",
-        component: () => import("@/views/Dashboard/Dashboard-project"),
-      },   
+     
       {
         path: "gestionarCitaMedico",
         name: "gestionarCitaMedico",

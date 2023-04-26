@@ -107,14 +107,7 @@ const items = [
     icon: "mdi-view-dashboard",
     to: "evaluarcotizacion",
   },
-  {
-    divider: "Proyecto",
-    hide: true,
-    identifier: "dashboard-proy-item",
-    title: "Inicio",
-    icon: "mdi-view-dashboard",
-    to: "dashboard-project",
-  },
+  
   {
     hide: true,
     identifier: "cronograma-item",
@@ -214,14 +207,7 @@ const itemsCliente = [
     icon: "mdi-view-dashboard",
     to: "evaluarcotizacion",
   },
-  {
-    divider: "Proyecto",
-    hide: true,
-    identifier: "dashboard-proy-item",
-    title: "Inicio",
-    icon: "mdi-view-dashboard",
-    to: "dashboard-project-client",
-  },
+ 
   {
     hide: true,
     identifier: "cronograma-item",

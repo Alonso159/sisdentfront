@@ -31,7 +31,7 @@ const actions = {
       console.log(res.data);
       localStorage.setItem(KEY_LS_ID_PROY, value);
       localStorage.setItem("GlobProyecto", JSON.stringify(res.data));
-      router.push({ name: 'dashboard-project' })
+      //router.push({ name: 'dashboard' })
     })
     .catch((error) => {
         console.log(error);
