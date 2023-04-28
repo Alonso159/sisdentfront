@@ -11,6 +11,7 @@ import "sweetalert2/src/sweetalert2.scss";
 const state = {
   idToken: null,
   user: null,
+  rol: null,
   typeUser: null,
   loadingSession: false,
 };
@@ -19,6 +20,9 @@ const getters = {
   // Para la obtención de datos del usuario y el loading de carga
   user: (state) => {
     return state.user;
+  },
+  rol: (state) => {
+    return state.rol;
   },
   typeUser: (state) => {
     return state.typeUser;
@@ -39,6 +43,9 @@ const mutations = {
   setUser: (state, user) => {
     state.user = user;
   },
+  setRol: (state, rol) => {
+    state.rol = rol;
+  },
   setTypeUser: (state, typeUser) => {
     state.typeUser = typeUser;
   },
@@ -47,6 +54,9 @@ const mutations = {
   },
   clearUser: (state) => {
     state.user = null;
+  },
+  clearRol: (state) => {
+    state.rol = null;
   },
   clearTypeUser: (state) => {
     state.typeUser = null;
@@ -66,7 +76,7 @@ const actions = {
       .post("/Account/login", userData)
       .then(async (res) => {
         commit("setLoading", false);
-        console.log("ESTA ENTRANDO")
+      
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
         const DateNow = new Date();        
         let DateExpiration = new Date(res.data.expiration);
@@ -74,11 +84,12 @@ const actions = {
         localStorage.setItem("token", res.data.token);
 
         localStorage.setItem("expirationDate", DateExpiration);
+        localStorage.setItem("rol", res.data.rol);
         
         commit("setAuthUser", {
           idToken: res.data.token,
         });
-
+        commit("setRol", res.data.rol);
         dispatch("setLogoutTimer", expirationTime);
         router.replace('/dashboard-management');
       })
@@ -102,7 +113,7 @@ const actions = {
 
     const expirationDate = localStorage.getItem("expirationDate");
     const DateNow = new Date();
-
+  
     if (DateNow >= expirationDate) {
       return;
     }
@@ -128,21 +139,48 @@ const actions = {
    
   },
   async fetchUser ({ commit, state }) {
- 
+    const userRol = localStorage.getItem("rol")
    
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
         await axios
-        .post("/Account/login", userData)
+        .get("/Account/user?rol="+userRol)
         .then((res) => {
+   
           commit("setUser", res.data);
-            
-    commit("setTypeUser", {
-      nameSis: "Bienvenido",
-      type:"Paciente"
-    });
+          if(res.data.rol=="0"){
+            commit("setTypeUser", {
+              nameSis: "Bienvenido",
+              type: "Administrador"
+            });
+          }
+          if(res.data.rol=="3"){
+            commit("setTypeUser", {
+              nameSis: "Bienvenido",
+              type: "Medico"
+            });
+          }
+          if(res.data.rol=="1"){
+            commit("setTypeUser", {
+              nameSis: "Bienvenido",
+              type: "Recepcionista "
+            });
+          }
+          if(res.data.rol=="4"){
+            commit("setTypeUser", {
+              nameSis: "Bienvenido",
+              type: "Paciente "
+            });
+          }
+          if(res.data.rol=="2"){
+            commit("setTypeUser", {
+              nameSis: "Bienvenido",
+              type: "Asistente "
+            });
+          }
+          
         })
         .catch((error) => {
-       
+          console.log("ERROR FETCH")
           localStorage.removeItem("token");
           localStorage.removeItem("expirationDate");
           router.replace('/login');

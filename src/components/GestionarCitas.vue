@@ -65,6 +65,7 @@ export default {
     };
   },
   async created() {
+    console.log("ESTOY AQUI")
     await this.obtenerCitas();
   },
   async mounted() { },
