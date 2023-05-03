@@ -25,7 +25,7 @@
         </v-col>
         <v-col cols="12">
           <v-select
-            :items="listaTratamiento"
+            :items="listaTratamiento" 
             item-text="descripcion"
             item-value="id"
             v-model="Cita.id_tratamiento"
@@ -33,12 +33,19 @@
             label="Tratamiento"
             :required="true"
           ></v-select>
+          <v-text-field
+          :disable="complejidadTratamiento"
+            label="Cantidad de tratamientos"
+            v-model="cantidadTratamiento"
+            class="mb-3"
+            
+          />
         </v-col>
         <v-col cols="12">
           <v-select
             :items="listaMedico"
-            item-text="text"
-            item-value="value"
+            item-text="datos_generales.apellido_paterno"
+            item-value="id"
             v-model="Cita.id_medico"
             outlined
             label="Medico"
@@ -126,28 +133,20 @@ export default {
   },
   data() {
     return {
+      cantidadTratamiento:0,
       listaFinal: [],
       Horario: {},
-
+      complejidad:0,
       Cita: {
         id_medico: "",
         id_paciente: "",
-        id_tratamiento: "",
+        tratamientos: [],
         fecha_cita: "",
         estado_cita: "Sin Pagar",
       },
-      listaTratamiento: {},
+      listaTratamiento: [],
       cargaRegistro: false,
-      listaMedico: [
-        {
-          value: "6340f2a9dfe765c0e853e443",
-          text: "Anghelo Flores Fano",
-        },
-        {
-          value: "63742e3c57e81730d4862a35",
-          text: "Victor Castro Chipana",
-        },
-      ],
+      listaMedico: [],
       Semana: [
         {
           value: 1,
@@ -184,6 +183,7 @@ export default {
   async created() {
     this.fecha = moment(this.hoy, "DD-MM-YYYY").format();
     await this.obtenerTratamientos();
+    await this.obtenerMedicos();
   },
   methods: {
     mensaje(icono, titulo, texto, footer, valid) {
@@ -198,7 +198,20 @@ export default {
         }
       });
     },
+    async verificaTramiento(){
 
+      await axios
+        .get("/Tratamiento/GetIDTratamiento?="+this.Cita.id_tratamiento)
+        .then((res) => {
+          this.complejidad=res.data.complejidad
+        })
+        .catch((err) => console.log(err));
+    },
+    complejidadTratamiento(){
+        var complejidad=this.complejidad
+        if (complejidad=3)   return false
+      
+    },
     closeDialog() {
       this.$emit("close-dialog-Registrar");
     },
@@ -217,6 +230,23 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    async obtenerMedicos() {
+      await axios
+        .get("/Medico/GetAllMedics")
+        .then((res) => {
+          for (var i = 0; i < res.data.length; i++) {
+            let nombreCompleto = "".concat(
+              res.data[i].datos_generales.nombre,
+              " ",
+              res.data[i].datos_generales.apellido_paterno,
+              " ",
+              res.data[i].datos_generales.apellido_materno
+            );
+            this.listaMedico.push(nombreCompleto);
+          }
+        })
+        .catch((err) => console.log(err));
+    },
     async registrarCita() {
       this.Cita.id_paciente = this.user.infoUser.id;
       //this.cargaRegistro = true;
@@ -229,8 +259,7 @@ export default {
             let dia = new Date(listaTurnos[i].dia).getDay();
             let a = new Date(listaTurnos[i].dia);
             let diaHoy = new Date();
-            if (diaHoy <=a ) {
-            
+            if (diaHoy <= a) {
               if (dia == this.Cita.fecha_cita) {
                 listaDia.push(listaTurnos[i]);
               }
@@ -253,8 +282,8 @@ export default {
             }
           }
           this.listaFinal = this.listaRango;
-          let nuevalistaRango=[8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-          this.listaRango=nuevalistaRango;
+          let nuevalistaRango = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+          this.listaRango = nuevalistaRango;
           this.cargaRegistro = false;
           this.abrirDialogo();
           //  this.closeDialog();
@@ -271,7 +300,7 @@ export default {
       console.log(this.Cita.fecha_cita);
       this.dialogoRegistrar = !this.dialogoRegistrar;
       this.Horario = this.listaFinal;
-      
+
       ////////////////////////////////////////////////////////////////////////////////////////
       //falta limpiar medicos dia y tratamiento
     },

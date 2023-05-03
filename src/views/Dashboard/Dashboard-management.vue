@@ -1,18 +1,18 @@
 <template>
   <v-row>
-    <v-col cols="12" md="12" lg="8">
+    <v-col cols="48" md="48" lg="32">
       <div class="home-columns">
-        <CardReserva :user="this.user" />
-      
+        <p v-if="user.rol == '4'||user.rol=='5'">
+          <CardReserva :user="this.user" />
+        </p>
       </div>
-    
     </v-col>
   </v-row>
 </template>
 <script>
 
 import CardReserva from "@/components/CardReserva.vue";
-import CardTodo from "@/components/Todo.vue";
+//import CardTodo from "@/components/Todo.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -23,7 +23,7 @@ export default {
   },
   components: {
     CardReserva,
-   
+
   },
   data() {
     return {
@@ -42,14 +42,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
-
 .home-columns {
 
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   flex-wrap: nowrap;
-  margin: 1% 3%;
+  margin: 1% 100%;
 }
 </style>

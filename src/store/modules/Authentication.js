@@ -76,22 +76,22 @@ const actions = {
       .post("/Account/login", userData)
       .then(async (res) => {
         commit("setLoading", false);
-      
+
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
-        const DateNow = new Date();        
+        const DateNow = new Date();
         let DateExpiration = new Date(res.data.expiration);
         const expirationTime = DateExpiration - DateNow;
         localStorage.setItem("token", res.data.token);
 
         localStorage.setItem("expirationDate", DateExpiration);
         localStorage.setItem("rol", res.data.rol);
-        
+
         commit("setAuthUser", {
           idToken: res.data.token,
         });
         commit("setRol", res.data.rol);
         dispatch("setLogoutTimer", expirationTime);
-        router.replace('/dashboard-management');
+        router.replace("/dashboard-management");
       })
       .catch((error) => {
         console.log(error);
@@ -102,7 +102,6 @@ const actions = {
         });
         commit("setLoading", false);
       });
-      
   },
   tryAutoLogin: ({ commit, dispatch }) => {
     const token = localStorage.getItem("token");
@@ -113,7 +112,7 @@ const actions = {
 
     const expirationDate = localStorage.getItem("expirationDate");
     const DateNow = new Date();
-  
+
     if (DateNow >= expirationDate) {
       return;
     }
@@ -127,7 +126,6 @@ const actions = {
     dispatch("setLogoutTimer", expirationTime);
   },
   logOut: ({ commit }) => {
-   
     console.log("logout");
     commit("clearAuthData");
     commit("clearUser");
@@ -135,57 +133,27 @@ const actions = {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationDate");
 
-        router.replace('/login')
-   
+    router.replace("/login");
   },
-  async fetchUser ({ commit, state }) {
-    const userRol = localStorage.getItem("rol")
-   
-        /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
-        await axios
-        .get("/Account/user?rol="+userRol)
-        .then((res) => {
-   
-          commit("setUser", res.data);
-          if(res.data.rol=="0"){
-            commit("setTypeUser", {
-              nameSis: "Bienvenido",
-              type: "Administrador"
-            });
-          }
-          if(res.data.rol=="3"){
-            commit("setTypeUser", {
-              nameSis: "Bienvenido",
-              type: "Medico"
-            });
-          }
-          if(res.data.rol=="1"){
-            commit("setTypeUser", {
-              nameSis: "Bienvenido",
-              type: "Recepcionista "
-            });
-          }
-          if(res.data.rol=="4"){
-            commit("setTypeUser", {
-              nameSis: "Bienvenido",
-              type: "Paciente "
-            });
-          }
-          if(res.data.rol=="2"){
-            commit("setTypeUser", {
-              nameSis: "Bienvenido",
-              type: "Asistente "
-            });
-          }
-          
-        })
-        .catch((error) => {
-          console.log("ERROR FETCH")
-          localStorage.removeItem("token");
-          localStorage.removeItem("expirationDate");
-          router.replace('/login');
+  async fetchUser({ commit, state }) {
+    const userRol = localStorage.getItem("rol");
+
+    /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
+    await axios
+      .get("/Account/user?rol=" + userRol)
+      .then((res) => {
+        commit("setUser", res.data);
+        commit("setTypeUser", {
+          nameSis: "Bienvenido",
+          type: res.data.nombre,
         });
-       
+      })
+      .catch((error) => {
+        console.log("ERROR FETCH");
+        localStorage.removeItem("token");
+        localStorage.removeItem("expirationDate");
+        router.replace("/login");
+      });
   },
   indirectLogIn: ({ commit, dispatch }, userData) => {
     commit("setLoading", true);
@@ -193,7 +161,6 @@ const actions = {
     axios
       .post("/Account/login", userData)
       .then((res) => {
-
         commit("setLoading", false);
 
         /* Para obtener la cantidad total de milisegundos en la cual se va usar para el deslogue automático */
@@ -210,8 +177,6 @@ const actions = {
         });
 
         dispatch("setLogoutTimer", expirationTime);
-
-   
       })
       .catch((error) => {
         console.log(error);

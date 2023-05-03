@@ -13,11 +13,11 @@
 <script>
 import moment from "moment";
 import "moment/locale/es";
-import CardCita from "@/components/GestionarCitas/CardCita.vue";
+//import CardCita from "@/components/GestionarCitas/CardCita.vue";
 export default {
   name: "CardCitas",
   components: {
-    CardCita, 
+   // CardCita, 
   },
   props: ["user"],
   data: () => ({
@@ -46,7 +46,7 @@ export default {
 <style lang="scss" scoped>
 .card-c {
   padding: 1%;
-  border-radius: 20px;
+  border-radius: 200px;
 }
 
 .button-89 {
@@ -62,7 +62,7 @@ export default {
   transition: .3s linear, color 0s, background-color 0s;
   outline: var(--b) solid #0000;
   outline-offset: .6em;
-  font-size: 30px;
+  font-size: 45px;
 
   border: 0;
 
