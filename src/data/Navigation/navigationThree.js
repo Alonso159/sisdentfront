@@ -125,7 +125,7 @@ const itemsPaciente = [
   {
     title: " Mi historia clinica",
     icon: "mdi-tooth",
-    href: "/gestionarPrescripción",
+    href: "/gestionarCitaPaciente",
   },
   {
     title: " Subir Resultados",

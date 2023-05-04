@@ -32,9 +32,12 @@
             outlined
             label="Tratamiento"
             :required="true"
+            :id="Cita.id_tratamiento"
+            @keydown="verificaTramiento(Cita.id_tratamiento)"
+
           ></v-select>
           <v-text-field
-          :disable="complejidadTratamiento"
+          :disabled="verificaTramiento(Cita.id_tratamiento)"
             label="Cantidad de tratamientos"
             v-model="cantidadTratamiento"
             class="mb-3"
@@ -50,6 +53,8 @@
             outlined
             label="Medico"
             :required="true"
+            
+
           ></v-select>
         </v-col>
 
@@ -198,18 +203,23 @@ export default {
         }
       });
     },
-    async verificaTramiento(){
+    async verificaTramiento(id){
 
       await axios
-        .get("/Tratamiento/GetIDTratamiento?="+this.Cita.id_tratamiento)
+        .get("/Tratamiento/GetIDTratamiento?id="+id)
         .then((res) => {
           this.complejidad=res.data.complejidad
+          console.log("this.complejidad")
+          console.log(this.complejidad)
+         this.complejidadTratamiento(this.complejidad);
         })
         .catch((err) => console.log(err));
+        return true
     },
-    complejidadTratamiento(){
-        var complejidad=this.complejidad
-        if (complejidad=3)   return false
+    complejidadTratamiento(complejidad){
+      console.log({complejidad})
+       if(complejidad>=3) return true;
+        
       
     },
     closeDialog() {
