@@ -28,19 +28,17 @@
             :items="listaTratamiento" 
             item-text="descripcion"
             item-value="id"
-            v-model="Cita.id_tratamiento"
+            v-model="id_tratamiento"
             outlined
             label="Tratamiento"
             :required="true"
-            :id="Cita.id_tratamiento"
-            @keydown="verificaTramiento(Cita.id_tratamiento)"
-
           ></v-select>
           <v-text-field
-          :disabled="verificaTramiento(Cita.id_tratamiento)"
+          :disabled="complejidadTratamiento()"
             label="Cantidad de tratamientos"
             v-model="cantidadTratamiento"
             class="mb-3"
+            @blur="$v.cantidadTratamiento.$touch()" :error-messages="errorNombre"
             
           />
         </v-col>
@@ -138,10 +136,11 @@ export default {
   },
   data() {
     return {
-      cantidadTratamiento:0,
+      cantidadTratamiento:1,
       listaFinal: [],
       Horario: {},
       complejidad:0,
+      id_tratamiento:"",
       Cita: {
         id_medico: "",
         id_paciente: "",
@@ -203,24 +202,23 @@ export default {
         }
       });
     },
-    async verificaTramiento(id){
-
+    async verificaTramiento(){
       await axios
-        .get("/Tratamiento/GetIDTratamiento?id="+id)
+        .get("/Tratamiento/GetIDTratamiento?id="+this.id_tratamiento)
         .then((res) => {
-          this.complejidad=res.data.complejidad
-          console.log("this.complejidad")
-          console.log(this.complejidad)
-         this.complejidadTratamiento(this.complejidad);
+          console.log
+          this.complejidad=res.data.complejidad       
         })
         .catch((err) => console.log(err));
-        return true
     },
-    complejidadTratamiento(complejidad){
-      console.log({complejidad})
-       if(complejidad>=3) return true;
-        
-      
+    complejidadTratamiento(){
+      if(this.id_tratamiento!=null)
+     { this.verificaTramiento()
+      console.log(this.complejidad)
+       if(this.complejidad>=3) 
+       {
+        this.cantidadTratamiento=1;
+        return true;}}
     },
     closeDialog() {
       this.$emit("close-dialog-Registrar");
@@ -257,6 +255,11 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    pushListaTratamientos(){
+
+      for(let i=0;i<=3;i++)
+      {this.Cita.tratamientos.push(id_tratamiento)}
+    },
     async registrarCita() {
       this.Cita.id_paciente = this.user.infoUser.id;
       //this.cargaRegistro = true;
@@ -264,6 +267,8 @@ export default {
         .get("/Turnos/GetTurnosxMedico?id_medico=" + this.Cita.id_medico)
         .then((res) => {
           let listaDia = [];
+
+          this.pushListaTratamientos();
           let listaTurnos = res.data;
           for (var i = 0; i < listaTurnos.length; i++) {
             let dia = new Date(listaTurnos[i].dia).getDay();
@@ -321,10 +326,26 @@ export default {
 
   computed: {
     ...mapGetters("Authentication", ["user"]),
+    errorNombre() {
+            const errors = [];
+          //  if (!this.$v.paciente.nombre.$dirty) return errors;
+            !this.$v.cantidadTratamiento.required &&
+                errors.push("Debe ingresar la cantidad de tratamientos que desee");
+                !this.$v.cantidadTratamiento.type &&
+                errors.push("Debe ingresar solo numeros");
+                !this.$v.cantidadTratamiento.minLength &&
+                errors.push("La cantidad no debe pasar de 1 digito");
+                !this.$v.cantidadTratamiento.validator &&
+                errors.push("La cantidad debe ser menor que 3");
+                !this.$v.cantidadTratamiento.validator &&
+                errors.push("La cantidad debe ser mayor que 0");
+            return errors;
+        },
   },
   validations() {
-    return {};
-  },
+    return {
+            cantidadTratamiento:{required,minLength:minLength(1), type:Number,default:0,validator:function(cantidadTratamiento){return cantidadTratamiento<=3},ayuda:function(cantidadTratamiento){return cantidadTratamiento>0}}
+        };  },
 };
 </script>
 
