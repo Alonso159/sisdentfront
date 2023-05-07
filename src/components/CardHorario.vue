@@ -180,7 +180,6 @@ export default {
             hora_inicio: HoraTurno.toString(),
             duracion: "60",
             id_cita: infoTurno.id,
-            id_tratamiento: infoTurno.id_tratamiento,
           }
            axios
             .post("/Turnos/CreateTurno", turno)

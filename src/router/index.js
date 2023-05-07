@@ -2,9 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 Vue.use(VueRouter)
-
 const routes = [
-  
   {
     path: '/about',
     name: 'about',
@@ -31,6 +29,11 @@ const routes = [
         component: () => import("@/views/gestionarCitas/gestionarCitaMedico"),
       },
       {
+        path: "gestionarTratamientos",
+        name: "gestionarTratamientos",
+        component: () => import("@/views/gestionarTratamiento/gestionarTratamiento"),
+      },
+      {
         path: "gestionarCitaRecepcionista",
         name: "gestionarCitaRecepcionista",
         component: () => import("@/views/gestionarCitas/gestionarCitaRecepcionista"),
@@ -52,18 +55,13 @@ const routes = [
       component: () => import('@/views/Pagar.vue')
   
   },
-      
-      
-    ]
+  ]
   },
   {
     path: '/login',
     name: "Login Usuario",
     component: () => import('@/views/Login/LoginSistema.vue')
-  },
-  
- 
-  
+  },  
 ]
 
 const router = new VueRouter({

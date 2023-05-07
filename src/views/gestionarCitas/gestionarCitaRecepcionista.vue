@@ -6,17 +6,7 @@
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
             Today
           </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="prev">
-            <v-icon small>
-              mdi-chevron-left
-            </v-icon>
-          </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="next">
-            <v-icon small>
-              mdi-chevron-right
-            </v-icon>
-          </v-btn>
-          <v-toolbar-title v-if="$refs.calendar">
+          <v-toolbar-title color="primary " class="mr-4" v-if="$refs.calendar">
             {{ $refs.calendar.title }}
           </v-toolbar-title>
           <v-spacer></v-spacer>
@@ -86,6 +76,7 @@ import axios from "axios";
 import RegistrarPaciente from "@/components/RegistrarPaciente.vue";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
+import { mdiAlignHorizontalCenter } from "@mdi/js";
 export default {
   components: {
     RegistrarPaciente,
@@ -114,7 +105,7 @@ export default {
     ...mapActions("Medico", ["setListaMedico"]),
     async obtieneCitaxDia() {
       var Hoy = moment();
-      var Fecha = Hoy.format('DD/MM/YYYY');
+      var Fecha = Hoy.format('DD-MM-YYYY');
       await axios
         .get("/Cita/GetAllCitasxdia?dia=" + Fecha)
         .then((x) => {
@@ -124,7 +115,7 @@ export default {
     },
     async obtieneMedicos() {
       await axios
-        .get("/Trabajador/GetAllMedico")
+        .get("/Medico/GetAllMedico")
         .then((x) => {
 
           for (var i = 0; i < x.data.length; i++) { this.doctores.push(x.data[i].datos_generales.apellido_paterno) }
@@ -155,12 +146,6 @@ export default {
     setToday() {
       this.focus = ''
     },
-    prev() {
-      this.$refs.calendar.prev()
-    },
-    next() {
-      this.$refs.calendar.next()
-    },
     showEvent ({ nativeEvent, event }) {
         const open = () => {
           this.selectedEvent = event
@@ -181,15 +166,14 @@ export default {
         this.focus = date
         this.type = 'day'
       },
-
     async fetchEvents({ start, end }) {
       var Hoy = moment();
-      var Fecha = Hoy.format('DD/MM/YYYY');
+      var Fecha = Hoy.format('DD-MM-YYYY');
       await axios
-        .get("/Cita/GetAll" )
-        .then((x) => {
-          this.listaCita = x.data;
-
+        .get("/Cita/GetAllCitasxdia?dia="+Fecha )
+        .then((res) => {
+          this.listaCita = res.data;
+          console.log(this.listaCita)
         })
         .catch((err) => console.log(err));
       const events = []
@@ -202,6 +186,11 @@ export default {
         var newhora= hora+1
         var a=HoraInicio.split("T")[0]+"T"+hora+":00:00"
         var b=HoraFin.split("T")[0]+"T"+newhora+":00:00"
+
+
+      
+
+        
         var evento = { name: "", start: "", end: "", color: "", timed: "", category: "" }
    
         evento.name = this.listaCita[i].apellidoPaterno
@@ -210,6 +199,8 @@ export default {
         evento.end= b
         evento.timed = !allDay
         evento.id=this.listaCita[i].id
+    
+        
         for (var j = 0; j < this.doctores.length; j++) {
           if (this.listaCita[i].apellidoPMedico == this.doctores[j]) {
             evento.category = this.listaCita[i].apellidoPMedico
@@ -224,6 +215,7 @@ export default {
         events.push(evento);
       }
       this.eventos = events
+     
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a

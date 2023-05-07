@@ -240,7 +240,7 @@ export default {
     },
     async obtenerMedicos() {
       await axios
-        .get("/Medico/GetAllMedics")
+        .get("/Medico/GetAllMedico")
         .then((res) => {
           for (var i = 0; i < res.data.length; i++) {
             let nombreCompleto = "".concat(
