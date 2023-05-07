@@ -144,7 +144,7 @@ export default {
       Cita: {
         id_medico: "",
         id_paciente: "",
-        tratamientos: [],
+        tratamiento: [],
         fecha_cita: "",
         estado_cita: "Sin Pagar",
       },
@@ -257,18 +257,30 @@ export default {
     },
     pushListaTratamientos(){
 
-      for(let i=0;i<=3;i++)
-      {this.Cita.tratamientos.push(id_tratamiento)}
+      for(let i=0;i<3;i++)
+      {this.Cita.tratamiento.push(this.id_tratamiento)}
+    },
+    async infoPaciente(){
+      await axios
+        .get("/Paciente/GetPacienteID?id="+this.user.myID)
+        .then((res) => {
+         
+          this.Cita.id_paciente = res.data.id;
+        })
+        .catch((err) => console.log(err));
+
+
     },
     async registrarCita() {
-      this.Cita.id_paciente = this.user.infoUser.id;
+    this.infoPaciente();
+    this.pushListaTratamientos();
       //this.cargaRegistro = true;
-      await axios
+     await axios
         .get("/Turnos/GetTurnosxMedico?id_medico=" + this.Cita.id_medico)
         .then((res) => {
           let listaDia = [];
 
-          this.pushListaTratamientos();
+          
           let listaTurnos = res.data;
           for (var i = 0; i < listaTurnos.length; i++) {
             let dia = new Date(listaTurnos[i].dia).getDay();
@@ -283,7 +295,7 @@ export default {
           let listaHora = [];
           for (var j = 0; j < listaDia.length; j++) {
             let listaHorafake = [];
-            listaHorafake = new Date(listaDia[j].dia).getHours();
+            listaHorafake = new Date(listaDia[j].dia).getHours(); 
             listaHora.push(listaHorafake);
           }
 
@@ -296,6 +308,7 @@ export default {
               }
             }
           }
+          console.log("CITA REGISTRADA")
           this.listaFinal = this.listaRango;
           let nuevalistaRango = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
           this.listaRango = nuevalistaRango;
