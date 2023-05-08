@@ -1,10 +1,37 @@
 <template>
   <v-row class="fill-height">
-    <v-col>
+    <v-col class="">
       <v-sheet height="64">
-        <v-toolbar flat>
-          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
+        <v-toolbar absolute>
+          <v-btn
+            outlined
+            class="mr-4"
+            color="grey darken-2"
+            @click="setToday"
+          >
             Today
+          </v-btn>
+          <v-btn
+            fab
+            text
+            small
+            color="grey darken-2"
+            @click="prev"
+          >
+            <v-icon small>
+              mdi-chevron-left
+            </v-icon>
+          </v-btn>
+          <v-btn
+            fab
+            text
+            small
+            color="grey darken-2"
+            @click="next"
+          >
+            <v-icon small>
+              mdi-chevron-right
+            </v-icon>
           </v-btn>
           <v-toolbar-title color="primary " class="mr-4" v-if="$refs.calendar">
             {{ $refs.calendar.title }}
@@ -12,8 +39,8 @@
           <v-spacer></v-spacer>
         </v-toolbar>
       </v-sheet>
-      <v-sheet height="600">
-        <v-calendar ref="calendar" v-model="focus" color="primary" type="category" category-show-all
+      <v-sheet height="400">
+        <v-calendar ref="calendar" v-model="focus" color="primary" type="category" category-show-all 
           :categories="doctores" :events="eventos" :event-color="getEventColor" @change="fetchEvents"
           @click:event="showEvent"
           @click:more="viewDay"
@@ -166,41 +193,40 @@ export default {
         this.focus = date
         this.type = 'day'
       },
+      prev () {
+        this.$refs.calendar.prev()
+      },
+      next () {
+        this.$refs.calendar.next()
+      },
     async fetchEvents({ start, end }) {
       var Hoy = moment();
       var Fecha = Hoy.format('DD-MM-YYYY');
       await axios
-        .get("/Cita/GetAllCitasxdia?dia="+Fecha )
+        .get("/Cita/GetAllCitas" )
         .then((res) => {
           this.listaCita = res.data;
-          console.log(this.listaCita)
         })
         .catch((err) => console.log(err));
       const events = []
       for (let i = 0; i < this.listaCita.length; i++) {
         const allDay = this.rnd(0, 3) === 0
-        var HoraInicio = new Date(this.listaCita[i].fecha_cita).toISOString();
+        var HoraInicio = new Date(this.listaCita[i].fecha_cita).toISOString()
         var HoradisqueFin = moment(HoraInicio).add(1,"hours");
+        var Hora=new Date(HoradisqueFin).getHours()
+        if(Hora==19){HoradisqueFin=moment(HoradisqueFin).subtract(1,"days")}
         var HoraFin= new Date(HoradisqueFin._d).toISOString();
         var hora=new Date(this.listaCita[i].fecha_cita).getHours()
         var newhora= hora+1
         var a=HoraInicio.split("T")[0]+"T"+hora+":00:00"
         var b=HoraFin.split("T")[0]+"T"+newhora+":00:00"
-
-
-      
-
-        
         var evento = { name: "", start: "", end: "", color: "", timed: "", category: "" }
-   
         evento.name = this.listaCita[i].apellidoPaterno
        // evento.nombrePaciente = this.listaCita[i].apellidoPaterno
         evento.start= a
         evento.end= b
         evento.timed = !allDay
         evento.id=this.listaCita[i].id
-    
-        
         for (var j = 0; j < this.doctores.length; j++) {
           if (this.listaCita[i].apellidoPMedico == this.doctores[j]) {
             evento.category = this.listaCita[i].apellidoPMedico
