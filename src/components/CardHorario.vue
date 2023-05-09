@@ -169,6 +169,7 @@ export default {
     },
     async RegistraCita() {
       console.log(this.Cita);
+      this.cargaRegistro=true
       await axios
         .post("/Cita/RegistrarCita", this.Cita)
         .then((res) => {
@@ -180,17 +181,18 @@ export default {
             hora_inicio: HoraTurno.toString(),
             duracion: "60",
             id_cita: infoTurno.id,
-            id_tratamiento: infoTurno.id_tratamiento,
           }
-           axios
-            .post("/Turnos/CreateTurno", turno)
-            .then((res) => {
-              console.log("SE CREO EL TURNO")
-              this.closeDialog();
-            })
-            .catch((err) => console.log(err));
+          this.cargaRegistro = false;
+          this.dialog=false
+          this.closeDialog();
         })
         .catch((err) => console.log(err));
+        await this.mensaje(
+            "success",
+            "Listo",
+            "Cita registrada satisfactoriamente",
+            "<strong>Se le redirigira<strong>"
+          );
     },
   },
   computed: {},

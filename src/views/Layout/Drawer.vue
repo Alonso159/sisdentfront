@@ -129,10 +129,10 @@ export default {
       if (this.user.rol == "3") {
         permisos = itemsMedico;
       }
-      if (this.user.rol == "2") {
+      if (this.user.rol == "1") {
         permisos = itemsAsistente;
       }
-      if (this.user.rol == "1") {
+      if (this.user.rol == "2") {
         permisos = itemsRecepcionista;
       }
       if (this.user.rol == "0") {

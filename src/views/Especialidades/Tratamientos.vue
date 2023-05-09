@@ -45,7 +45,7 @@
         <v-col cols="12">
           <v-select
             :items="listaMedico"
-            item-text="datos_generales.apellido_paterno"
+            item-text="nombreMedico"
             item-value="id"
             v-model="Cita.id_medico"
             outlined
@@ -139,6 +139,11 @@ export default {
       cantidadTratamiento:1,
       listaFinal: [],
       Horario: {},
+      datos:{
+        nombreMedico:"",
+        id:"",
+      },
+      nombreCompleto:"",
       complejidad:0,
       id_tratamiento:"",
       Cita: {
@@ -239,25 +244,33 @@ export default {
         .catch((err) => console.log(err));
     },
     async obtenerMedicos() {
+      let listaM=[]
       await axios
-        .get("/Medico/GetAllMedics")
+        .get("/Medico/GetAllMedico")
         .then((res) => {
-          for (var i = 0; i < res.data.length; i++) {
-            let nombreCompleto = "".concat(
+          for (let i = 0; i < res.data.length; i++) {
+             let nombreCompleto = "".concat(
               res.data[i].datos_generales.nombre,
               " ",
               res.data[i].datos_generales.apellido_paterno,
               " ",
               res.data[i].datos_generales.apellido_materno
+           
             );
-            this.listaMedico.push(nombreCompleto);
+            var datos={nombreMedico:"",id:""}
+            datos.id=res.data[i].id 
+            datos.nombreMedico=nombreCompleto
+            listaM.push(datos)
           }
+              this.listaMedico=listaM;
+          console.log(this.listaMedico)
+          
         })
         .catch((err) => console.log(err));
     },
     pushListaTratamientos(){
 
-      for(let i=0;i<3;i++)
+      for(let i=0;i<this.cantidadTratamiento;i++)
       {this.Cita.tratamiento.push(this.id_tratamiento)}
     },
     async infoPaciente(){

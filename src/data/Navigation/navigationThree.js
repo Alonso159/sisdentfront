@@ -60,7 +60,7 @@ const itemsMedico = [
   {
     title: "Gestionar Turnos",
     icon: "mdi-tooth",
-    href: "/gestionarTurnos",
+    href: "/gestionarCitaMedico",
   },
   {
     title: "Consultar Pacientes",
@@ -89,7 +89,7 @@ const itemsRecepcionista = [
   {
     title: "Visualizar Turnos",
     icon: "mdi-tooth",
-    href: "/gestionarPrescripción",
+    href: "/gestionarCitaRecepcionista",
   },  
 ];
 const itemsAsistente = [
