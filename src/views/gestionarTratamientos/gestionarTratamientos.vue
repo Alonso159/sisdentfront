@@ -1,5 +1,5 @@
 <template>
-  <v-card style="border-radius:5%;">
+  <v-card style="width: 500px;border-radius: 5%;">
     <v-card-title class="justify-center">Registrar Tratamiento</v-card-title>
     <div class="container-Tratamiento" >
       <v-form style="margin:0px 100px 0 100px; ">
