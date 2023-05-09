@@ -31,6 +31,12 @@ const routes = [
         component: () => import("@/views/gestionarCitas/gestionarCitaMedico"),
       },
       {
+        path: "gestionarTratamientos",
+        name: "gestionarTratamientos",
+        // component: () => import("@/components/GestionarEspecialidad/RegistrarEspecialidad"),
+        component: () => import("@/views/gestionarTratamientos/gestionarTratamientos"),
+      },
+      {
         path: "gestionarCitaRecepcionista",
         name: "gestionarCitaRecepcionista",
         component: () => import("@/views/gestionarCitas/gestionarCitaRecepcionista"),
