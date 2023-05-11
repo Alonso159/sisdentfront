@@ -4,39 +4,57 @@
     <div class="container-Tratamiento" >
       <v-form style="margin:0px 100px 0 100px; ">
         <v-text-field
-          v-model.trim="especialidad.descripcion"
+          v-model.trim="tratamiento.id"
           label="Nombre"
           outlined
-          @input="$v.especialidad.descripcion.$touch()"
-          @blur="$v.especialidad.descripcion.$touch()"
+          @input="$v.tratamiento.id.$touch()"
+          @blur="$v.tratamiento.id.$touch()"
+          :error-messages="errorId"
+          color="#009900"
+        ></v-text-field>
+        <v-text-field
+          v-model.trim="tratamiento.descripcion"
+          label="Nombre"
+          outlined
+          @input="$v.tratamiento.descripcion.$touch()"
+          @blur="$v.tratamiento.descripcion.$touch()"
           :error-messages="errorDescripcion"
           color="#009900"
         ></v-text-field>
 
         <v-text-field
-          v-model.trim="especialidad.duracion"
+          v-model="tratamiento.duracion"
           label="Duración"
           outlined
-          @input="$v.especialidad.duracion.$touch()"
-          @blur="$v.especialidad.duracion.$touch()" 
+          @input="$v.tratamiento.duracion.$touch()"
+          @blur="$v.tratamiento.duracion.$touch()" 
           :error-messages="errorDuracion"
           color="#009900"
         ></v-text-field>
         <v-text-field
-          v-model.trim="especialidad.materiales"
-          label="Materiales"
+          v-model.trim="tratamiento.materiales.id_inventario"
+          label="IDMateriales"
           outlined
-          @input="$v.especialidad.materiales.$touch()"
-          @blur="$v.especialidad.materiales.$touch()" 
-          :error-messages="errorMateriales"
+          @input="$v.tratamiento.materiales.$touch()"
+          @blur="$v.tratamiento.materiales.$touch()" 
+          :error-messages="errorMaterialesId"
+          color="#009900"
+        ></v-text-field>
+        <v-text-field
+          v-model="tratamiento.materiales.cantidad"
+          label="cantidad"
+          outlined
+          @input="$v.tratamiento.materiales.$touch()"
+          @blur="$v.tratamiento.materiales.$touch()" 
+          :error-messages="errorMaterialesCantidad"
           color="#009900"
         ></v-text-field>
 
         <v-textarea
-          v-model.trim="especialidad.costo"
+          v-model="tratamiento.costo"
           label="Costo"
-          @input="$v.especialidad.costo.$touch()"
-          @blur="$v.especialidad.costo.$touch()"
+          @input="$v.tratamiento.costo.$touch()"
+          @blur="$v.tratamiento.costo.$touch()"
           height="25"
           rows="2"
           :error-messages="errorCosto"
@@ -45,14 +63,14 @@
         ></v-textarea>
 
         <v-select
-          v-model.trim="especialidad.complejidad"
+          v-model="tratamiento.complejidad"
           :items="itemsTD"
           :item-text="itemsTD.text"
           :item-value="itemsTD.value"
           label="Complejidad"
           outlined
-          @input="$v.especialidad.complejidad.$touch()"
-          @blur="$v.especialidad.complejidad.$touch()"
+          @input="$v.tratamiento.complejidad.$touch()"
+          @blur="$v.tratamiento.complejidad.$touch()"
           :error-messages="errorComplejidad"
           color="#009900"
         ></v-select>      
@@ -65,7 +83,7 @@
               block
               color="success"
               elevation="2"
-              @click.prevent="RegistrarEspecialidad"
+              @click.prevent="RegistrarTratamiento"
               >Registrar</v-btn
             >
           </v-col>
@@ -103,39 +121,28 @@
 
 <script>
 import axios from "axios";
-
 import vue2Dropzone from "vue2-dropzone";
-import "vue2-dropzone/dist/vue2Dropzone.min.css";
 import { mapMutations, mapState } from "vuex";
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
   name: "RegistrarTratameitno",
   props: ["Tratamiento"],
-  components: {
-    vueDropzone: vue2Dropzone,
-  },
+  
   data() {
     return {
       step: 1,
-      // dropzoneOptions: {
-      //   url: "https://httpbin.org/post",
-      //   thumbnailWidth: 250,
-      //   maxFilesize: 3.0,
-      //   maxFiles: 1,
-      //   acceptedFiles: ".jpg, .png, jpeg",
-      //   headers: { "My-Awesome-Header": "header value" },
-      //   addRemoveLinks: true,
-      //   dictDefaultMessage:
-      //     "Seleccione una Imagen de su Dispositivo o Arrastrela aquí",
-      // },
-
-      especialidad: {
+      tratamiento: {
+        id:"",
         descripcion: "",
-        duracion: "",
-        materiales: "",
-        costo: "",
-        complejidad: "",
+        duracion: 0,
+        materiales:{
+        id_inventario:"",
+        cantidad,
+        },
+        costo: 0,
+        complejidad: 0,
       },
+      
       itemsTD: [
         { value: "1", text: "1" },
         { value: "2", text: "2" }, 
@@ -154,31 +161,7 @@ export default {
   methods: {
     ...mapMutations(["setE"]),
 
-    dropzone() {
-      var file = {
-        size: 123,
-        name: "Imagen de Especialidad",
-        type: "image/jpg",
-      };
-      this.$refs.myVueDropzone.manuallyAddFile(
-        file,
-        this.especialidad.url,
-        null,
-        null,
-        true
-      );
-    },
-    afterSuccess(file, response) {
-      console.log(file);
-      this.especialidad.url = file.dataURL.split(",")[1];
-      this.$v.especialidad.url.$model = file.dataURL.split(",")[1];
-      //console.log(file.dataURL.split(",")[1]);
-    },
-
-    afterRemoved(file, error, xhr) {
-      this.especialidad.url = "";
-      this.$v.especialidad.url.$model = "";
-    },
+  
     mensaje(icono, titulo, texto, footer, valid) {
       this.$swal({
         icon: icono,
@@ -191,14 +174,14 @@ export default {
         }
       });
     },
-    resetEspecialidadValidationState() {
+    resetTratamientoValidationState() {
       this.$refs.myVueDropzone.removeAllFiles();
-      this.$v.especialidad.$reset();
+      this.$v.tratamiento.$reset();
     },
     closeDialog() {
-      this.especialidad = this.limpiarEspecialidad();
+      this.tratamiento = this.limpiarTratamiento();
       this.step = 1;
-      this.resetEspecialidadValidationState();
+      this.resetTratamientoValidationState();
       this.$emit("close-dialog-Registrar");
     },
     close() {
@@ -209,16 +192,10 @@ export default {
       });
     },
 
-    async RegistrarEspecialidad() {
-      this.especialidad.descripcion = this.especialidad.descripcion;
-      this.especialidad.duracion = this.especialidad.duracion;
-      this.especialidad.materiales = this.especialidad.materiales;
-      this.especialidad.costo= this.especialidad.costo;
-      this.especialidad.complejidad= this.especialidad.complejidad;
-
-      console.log(this.especialidad);
-      this.$v.especialidad.$touch();
-      //if (this.$v.informe.$invalid) {
+    async RegistrarTratamiento() {
+      // this.tratamiento.push(materiales);
+      console.log(this.tratamiento);
+      this.$v.tratamiento.$touch();
       if (this.$v.$invalid) {
         this.mensaje(
           "error",
@@ -231,52 +208,42 @@ export default {
         console.log("no hay errores");
         this.cargaRegistro = true;
         await axios
-          .post("/Especialidad/Registrar", this.especialidad)
+          .post("/Tratamiento/RegistrarTratamiento", this.tratamiento)
           .then((res) => {
-            this.especialidad = res.data;
-            this.$emit("emit-obtener-especialidades");
+            this.tratamiento = res.data;
+            this.$emit("emit-obtener-tratamientos");
             this.cargaRegistro = false;
             this.closeDialog();
           })
           .catch((err) => console.log(err));
-
-        /*await this.mensaje(
-          "success",
-          "Listo",
-          "Turno registrado satisfactoriamente",
-          "<strong>Se redirigira a la interfaz de gestionar turnos<strong>"
-        );*/
       }
     },
 
-    limpiarEspecialidad() {
+    limpiarTratamiento() {
       return {
-        especialidad:{
-          descripcion: "",
-          duracion: "",
-          materiales: "",
-          costo: "",
-          complejidad: "",
+        tratamiento: {
+        id:"",
+        descripcion: "",
+        duracion: 0,
+        materiales:{
+          id_inventario:"",
+          cantidad,
         },
+        costo: 0,
+        complejidad: 0,
+        },
+        
       };
     },
   },
 
-  /*async mensaje(icono, titulo, texto, footer) {
-      await this.$swal({
-        icon: icono,
-        title: titulo,
-        text: texto,
-        footer: footer,
-      });
-    },*/
   computed: {    
     errorDescripcion() {
       const errors = [];
-      if (!this.$v.especialidad.descripcion.$dirty) return errors;
-      !this.$v.especialidad.descripcion.required &&
+      if (!this.$v.tratamiento.descripcion.$dirty) return errors;
+      !this.$v.tratamiento.descripcion.required &&
         errors.push("Debe ingresar el nombre del tratamiento");
-      !this.$v.especialidad.descripcion.minLength &&
+      !this.$v.tratamiento.descripcion.minLength &&
         errors.push(
           "El nombre del tratamiento debe poseer al menos 6 caracteres"
         );
@@ -285,32 +252,43 @@ export default {
     },
     errorDuracion() {
       const errors = [];
-      if (!this.$v.especialidad.duracion.$dirty) return errors;
-      !this.$v.especialidad.duracion.required &&
+      if (!this.$v.tratamiento.duracion.$dirty) return errors;
+      !this.$v.tratamiento.duracion.required &&
         errors.push("Falta poner como opcion la duracion");
-      !this.$v.especialidad.duracion.minLength &&
+      !this.$v.tratamiento.duracion.minLength &&
         errors.push(
           "Duracion es por sesiones o tiempo?"
         );
       return errors;
     },
-    errorMateriales() {
+    errorMaterialesId() {
       const errors = [];
-      if (!this.$v.especialidad.materiales.$dirty) return errors;
-      !this.$v.especialidad.materiales.required &&
-        errors.push("Falta ventana emergente que registre materiales ");
-      !this.$v.especialidad.materiales.minLength &&
+      if (!this.$v.tratamiento.materiales.$dirty) return errors;
+      !this.$v.tratamiento.materiales.id_inventario.required &&
+        errors.push("Id");
+      !this.$v.tratamiento.materiales.id_inventario.minLength &&
         errors.push(
-          "Los materiales deben tener su cantidad y debe estar identificado con id"
+          "Id"
+        );
+      return errors;
+    },
+    errorMaterialesCantidad() {
+      const errors = [];
+      if (!this.$v.tratamiento.materiales.$dirty) return errors;
+      !this.$v.tratamiento.materiales.cantidad.required &&
+        errors.push("Cantidad");
+      !this.$v.tratamiento.materiales.cantidad.minLength &&
+        errors.push(
+          "Cantidad"
         );
       return errors;
     },
     errorCosto() {
       const errors = [];
-      if (!this.$v.especialidad.costo.$dirty) return errors;
-      !this.$v.especialidad.costo.required &&
+      if (!this.$v.tratamiento.costo.$dirty) return errors;
+      !this.$v.tratamiento.costo.required &&
         errors.push("Debe ingresar el costo del tratamiento");
-      !this.$v.especialidad.costo.minLength &&
+      !this.$v.tratamiento.costo.minLength &&
         errors.push(
           "El costo debe ser superior a:"
         );
@@ -318,35 +296,38 @@ export default {
     },
     errorComplejidad() {
       const errors = [];
-      if (!this.$v.especialidad.complejidad.$dirty) return errors;
-      !this.$v.especialidad.complejidad.required &&
+      if (!this.$v.tratamiento.complejidad.$dirty) return errors;
+      !this.$v.tratamiento.complejidad.required &&
         errors.push("Seleccione la complejidad");      
       return errors;
-    },
-    
+    },    
   },
   validations() {
     return {
-      especialidad: {
+      tratamiento: {
         descripcion: {
           required,
-          minLength: minLength(7),
+          minLength: minLength(1),
         },        
         duracion:{
           required,
-          minLength: minLength(2),
-        },
-        materiales:{
-          required,
-          minLength: minLength(2),
-        },
+          minLength: minLength(1),
+        },        
         costo: {
           required,
-          minLength: minLength(2),
+          minLength: minLength(1),
         },
         complejidad:{
           required,
         }       
+      },
+      materiales:{
+        id_inventario:{
+          required,
+        },
+        cantidad:{
+          required,
+        },
       },
     };
   },
