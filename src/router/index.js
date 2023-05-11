@@ -51,6 +51,12 @@ const routes = [
     
     },
     {
+      path: '/gestionarInventario',
+      name: 'gestionarInventario',
+      component: () => import('@/views/GestionarInventario/gestionarInventario.vue')
+  
+  },
+    {
       path: '/Pagar',
       name: 'PagarCita',
       component: () => import('@/views/Pagar.vue')
