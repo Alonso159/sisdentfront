@@ -335,5 +335,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.boton
+{
+  border: 0px;
+}
 </style>
