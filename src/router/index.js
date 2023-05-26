@@ -29,6 +29,12 @@ const routes = [
         component: () => import("@/views/gestionarCitas/gestionarCitaMedico"),
       },
       {
+        path: "gestionarTratamientos",
+        name: "gestionarTratamientos",
+        // component: () => import("@/components/GestionarEspecialidad/RegistrarEspecialidad"),
+        component: () => import("@/views/gestionarTratamientos/gestionarTratamientos"),
+      },
+      {
         path: "gestionarCitaRecepcionista",
         name: "gestionarCitaRecepcionista",
         component: () => import("@/views/gestionarCitas/gestionarCitaRecepcionista"),
@@ -44,6 +50,12 @@ const routes = [
         component: () => import('@/views/Especialidades/Tratamientos.vue')
     
     },
+    {
+      path: '/gestionarInventario',
+      name: 'gestionarInventario',
+      component: () => import('@/views/GestionarInventario/gestionarInventario.vue')
+  
+  },
     {
       path: '/Pagar',
       name: 'PagarCita',
