@@ -4,6 +4,7 @@
       <div class="home-columns">
         <p v-if="user.rol == '4'||user.rol=='5'">
           <CardReserva :user="this.user" />
+          <CardPagosPendientes :user="this.user" />
         </p>
       </div>
     </v-col>
@@ -12,6 +13,7 @@
 <script>
 
 import CardReserva from "@/components/CardReserva.vue";
+import CardPagosPendientes from "@/components/CardPagosPendientes.vue";
 //import CardTodo from "@/components/Todo.vue";
 import { mapGetters, mapActions } from "vuex";
 
@@ -22,7 +24,7 @@ export default {
     title: "Dashboard",
   },
   components: {
-    CardReserva,
+    CardReserva, CardPagosPendientes,
 
   },
   data() {
@@ -48,6 +50,6 @@ export default {
   flex-direction: row;
   justify-content: left;
   flex-wrap: nowrap;
-  margin: 1% 100%;
+
 }
 </style>
