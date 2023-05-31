@@ -27,10 +27,10 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="PagaCita()">
+          <v-btn color="green darken-1" text @click="PagaCita()" href=/dashboard-management>
             Pagar
           </v-btn>
-          <v-btn color="green darken-1" text @click="closeDialog()">
+          <v-btn color="green darken-1" text @click="closeDialog()" href=/dashboard-management>
             Cancelar
           </v-btn>
         </v-card-actions>
