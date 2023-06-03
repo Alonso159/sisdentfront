@@ -42,7 +42,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" class="d-flex justify-end">
-              <v-btn type="submit" color="primary" class="mr-2" v-on:click="editar()">Guardar</v-btn>
+              <v-btn type="submit" color="primary" class="mr-2" v-on:click="editar()" href="/dashboard-management">Guardar</v-btn>
               <v-btn type="submit" color="error" href="/dashboard-management">Salir</v-btn>
             </v-col>
           </v-row>
