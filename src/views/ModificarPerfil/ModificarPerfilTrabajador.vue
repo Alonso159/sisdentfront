@@ -85,8 +85,7 @@
   }
   },
     mounted() {
-      console.log("TU MAMA "+ this.user.myID)
-      axios.get("/Trabajador/GetTrabajadorID?id="+this.user.id)
+      axios.get("/Trabajador/GetTrabajadorID?id="+this.user.myID)
       .then(datos =>{
         this.form.id=datos.data.id;
         this.form.id_usuario=datos.data.id_usuario;
