@@ -73,7 +73,12 @@ const routes = [
     path: '/login',
     name: "Login Usuario",
     component: () => import('@/views/Login/LoginSistema.vue')
-  },  
+  },
+  {
+    path: "/UsuarioInvitado",
+    name: "UsuarioInvitado",
+    component: () => import("@/views/UsuarioInvitado/UsuarioInvitado"),
+  },
 ]
 
 const router = new VueRouter({
