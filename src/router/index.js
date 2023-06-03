@@ -45,6 +45,11 @@ const routes = [
         component: () => import("@/components/GestionarCitas"),
       },
       {
+        path: "ModificarPerfil",
+        name: "ModificarPerfil",
+        component: () => import("@/views/ModificarPerfil/ModificarPerfil"),
+      },
+      {
         path: '/Tratamientos',
         name: 'Tratamientos',
         component: () => import('@/views/Especialidades/Tratamientos.vue')
