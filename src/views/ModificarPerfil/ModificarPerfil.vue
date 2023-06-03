@@ -3,7 +3,6 @@
     <v-col cols="48" md="48" lg="32">
       <div class="home-columns">
         <CardModificarPaciente v-if="['4', '5'].includes(user.rol)" :user="user" />
-        <!-- <ModificarPerfilPaciente v-if="['4', '5'].includes(user.rol)" :user="user" /> -->
         <CardModificarTrabajador v-else-if="['0','1', '2', '3'].includes(user.rol)" :user="user" />
       </div>
     </v-col>
@@ -12,8 +11,6 @@
 
   <script>
   import { mapGetters, mapActions } from "vuex";
-import ModificarPerfilPaciente from "./ModificarPerfilPaciente.vue";
-import ModificarPerfilTrabajador from "./ModificarPerfilTrabajador.vue";
 import CardModificarPaciente from "@/components/ModificarPerfil/CardModificarPaciente.vue";
 import CardModificarTrabajador from "@/components/ModificarPerfil/CardModificarTrabajador.vue";
   export default {
@@ -22,8 +19,6 @@ import CardModificarTrabajador from "@/components/ModificarPerfil/CardModificarT
       title: "ModificarPerfil",
     },
     components: {
-    ModificarPerfilPaciente,
-    ModificarPerfilTrabajador,
     CardModificarPaciente,
     CardModificarTrabajador
 },
