@@ -1,0 +1,85 @@
+<template>
+    <div class="container">
+      <div class="bar">
+        <div class="label">Usuario:</div>
+        <v-label>{{ generatedUser }}</v-label>
+      </div>
+      <div class="bar">
+        <div class="label">Contraseña:</div>
+        <v-label>{{ generatedPassword }}</v-label>
+      </div>
+      <p class="message">IMPORTANTE: Anote estos datos de usuario. Serán usados para futuras consultas.</p>
+      <v-btn type="submit" color="error" href="/dashboard-management">Salir</v-btn>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        generatedUser: '',
+        generatedPassword: ''
+      };
+    },
+    mounted() {
+      this.generateUser();
+    },
+    methods: {
+      generateUser() {
+        const user = this.generateRandomValue();
+        this.generatedUser = `${user}@sisdent.com`;
+        this.generatedPassword = this.generateRandomValue();
+      },
+      generateRandomValue() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const length = 8;
+        let value = '';
+        for (let i = 0; i < length; i++) {
+          value += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return value;
+      }
+    }
+  };
+  </script>
+  
+  <style>
+  .container {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 4px;
+  }
+  
+  .bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .label {
+    font-weight: bold;
+    margin-right: 10px;
+    color: #333;
+  }
+  
+  .message {
+    font-size: 14px;
+    margin-top: 20px;
+    color: #777;
+  }
+  
+  .v-btn {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .v-btn:hover {
+    background-color: #c82333;
+  }
+  </style>
+  
