@@ -45,6 +45,7 @@
   </v-card>
 </template>
 <script>
+import moment from 'moment';
  import { mapGetters, mapActions } from "vuex";
  import axios from 'axios';
 export default {
@@ -60,7 +61,7 @@ return{
         apellido_materno:'',
         telefono:0,
         dni:'',
-        fecha_nacimiento:0,
+        fecha_nacimiento:null,
         sexo:'',
         estado:''
       }
@@ -88,7 +89,7 @@ methods:
       this.form.datos_generales.apellido_materno=datos.data.datos_generales.apellido_paterno;
       this.form.datos_generales.telefono=datos.data.datos_generales.telefono;
       this.form.datos_generales.dni=datos.data.datos_generales.dni;
-      this.form.datos_generales.fecha_nacimiento=datos.data.datos_generales.fecha_nacimiento;
+      this.form.datos_generales.fecha_nacimiento = moment(datos.data.datos_generales.fecha_nacimiento).format('YYYY-MM-DD');
       this.form.datos_generales.sexo=datos.data.datos_generales.sexo;
       this.form.datos_generales.estado=datos.data.datos_generales.estado;
       console.log(this.form);
