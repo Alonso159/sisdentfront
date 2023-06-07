@@ -23,7 +23,7 @@
             <v-text-field v-model="form.datos_generales.dni" label="DNI" :rules="dniRules" required></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
-            <v-text-field v-model="form.datos_generales.fecha_nacimiento" label="Fecha de Nacimiento" required></v-text-field>
+            <v-text-field v-model="form.datos_generales.fecha_nacimiento" label="Fecha de Nacimiento" type="date" required></v-text-field>
           </v-col>
         </v-row>
         <v-row>
