@@ -136,8 +136,11 @@ export default {
       this.$swal({
         icon: icono,
         title: titulo,
-        text: texto,
+        html: texto,
         footer: footer,
+        showCancelButton: true,
+        confirmButtonText: 'Pagar ahora',
+        cancelButtonText: 'Pagar despues',
       }).then((res) => {
         if (valid) {
           this.$emit("modifier-complete");
@@ -169,30 +172,43 @@ export default {
     },
     async RegistraCita() {
       console.log(this.Cita);
-      this.cargaRegistro=true
-      await axios
-        .post("/Cita/RegistrarCita", this.Cita)
-        .then((res) => {
-          let infoTurno = res.data;
-          let HoraTurno = new Date(infoTurno.fecha_cita).getHours();
-          let turno = {
-            id_medico: infoTurno.id_medico,
-            dia: infoTurno.fecha_cita,
-            hora_inicio: HoraTurno.toString(),
-            duracion: "60",
-            id_cita: infoTurno.id,
-          }
-          this.cargaRegistro = false;
-          this.dialog=false
-          this.closeDialog();
-        })
-        .catch((err) => console.log(err));
+      this.cargaRegistro = true;
+      try {
+        const res = await axios.post("/Cita/RegistrarCita", this.Cita);
+        let infoTurno = res.data;
+        let HoraTurno = new Date(infoTurno.fecha_cita).getHours();
+        let turno = {
+          id_medico: infoTurno.id_medico,
+          dia: infoTurno.fecha_cita,
+          hora_inicio: HoraTurno.toString(),
+          duracion: "60",
+          id_cita: infoTurno.id,
+        };
+        this.cargaRegistro = false;
+        this.dialog = false;
+        this.closeDialog();
+          const divResumen = document.createElement("div");
+          divResumen.textContent = "Resumen de mi cita";
+          divResumen.id = "resumen_pago";
+
+          const nombreTratamiento = document.createElement("p");
+          nombreTratamiento.textContent = "Tratamiento: ";
+          divResumen.appendChild(nombreTratamiento);
+
+          const costoTratamiento = document.createElement("p");
+          costoTratamiento.textContent = "Costo total: " + infoTurno.costo;
+          divResumen.appendChild(costoTratamiento);
+
+          const htmlContent = divResumen.outerHTML;
         await this.mensaje(
             "success",
             "Listo",
-            "Cita registrada satisfactoriamente",
+            htmlContent,
             "<strong>Se le redirigira<strong>"
-          );
+        );
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
   computed: {},
