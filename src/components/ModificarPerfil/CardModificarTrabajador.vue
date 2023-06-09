@@ -30,9 +30,6 @@
           <v-col cols="12" md="6">
             <v-select v-model="form.datos_generales.sexo" :items="sexos" label="Sexo" required></v-select>
           </v-col>
-          <v-col cols="12" md="6">
-            <v-select v-model="form.datos_generales.estado" :items="estados" label="Estado" required></v-select>
-          </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" class="d-flex justify-end">
@@ -67,7 +64,6 @@ return{
       }
   },
   sexos: ["Masculino", "Femenino", "No especifica"],
-  estados: ["Activo", "Inactivo"]
 }
 },
 methods:
