@@ -60,7 +60,6 @@ export default {
       fechaCita: "",
       headers: [
         { text: "Estado", value: "estado_cita" },
-        { text: "Paciente", value: "datos_generales.apellido_paterno" },
         { text: "Hora", value: "fecha_cita" },
         {text: "Dia", value:"dia"},
         { text: "Acciones", value: "actions", sortable: false },
