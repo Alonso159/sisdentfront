@@ -77,14 +77,14 @@
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon class="mr-4" color="primary darken-2" @click="cambiaestadoCita(selectedEvent.id)">
-                <v-icon>mdi-heart</v-icon>
+                <v-icon></v-icon>
               </v-btn>
               <v-btn icon>
-                <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <span v-html="selectedEvent.details"></span>
+              <span v-html="selectedEvent.fecha_cita"></span>
+              <span v-html="selectedEvent.hora"></span>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -235,7 +235,9 @@ export default {
         var b=HoraFin.split("T")[0]+"T"+newhora+":00:00"
         var evento = { name: "", start: "", end: "", color: "", timed: "", category: "" }
         evento.name = this.listaCita[i].apellidoPaterno
-       // evento.nombrePaciente = this.listaCita[i].apellidoPaterno
+        evento.fecha_cita = this.listaCita[i].fecha_cita.split("T")[0];
+        evento.hora = this.listaCita[i].hora.split("T")[1];
+        evento.nombrePaciente = this.listaCita[i].apellidoPaterno
         evento.start= a
         evento.end= b
         evento.timed = !allDay
