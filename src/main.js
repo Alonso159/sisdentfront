@@ -9,6 +9,7 @@ import VueAxios from 'vue-axios';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
+import '../src/assets/css/estilos3.css';
 
 Vue.config.productionTip = false
 Vue.use(VueSweetalert2);
