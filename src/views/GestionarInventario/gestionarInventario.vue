@@ -17,7 +17,7 @@
                 <v-btn
                   class="mr-4"
                   color="white darken-1"
-                  @click="registrarMaterial()"
+                  href="/RegistrarMaterial"
                 >
                   <span>Registrar nuevo material</span>
                 </v-btn>
@@ -58,10 +58,9 @@
         search: "",
         fechaCita: "",
         headers: [
-          { text: "Nombre", value: "nombre" },
-          { text: "Costo", value: "costo" },
+          { text: "Nombre", value: "descripcion" },
           { text: "Stock", value: "stock" },
-          { text: "Proveedor", value: "proveedor", sortable: false },
+          { text: "Estado", value: "estado"},
         ],
         idCita:"",
         dialog: false,
