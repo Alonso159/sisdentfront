@@ -3,7 +3,7 @@
 }
 
 #pagePrincipal main.v-main div{
-    width: auto;
+    
 }
 #app > div > main > div > div > div.container > div > div > div > p > div.card-c.v-card.v-sheet.theme--light.elevation-3{
     padding: 0;
@@ -25,7 +25,7 @@
 #app > div > main.v-main{
     background-color: #c1dfe2;
 }
-
+/*
 #app > div > div > div{
     position: absolute;
     right: 0;
@@ -40,7 +40,7 @@
     align-items: center;
     border-left: 2px solid #d1d1d1 !important;
 
-}
+}*/
 #app > div > div > div > div{
     box-shadow: none !important;
 }
