@@ -26,7 +26,11 @@ const itemsAdministrador = [
     icon: "mdi-view-dashboard",
     href: "/gestionarTratamientos",
   },
-
+  {
+    title: "Modificar Perfil",
+    icon: "mdi-view-dashboard",
+    href: "/ModificarPerfil",
+  },
   
   {
     title: "Tareas",
@@ -72,6 +76,11 @@ const itemsMedico = [
     icon: "mdi-tooth",
     href: "/gestionarPrescripción",
   },
+  {
+    title: "Modificar Perfil",
+    icon: "mdi-view-dashboard",
+    href: "/ModificarPerfil",
+  },
   
 ];
 const itemsRecepcionista = [
@@ -91,6 +100,11 @@ const itemsRecepcionista = [
     icon: "mdi-tooth",
     href: "/gestionarCitaRecepcionista",
   },  
+  {
+    title: "Modificar Perfil",
+    icon: "mdi-view-dashboard",
+    href: "/ModificarPerfil",
+  },
 ];
 const itemsAsistente = [
   {
@@ -104,6 +118,11 @@ const itemsAsistente = [
     icon: "mdi-tooth",
     href: "/gestionarPrescripción",
   },
+  {
+    title: "Modificar Perfil",
+    icon: "mdi-view-dashboard",
+    href: "/ModificarPerfil",
+  },
   
 ];
 const itemsPacienteTemp = [
@@ -112,6 +131,11 @@ const itemsPacienteTemp = [
     title: "Inicio",
     icon: "mdi-tooth",
     href: "/dashboard-management",
+  },
+  {
+    title: "Modificar Perfil",
+    icon: "mdi-view-dashboard",
+    href: "/ModificarPerfil",
   },
   
 ];
@@ -136,6 +160,11 @@ const itemsPaciente = [
     title: " Mis recetas",
     icon: "mdi-tooth",
     href: "/gestionarPrescripción",
+  },
+  {
+    title: "Modificar Perfil",
+    icon: "mdi-view-dashboard",
+    href: "/ModificarPerfil",
   },
 ];
 
