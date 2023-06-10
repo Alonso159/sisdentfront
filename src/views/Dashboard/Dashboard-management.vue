@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="48" md="48" lg="32">
+    <v-col cols="12" md="4" lg="32">
       <div class="home-columns">
         <p v-if="user.rol == '4'||user.rol=='5'">
           <CardReserva :user="this.user" />
@@ -50,6 +50,7 @@ export default {
   flex-direction: row;
   justify-content: left;
   flex-wrap: nowrap;
+    margin: 1% 100%;
 
 }
 </style>

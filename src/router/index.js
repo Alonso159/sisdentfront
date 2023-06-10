@@ -39,10 +39,16 @@ const routes = [
         name: "gestionarCitaRecepcionista",
         component: () => import("@/views/gestionarCitas/gestionarCitaRecepcionista"),
       },
+      
       {
         path: "gestionarCitaPaciente",
         name: "gestionarCitaPaciente",
         component: () => import("@/components/GestionarCitas"),
+      },
+      {
+        path: "historiaClinica",
+        name: "historiaClinica",
+        component: () => import("@/views/HistoriaClinica.vue"),
       },
       {
         path: "ModificarPerfil",

@@ -1,6 +1,9 @@
 <template>
-  <v-card>
-    <v-card-title class="justify-center">Horarios Disponibles</v-card-title>
+  <v-card width="400px">
+    <v-card-title class="text-h5">
+          La reserva mas proxima seria el {{ fechaCita }}
+        </v-card-title>
+    
     <div class="container-Actividad">
       <v-form>
         <v-col cols="12">
@@ -43,7 +46,7 @@
         </v-card-actions>
       </v-form>
     </div>
-    <v-dialog width="450px" v-model="cargaRegistro" persistent>
+    <v-dialog width="400px" v-model="cargaRegistro" persistent>
       <v-card height="300px">
         <v-card-title class="justify-center">Reservando la Cita</v-card-title>
         <div>
@@ -62,22 +65,7 @@
         >
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog" max-width="370">
-      <v-card>
-        <v-card-title class="text-h5">
-          La reserva mas proxima seria el {{ fechaCita }}
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="RegistraCita()">
-            Aceptar
-          </v-btn>
-          <v-btn color="green darken-1" text @click="closeDialog()">
-            Volver
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+   
     
   </v-card>
 </template>
@@ -112,7 +100,9 @@ export default {
       val || this.close();
     },
   },
-  async created() {},
+  async created() {
+    this.obtieneCita();
+  },
   methods: {
     cambiodeHoras(nuevafecha) {
       nuevafecha = new Date(nuevafecha._d).toISOString();
@@ -147,7 +137,7 @@ export default {
         }
       });
     },
-    async reservaCita() {
+    obtieneCita(){
       let fechaHoy = new Date().getUTCDay();
       let hoy = new Date();
       if (this.Cita.fecha_cita < fechaHoy) {
@@ -155,23 +145,27 @@ export default {
         let numeroDias = 7 - variable;
         let nuevafecha = moment(hoy).add(numeroDias, "day");
         this.cambiodeHoras(nuevafecha);
+        let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
+        this.fechaCita = fechaPaciente.split("T")[0];
       } else if (this.Cita.fecha_cita == fechaHoy) {
         let nuevafecha = moment(hoy).add(7, "day");
         this.cambiodeHoras(nuevafecha);
+        let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
+        this.fechaCita = fechaPaciente.split("T")[0];
       } else {
         let variable = this.Cita.fecha_cita - fechaHoy;
         let nuevafecha = moment(hoy).add(variable, "day");
         this.cambiodeHoras(nuevafecha);
-      }
-      console.log(this.Cita.fecha_cita);
-
-      let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
-      console.log({ fechaPaciente });
+        let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
       this.fechaCita = fechaPaciente.split("T")[0];
-      this.$emit("actualiza-turnos");
+
+      }
+     
     },
-    async RegistraCita() {
-      console.log(this.Cita);
+    async reservaCita() {
+     
+
+      this.$emit("actualiza-turnos");
       this.cargaRegistro = true;
       try {
         const res = await axios.post("/Cita/RegistrarCita", this.Cita);
@@ -184,6 +178,20 @@ export default {
           duracion: "60",
           id_cita: infoTurno.id,
         };
+      let idTratamiento= res.data.tratamiento[0]
+      console.log(idTratamiento)
+     const x= await axios.get("/Tratamiento/GetIDTratamiento?id="+idTratamiento);
+        console.log({x})
+
+        if(res.data!=null)
+          {
+            axios
+            .post("/Turnos/CreateTurno", turno)
+            .then((res) => {
+              this.closeDialog();
+            })
+            .catch((err) => console.log(err));
+          }
         this.cargaRegistro = false;
         this.dialog = false;
         this.closeDialog();
@@ -192,7 +200,7 @@ export default {
           divResumen.id = "resumen_pago";
 
           const nombreTratamiento = document.createElement("p");
-          nombreTratamiento.textContent = "Tratamiento: ";
+          nombreTratamiento.textContent = "Tratamiento: "+x.data.descripcion;
           divResumen.appendChild(nombreTratamiento);
 
           const costoTratamiento = document.createElement("p");
@@ -204,11 +212,14 @@ export default {
             "success",
             "Listo",
             htmlContent,
-            "<strong>Se le redirigira<strong>"
+            "<strong><strong>"
         );
       } catch (err) {
         console.log(err);
       }
+    },
+    async RegistraCita() {
+      
     },
   },
   computed: {},

@@ -83,8 +83,11 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <span v-html="selectedEvent.fecha_cita"></span>
+              <span v-html="selectedEvent.fecha_cita"></span> 
+              <br>
               <span v-html="selectedEvent.hora"></span>
+              <br>
+              <span v-html="selectedEvent.tratamiento"></span>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -236,7 +239,15 @@ export default {
         var evento = { name: "", start: "", end: "", color: "", timed: "", category: "" }
         evento.name = this.listaCita[i].apellidoPaterno
         evento.fecha_cita = this.listaCita[i].fecha_cita.split("T")[0];
-        evento.hora = this.listaCita[i].hora.split("T")[1];
+        evento.hora = this.listaCita[i].fecha_cita.split("T")[1];
+       let idTratamiento=this.listaCita[i].ids_tratamiento[0]
+     
+        await axios
+        .get("/Tratamiento/GetIDTratamiento?id=" +idTratamiento)
+        .then((res) => {
+          evento.tratamiento=res.data.descripcion
+        })
+        .catch((err) => console.log(err));
         evento.nombrePaciente = this.listaCita[i].apellidoPaterno
         evento.start= a
         evento.end= b

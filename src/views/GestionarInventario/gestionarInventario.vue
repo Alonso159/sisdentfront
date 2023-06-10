@@ -59,6 +59,7 @@
         fechaCita: "",
         headers: [
           { text: "Nombre", value: "descripcion" },
+          { text: "Reservado", value: "reservado" },
           { text: "Stock", value: "stock" },
           { text: "Estado", value: "estado"},
         ],

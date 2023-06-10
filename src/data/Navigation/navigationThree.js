@@ -57,6 +57,12 @@ const itemsMedico = [
     href: "/dashboard-management",
   },
   {
+    divider: "Principal",
+    title: "Modificiar Mi Perfil",
+    icon: "mdi-tooth",
+    href: "/ModificarPerfil",
+  },
+  {
     title: "Gestionar Prescripción",
     icon: "mdi-tooth",
     href: "/gestionarPrescripción",
@@ -91,6 +97,12 @@ const itemsRecepcionista = [
     href: "/dashboard-management",
   },
   {
+    divider: "Principal",
+    title: "Modificiar Mi Perfil",
+    icon: "mdi-tooth",
+    href: "/ModificarPerfil",
+  },
+  {
     title: "Consultar Citas",
     icon: "mdi-tooth",
     href: "/gestionarPrescripción",
@@ -112,6 +124,12 @@ const itemsAsistente = [
     title: "Inicio",
     icon: "mdi-tooth",
     href: "/dashboard-management",
+  },
+  {
+    divider: "Principal",
+    title: "Modificiar Mi Perfil",
+    icon: "mdi-tooth",
+    href: "/ModificarPerfil",
   },
   {
     title: "Consultar Citas",
@@ -147,9 +165,15 @@ const itemsPaciente = [
     href: "/dashboard-management",
   },
   {
+    divider: "Principal",
+    title: "Modificiar Mi Perfil",
+    icon: "mdi-tooth",
+    href: "/ModificarPerfil",
+  },
+  {
     title: " Mi historia clinica",
     icon: "mdi-tooth",
-    href: "/gestionarCitaPaciente",
+    href: "/historiaClinica",
   },
   {
     title: " Subir Resultados",
@@ -160,11 +184,6 @@ const itemsPaciente = [
     title: " Mis recetas",
     icon: "mdi-tooth",
     href: "/gestionarPrescripción",
-  },
-  {
-    title: "Modificar Perfil",
-    icon: "mdi-view-dashboard",
-    href: "/ModificarPerfil",
   },
 ];
 
