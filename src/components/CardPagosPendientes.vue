@@ -30,7 +30,7 @@
           <v-btn color="green darken-1" text @click="PagaCita()" href=/dashboard-management>
             Pagar
           </v-btn>
-          <v-btn color="green darken-1" text @click="closeDialog()" href=/dashboard-management>
+          <v-btn color="green darken-1" text @click="closeDialog()" >
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -60,7 +60,6 @@ export default {
       fechaCita: "",
       headers: [
         { text: "Estado", value: "estado_cita" },
-        { text: "Paciente", value: "datos_generales.apellido_paterno" },
         { text: "Hora", value: "fecha_cita" },
         {text: "Dia", value:"dia"},
         { text: "Acciones", value: "actions", sortable: false },
@@ -144,8 +143,6 @@ export default {
       this.fechaCita = fecha_cita;
       this.dialog = true;
       this.idCita=id;
-    
-      // this.$router.push(`pagar`);
     },
     async PagaCita() {
       
@@ -159,6 +156,12 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    closeDialog(){
+      this.dialog=false
+
+    },
+
+
   },
   computed: {
     ...mapGetters("Authentication", ["user"]),

@@ -91,7 +91,7 @@
         >
       </v-card>
     </v-dialog>
-    <v-dialog persistent v-model="dialogoRegistrar" max-width="320px">
+    <v-dialog persistent v-model="dialogoRegistrar" max-width="450px">
       <VisualizarHorario
         v-if="dialogoRegistrar"
         :Horario="Horario"
