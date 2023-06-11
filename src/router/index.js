@@ -45,11 +45,22 @@ const routes = [
         component: () => import("@/components/GestionarCitas"),
       },
       {
+        path: "ModificarPerfil",
+        name: "ModificarPerfil",
+        component: () => import("@/views/ModificarPerfil/ModificarPerfil"),
+      },
+      {
         path: '/Tratamientos',
         name: 'Tratamientos',
         component: () => import('@/views/Especialidades/Tratamientos.vue')
     
     },
+    {
+      path: '/gestionarInventario',
+      name: 'gestionarInventario',
+      component: () => import('@/views/GestionarInventario/gestionarInventario.vue')
+  
+  },
     {
       path: '/Pagar',
       name: 'PagarCita',
@@ -62,7 +73,12 @@ const routes = [
     path: '/login',
     name: "Login Usuario",
     component: () => import('@/views/Login/LoginSistema.vue')
-  },  
+  },
+  {
+    path: "/UsuarioInvitado",
+    name: "UsuarioInvitado",
+    component: () => import("@/views/UsuarioInvitado/UsuarioInvitado"),
+  },
 ]
 
 const router = new VueRouter({

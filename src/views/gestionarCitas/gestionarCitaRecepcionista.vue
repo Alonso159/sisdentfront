@@ -1,8 +1,10 @@
 <template>
   <v-row class="fill-height">
-    <v-col class="">
+    <v-col>
       <v-sheet height="64">
-        <v-toolbar absolute>
+        <v-toolbar
+          flat
+        >
           <v-btn
             outlined
             class="mr-4"
@@ -33,19 +35,28 @@
               mdi-chevron-right
             </v-icon>
           </v-btn>
-          <v-toolbar-title color="primary " class="mr-4" v-if="$refs.calendar">
+          <v-toolbar-title v-if="$refs.calendar">
             {{ $refs.calendar.title }}
           </v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
       </v-sheet>
-      <v-sheet height="400">
-        <v-calendar ref="calendar" v-model="focus" color="primary" type="category" category-show-all 
-          :categories="doctores" :events="eventos" :event-color="getEventColor" @change="fetchEvents"
+      <v-sheet height="600">
+        <v-calendar
+          ref="calendar"
+          v-model="focus"
+          color="primary"
+          type="category"
+          category-show-all
+          :categories="doctores"
+          :events="eventos"
+          :event-color="getEventColor"
+          @change="fetchEvents"
           @click:event="showEvent"
           @click:more="viewDay"
-          @click:date="viewDay"></v-calendar>
-          <v-menu
+          @click:date="viewDay"
+        ></v-calendar>
+         <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
@@ -93,11 +104,10 @@
         @close-dialog-Registrar="closeDialogRegistrar()"
       >
       </RegistrarPaciente>
-    </v-dialog>
-    </v-col>
-  </v-row>
-  
-</template>
+     </v-dialog>
+     </v-col>
+   </v-row>
+ </template>
 <script>
 import axios from "axios";
 import RegistrarPaciente from "@/components/RegistrarPaciente.vue";
@@ -114,6 +124,8 @@ export default {
       focus: '',
       eventos: [],
       doctores: [],
+      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+      names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
@@ -167,6 +179,7 @@ export default {
     closeDialogRegistrar() {
       this.dialogoRegistrar = false;
     },
+    
     getEventColor(event) {
       return event.color
     },
