@@ -211,15 +211,12 @@ export default {
       await axios
         .get("/Tratamiento/GetIDTratamiento?id="+this.id_tratamiento)
         .then((res) => {
-          console.log
-          this.complejidad=res.data.complejidad       
         })
         .catch((err) => console.log(err));
     },
     complejidadTratamiento(){
       if(this.id_tratamiento!=null)
      { this.verificaTramiento()
-      console.log(this.complejidad)
        if(this.complejidad>=3) 
        {
         this.cantidadTratamiento=1;
@@ -263,7 +260,6 @@ export default {
             listaM.push(datos)
           }
               this.listaMedico=listaM;
-          console.log(this.listaMedico)
           
         })
         .catch((err) => console.log(err));
@@ -321,7 +317,6 @@ export default {
               }
             }
           }
-          console.log("CITA REGISTRADA")
           this.listaFinal = this.listaRango;
           let nuevalistaRango = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
           this.listaRango = nuevalistaRango;
@@ -338,7 +333,6 @@ export default {
         .catch((err) => console.log(err));
     },
     async abrirDialogo() {
-      console.log(this.Cita.fecha_cita);
       this.dialogoRegistrar = !this.dialogoRegistrar;
       this.Horario = this.listaFinal;
 

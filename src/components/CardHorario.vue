@@ -112,10 +112,11 @@ export default {
           "" + splite1 + "T" + this.hora + ":00:00"
         );
       } else {
-        console.log("menor que 10");
+     
         this.Cita.fecha_cita = new Date(
           "" + splite1 + "T0" + this.hora + ":00:00"
         );
+       console.log(this.hora)
       }
     },
     closeDialog() {
@@ -163,8 +164,12 @@ export default {
      
     },
     async reservaCita() {
-     
-
+      let fechaHoy = new Date().getUTCDay();
+      let variable = fechaHoy - this.Cita.fecha_cita;
+      let numeroDias = 7 - variable;
+      let nuevafecha = moment(hoy).add(numeroDias, "day");
+      this.cambiodeHoras(nuevafecha);
+      
       this.$emit("actualiza-turnos");
       this.cargaRegistro = true;
       try {
@@ -179,10 +184,7 @@ export default {
           id_cita: infoTurno.id,
         };
       let idTratamiento= res.data.tratamiento[0]
-      console.log(idTratamiento)
      const x= await axios.get("/Tratamiento/GetIDTratamiento?id="+idTratamiento);
-        console.log({x})
-
         if(res.data!=null)
           {
             axios
