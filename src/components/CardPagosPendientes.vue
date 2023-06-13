@@ -9,7 +9,7 @@
       <template v-slot:[`item.actions`]="{ item }">
         <v-row>
           <v-btn color="info" small dark :disabled="verificaEstado(item.estado_cita)" class="ml-4"
-            @click="abrePago(item.id, item.fecha_cita,item.estado_cita)" @click.stop="dialog = true">
+            @click="abrePago(item.id, item.fecha_cita, item.estado_cita)" @click.stop="dialog = true">
             <v-icon left> mdi-file-eye </v-icon>
             <span>Pagar</span>
           </v-btn>
@@ -27,10 +27,10 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="PagaCita()" href=/dashboard-management>
+          <v-btn color="green darken-1" text @click="PagaCita()" >
             Pagar
           </v-btn>
-          <v-btn color="green darken-1" text @click="closeDialog()" >
+          <v-btn color="green darken-1" text @click="closeDialog()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -48,36 +48,36 @@ import axios from "axios";
 export default {
   name: "CardPagos_Pendientes",
   components: {
-   // CardCita, 
+    // CardCita, 
   },
-  
+
   data: () => ({
     dialogReservarCita: false,
     listaCitas: [],
     hoy: moment().format("L").replaceAll("/", "-"),
     fecha: "",
     search: "",
-      fechaCita: "",
-      headers: [
-        { text: "Estado", value: "estado_cita" },
-        { text: "Hora", value: "fecha_cita" },
-        {text: "Dia", value:"dia"},
-        { text: "Acciones", value: "actions", sortable: false },
-      ],
-      idCita:"",
-      dialog: false,
-      dialogoRegistrar: false,
-      dialogoactualizacion: false,
-      dialogocambio: false,
-      dialogodetalle: false,
-      estadoCita:"",
+    fechaCita: "",
+    headers: [
+      { text: "Estado", value: "estado_cita" },
+      { text: "Hora", value: "fecha_cita" },
+      { text: "Dia", value: "dia" },
+      { text: "Acciones", value: "actions", sortable: false },
+    ],
+    idCita: "",
+    dialog: false,
+    dialogoRegistrar: false,
+    dialogoactualizacion: false,
+    dialogocambio: false,
+    dialogodetalle: false,
+    estadoCita: "",
   }),
   async created() {
     this.fecha = moment(this.hoy, "DD-MM-YYYY").format();
     await this.obteneridPaciente();
   },
   methods: {
-      ...mapActions("Citas", ["setListaCitaMedico"]),
+    ...mapActions("Citas", ["setListaCitaMedico"]),
     openDialogPago_Pendiente() {
       this.openDialogPago_Pendiente = true;
     },
@@ -89,17 +89,20 @@ export default {
     },
     async obtenerCitas(idPaciente) {
       await axios
-        .get("/Cita/GetPagos_Pendientes?idPaciente="+idPaciente)
+        .get("/Cita/GetPagos_Pendientes?idPaciente=" + idPaciente)
         .then((x) => {
           console.log("NUEVA LISTA MEDICO")
           console.log(x.data)
           const listaCita = x.data;
           for (var i = 0; i < listaCita.length; i++) {
-              console.log(x.data[i].fecha_cita)
-              listaCita[i].dia=x.data[i].fecha_cita.split("T")[0];
+            console.log(x.data[i].fecha_cita)
+            let fechaCorreccion = new Date(x.data[i].fecha_cita).toISOString();
+            let nuevafecha = moment(fechaCorreccion).subtract(5, "hours");
+            nuevafecha = new Date(nuevafecha._d).toISOString();
+            console.log({ nuevafecha })
+            x.data[i].fecha_cita = nuevafecha
             listaCita[i].fecha_cita = x.data[i].fecha_cita.split("T")[1];
-          listaCita[i].fecha_cita = listaCita[i].fecha_cita.split("Z")[0];
-          
+            listaCita[i].fecha_cita = listaCita[i].fecha_cita.split(".")[0];
           }
           this.setListaCitaMedico(listaCita);
         })
@@ -107,10 +110,10 @@ export default {
     },
     async obteneridPaciente() {
       await axios
-        .get("/Paciente/GetPacienteID?id="+this.user.myID)
+        .get("/Paciente/GetPacienteID?id=" + this.user.myID)
         .then((res) => {
-         let idPaciente= res.data.id; 
-         this.obtenerCitas(idPaciente);
+          let idPaciente = res.data.id;
+          this.obtenerCitas(idPaciente);
         })
         .catch((err) => console.log(err));
     },
@@ -124,7 +127,7 @@ export default {
       }
     },
     verificaEstado(estadoCita) {
-    
+
       if (estadoCita == "Sin Pagar") {
         return false;
       } else {
@@ -139,25 +142,26 @@ export default {
       }
     },
     abrePago(id, fecha_cita) {
-      
+
       this.fechaCita = fecha_cita;
       this.dialog = true;
-      this.idCita=id;
+      this.idCita = id;
     },
     async PagaCita() {
-      
+
       this.dialog = false;
       this.cargaRegistro = true;
-      
+
       await axios
-        .put("/Cita/UpdateCita?idCita="+this.idCita+"&estado=2")
+        .put("/Cita/UpdateCita?idCita=" + this.idCita + "&estado=2")
         .then((x) => {
           this.obtenerCitas();
+          this.modificaUsuario();
         })
         .catch((err) => console.log(err));
     },
-    closeDialog(){
-      this.dialog=false
+    closeDialog() {
+      this.dialog = false
 
     },
 
@@ -177,15 +181,14 @@ export default {
 }
 
 .button-89 {
-  --b: 3px;   
+  --b: 3px;
   --s: .45em;
   --color: #373B44;
   padding: calc(.5em + var(--s)) calc(.9em + var(--s));
   color: var(--color);
   --_p: var(--s);
   background:
-    conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--color) 0)
-    var(--_p) var(--_p)/calc(100% - var(--b) - 2var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+    conic-gradient(from 90deg at var(--b) var(--b), #0000 90deg, var(--color) 0) var(--_p) var(--_p)/calc(100% - var(--b) - 2var(--_p)) calc(100% - var(--b) - 2*var(--_p));
   transition: .3s linear, color 0s, background-color 0s;
   outline: var(--b) solid #0000;
   outline-offset: .6em;
@@ -199,7 +202,7 @@ export default {
 }
 
 .button-89:hover,
-.button-89:focus-visible{
+.button-89:focus-visible {
   --_p: 0px;
   outline-color: var(--color);
   outline-offset: .05em;
@@ -218,9 +221,11 @@ h2 {
 .div_reservar {
   display: flex;
 }
+
 .item-cita {
   margin: 4% 0;
 }
+
 .card {
   margin: 200 px;
 }

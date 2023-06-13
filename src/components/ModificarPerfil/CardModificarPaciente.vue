@@ -1,7 +1,15 @@
 <template>
-    <v-card height:10px class="card" style="margin: 10px auto 0; width: 100%">
-      <v-form @submit="submitForm">
+    <v-card height:10px class="card" style="margin: 10px auto 10; width: 100%">
+      
         <v-container>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="form.username" label="Usuario" ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="form.password" label="Contraseña" ></v-text-field>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col cols="12" md="6">
               <v-text-field v-model="form.datos_generales.nombre" label="Nombre" :rules="nameRules" required></v-text-field>
@@ -59,7 +67,6 @@
             </v-col>
           </v-row>
         </v-container>
-      </v-form>
     </v-card>
   </template>
   <script>
@@ -73,6 +80,8 @@
     {
         id: '',
         id_usuario:"",
+        username:"",
+        password:"",
         datos_generales : {
           nombre: '',
           apellido_paterno: '',
@@ -110,6 +119,9 @@
     mounted() {
       axios.get("/Paciente/GetPacienteID?id=" + this.user.myID)
       .then(datos =>{
+        
+            this.form.username=this.user.usuario
+            this.form.password=this.user.clave
             this.form.id=datos.data.id;
             this.form.id_usuario=datos.data.id_usuario;
             this.form.datos_generales.nombre=datos.data.datos_generales.nombre;

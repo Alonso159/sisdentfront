@@ -149,13 +149,7 @@ const itemsPacienteTemp = [
     title: "Inicio",
     icon: "mdi-tooth",
     href: "/dashboard-management",
-  },
-  {
-    title: "Modificar Perfil",
-    icon: "mdi-view-dashboard",
-    href: "/ModificarPerfil",
-  },
-  
+  },  
 ];
 const itemsPaciente = [
   {

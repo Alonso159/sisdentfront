@@ -88,6 +88,7 @@ export default {
   data() {
     return {
       fechaCita: "",
+      alternativaFecha:"",
       dialog: false,
       hora: 0,
       date: new Date(),
@@ -138,37 +139,38 @@ export default {
         }
       });
     },
-    obtieneCita(){
+    obtieneCita(alternativaCita){
+      this.alternativaFecha=this.Cita.fecha_cita
+      let condicionFecha="";
+     if(this.Cita.fecha_cita>10){ condicionFecha=alternativaCita}
+     else{condicionFecha=this.Cita.fecha_cita}
       let fechaHoy = new Date().getUTCDay();
       let hoy = new Date();
-      if (this.Cita.fecha_cita < fechaHoy) {
-        let variable = fechaHoy - this.Cita.fecha_cita;
+    
+      if (condicionFecha< fechaHoy) {
+        let variable = fechaHoy - condicionFecha;
         let numeroDias = 7 - variable;
         let nuevafecha = moment(hoy).add(numeroDias, "day");
+        x.data[i].fecha_cita=nuevafecha
         this.cambiodeHoras(nuevafecha);
         let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
         this.fechaCita = fechaPaciente.split("T")[0];
-      } else if (this.Cita.fecha_cita == fechaHoy) {
+      } else if (condicionFecha == fechaHoy) {
         let nuevafecha = moment(hoy).add(7, "day");
         this.cambiodeHoras(nuevafecha);
         let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
         this.fechaCita = fechaPaciente.split("T")[0];
       } else {
-        let variable = this.Cita.fecha_cita - fechaHoy;
+        let variable = condicionFecha - fechaHoy;
         let nuevafecha = moment(hoy).add(variable, "day");
         this.cambiodeHoras(nuevafecha);
         let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
       this.fechaCita = fechaPaciente.split("T")[0];
-
       }
-     
     },
     async reservaCita() {
-      let fechaHoy = new Date().getUTCDay();
-      let variable = fechaHoy - this.Cita.fecha_cita;
-      let numeroDias = 7 - variable;
-      let nuevafecha = moment(hoy).add(numeroDias, "day");
-      this.cambiodeHoras(nuevafecha);
+      let alternativaCita=this.alternativaFecha
+      this.obtieneCita(alternativaCita);
       
       this.$emit("actualiza-turnos");
       this.cargaRegistro = true;
@@ -185,15 +187,6 @@ export default {
         };
       let idTratamiento= res.data.tratamiento[0]
      const x= await axios.get("/Tratamiento/GetIDTratamiento?id="+idTratamiento);
-        if(res.data!=null)
-          {
-            axios
-            .post("/Turnos/CreateTurno", turno)
-            .then((res) => {
-              this.closeDialog();
-            })
-            .catch((err) => console.log(err));
-          }
         this.cargaRegistro = false;
         this.dialog = false;
         this.closeDialog();
