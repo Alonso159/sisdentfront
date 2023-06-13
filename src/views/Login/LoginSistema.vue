@@ -92,7 +92,32 @@ export default {
       ],
       nameRules: [
           (v) => !!v || 'La contraseña es requerida'
-      ]
+      ],
+     paciente: {
+        id: '',
+        id_usuario:"",
+        datos_generales : {
+          nombre: '',
+          apellido_paterno: '',
+          apellido_materno:'',
+          telefono:0,
+          dni:'',
+          fecha_nacimiento:null,
+          sexo:'',
+          estado:'',
+          disptiemp:0,
+          direccion:'',
+          edad:0,
+          hijos:0,
+          ocupacion:''},
+        datos_paciente:
+          {
+            alergias:[""],
+            obs:"",
+            solicitud:"",
+            rx:"",
+          },   
+    },
     }
   },
   methods: {
@@ -125,10 +150,22 @@ export default {
   console.log(form);
   axios.post("UsuarioTemporal/UsuarioTemporal", form)
     .then((y) => {
-      console.log(y);
+     
+      let idPaciente=y.data.id
+      console.log(idPaciente)
+      this.paciente.datos_generales.nombre=modelTemporal.password;
+      this.crearPaciente(idPaciente);
+      console.log({ modelTemporal });// Agrega esta línea para mostrar el objeto modelTemporal en la consola
       this.logIn(modelTemporal); // Agrega esta línea para iniciar sesión con el objeto modelTemporal
-      console.log({ modelTemporal }); // Agrega esta línea para mostrar el objeto modelTemporal en la consola
     });
+},
+async crearPaciente(idPaciente){
+  this.paciente.id_usuario=idPaciente
+  axios.post("/Paciente/RegistrarPaciente", this.paciente)
+  .then((y) => {
+   
+      });
+
 },
       generateRandomValue() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
