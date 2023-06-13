@@ -27,7 +27,7 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="PagaCita()" href=/dashboard-management >
+          <v-btn color="green darken-1" text @click="PagaCita()" >
             Pagar
           </v-btn>
           <v-btn color="green darken-1" text @click="closeDialog()">
