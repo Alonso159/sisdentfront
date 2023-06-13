@@ -87,40 +87,9 @@ export default {
 
       // return this.items.map(this.mapItem);
       let permisos = [
-        /*  {
-            title: "Dashboard",
-            icon: mdiTooth,
-            name: "Dashboard",
-            href: "/dashboard-management",
-          },
-          {
-            title: "Gestionar Citas Paciente",
-            icon: mdiTooth,
-            name: "Dashboard",
-            href: "/gestionarCitaPaciente",
-          },
-          {
-            title: "Gestionar Citas Medico",
-            icon: mdiTooth,
-            name: "GestionarCitaMedico",
-            href: "/gestionarCitaMedico",
-          },
-          {
-            title: "Gestionar Citas Recepcionista",
-            icon: mdiTooth,
-            name: "GestionarCitaRecepcionista",
-            href: "/gestionarCitaRecepcionista",
-          },
-         
-         /* {
-            title: "Gestionar Medicos",
-            icon: mdiTooth,
-            name: "GestionarEspecialida<<",
-            href: "/gestionarEspecialidades",
-          },*/
       ]
-
       if (this.user.rol == "5") {
+        console.log(this.user)
         permisos = itemsPacienteTemp;
       }
       if (this.user.rol == "4") {

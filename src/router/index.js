@@ -31,7 +31,7 @@ const routes = [
       {
         path: "gestionarTratamientos",
         name: "gestionarTratamientos",
-        // component: () => import("@/components/GestionarEspecialidad/RegistrarEspecialidad"),
+        // component: () => import("@/components/ComponenteGestionarCronograma/RegistrarCronograma.vue"),
         component: () => import("@/views/gestionarTratamientos/gestionarTratamientos"),
       },
       {

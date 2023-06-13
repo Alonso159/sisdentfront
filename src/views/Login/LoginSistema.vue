@@ -36,6 +36,16 @@
                        
                         >Iniciar Sesión</v-btn
                     >
+
+                    <v-btn
+                        :loading="loading"
+                        @click="IngresarUsuarioInvitado"
+                        block
+                        style="background-color:#ED0909; color:#fefefe;"
+                        dark
+                       
+                        >Ingresar como Invitado</v-btn
+                    >
                     
                 </v-card-text>
 
@@ -60,6 +70,7 @@
 </template>
 <script>
 import {mapGetters, mapActions} from 'vuex'
+import axios from 'axios'
 export default {
   name: 'signup',
   metaInfo: {
@@ -81,10 +92,34 @@ export default {
       ],
       nameRules: [
           (v) => !!v || 'La contraseña es requerida'
-      ]
+      ],
+     paciente: {
+        id: '',
+        id_usuario:"",
+        datos_generales : {
+          nombre: '',
+          apellido_paterno: '',
+          apellido_materno:'',
+          telefono:0,
+          dni:'',
+          fecha_nacimiento:null,
+          sexo:'',
+          estado:'',
+          disptiemp:0,
+          direccion:'',
+          edad:0,
+          hijos:0,
+          ocupacion:''},
+        datos_paciente:
+          {
+            alergias:[""],
+            obs:"",
+            solicitud:"",
+            rx:"",
+          },   
+    },
     }
   },
-
   methods: {
     ...mapActions("Authentication",["logIn"]),
     submit() {
@@ -99,8 +134,60 @@ export default {
       } else {
           this.snackbar = true
       }
-    }
+    },
+    IngresarUsuarioInvitado() {
+  const user = this.generateRandomValue();
+  let form = {
+    _id: this.generateRandomID(),
+    usuario: `${user}@sisdent.com`,
+    clave: `${user}`,
+    rol: '5'
+  };
+  let modelTemporal = {
+    username: form.usuario,
+    password: form.clave,
+  };
+  console.log(form);
+  axios.post("UsuarioTemporal/UsuarioTemporal", form)
+    .then((y) => {
+     
+      let idPaciente=y.data.id
+      console.log(idPaciente)
+      this.paciente.datos_generales.nombre=modelTemporal.password;
+      this.crearPaciente(idPaciente);
+      console.log({ modelTemporal });// Agrega esta línea para mostrar el objeto modelTemporal en la consola
+      this.logIn(modelTemporal); // Agrega esta línea para iniciar sesión con el objeto modelTemporal
+    });
+},
+async crearPaciente(idPaciente){
+  this.paciente.id_usuario=idPaciente
+  axios.post("/Paciente/RegistrarPaciente", this.paciente)
+  .then((y) => {
+   
+      });
+
+},
+      generateRandomValue() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const length = 8;
+        let value = '';
+        for (let i = 0; i < length; i++) {
+          value += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return value;
+      },
+      generateRandomID() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const length = 24;
+        let value = '';
+        for (let i = 0; i < length; i++) {
+          value += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return value;
+      }
+
   },
+
   computed:{
     ...mapGetters("Authentication",["loading"]),
   }
