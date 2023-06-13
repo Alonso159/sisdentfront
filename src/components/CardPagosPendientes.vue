@@ -27,7 +27,7 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="PagaCita()" >
+          <v-btn color="green darken-1" text @click="PagaCita()" href=/dashboard-management >
             Pagar
           </v-btn>
           <v-btn color="green darken-1" text @click="closeDialog()">
@@ -157,6 +157,15 @@ export default {
         .then((x) => {
           this.obtenerCitas();
           this.modificaUsuario();
+        })
+        .catch((err) => console.log(err));
+    },
+    async modificaUsuario(){
+      
+      console.log(this.user.myID)
+      await axios
+        .put("/UsuarioTemporal/IDtemporal?user=" + this.user.myID)
+        .then((x) => {
         })
         .catch((err) => console.log(err));
     },

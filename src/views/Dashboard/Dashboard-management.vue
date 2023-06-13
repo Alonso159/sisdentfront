@@ -46,15 +46,18 @@ export default {
   },
   async created() {
     await this.fetchUser();
+    this.generateUser();
   },
   mounted() {
-    this.generateUser();
+  
   },
   methods: {
     ...mapActions("Authentication", ["fetchUser"]),
     generateUser() {
+      
       this.generatedUser = this.user.usuario;
       this.generatedPassword = this.user.clave;
+      console.log(this.generatedUser)
     },
   },
   computed: {
