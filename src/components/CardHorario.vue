@@ -66,7 +66,13 @@
       </v-card>
     </v-dialog>
    
-    
+    <v-dialog width="800px" v-model="cargaPago" persistent>
+      <v-card height="600px">
+        <v-card-title class="justify-center">Pago cita</v-card-title>
+          <CardPagar>
+          </CardPagar>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -74,6 +80,7 @@
 import axios from "axios";
 import Vuelidate from "vuelidate";
 import moment from "moment";
+import CardPagar from "@/components/CardPagar.vue";
 import {
   required,
   minLength,
@@ -84,7 +91,9 @@ import {
 export default {
   name: "RegistrarActividad",
   props: ["Horario", "Cita"],
-  components: {},
+  components: {
+    CardPagar,
+  },
   data() {
     return {
       fechaCita: "",
@@ -94,6 +103,7 @@ export default {
       date: new Date(),
       dialogoRegistrar: false,
       cargaRegistro: false,
+      cargaPago: false,
     };
   },
   watch: {
@@ -187,10 +197,12 @@ export default {
         };
       let idTratamiento= res.data.tratamiento[0]
      const x= await axios.get("/Tratamiento/GetIDTratamiento?id="+idTratamiento);
-        this.cargaRegistro = false;
-        this.dialog = false;
-        this.closeDialog();
-          const divResumen = document.createElement("div");
+
+
+     this.cargaPago = true;
+     
+     
+     const divResumen = document.createElement("div");
           divResumen.textContent = "Resumen de mi cita";
           divResumen.id = "resumen_pago";
 
@@ -203,12 +215,12 @@ export default {
           divResumen.appendChild(costoTratamiento);
 
           const htmlContent = divResumen.outerHTML;
-        await this.mensaje(
+       /* await this.mensaje(
             "success",
             "Listo",
             htmlContent,
             "<strong><strong>"
-        );
+        );*/
       } catch (err) {
         console.log(err);
       }
