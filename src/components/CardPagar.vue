@@ -108,7 +108,9 @@ export default {
           
 
           let arrayLista = [];
-          arrayLista.push(x.data.pop());
+          if(x.data.lenght>1)
+          {arrayLista.push(x.data.pop());}
+          else {arrayLista.push(x.data)}
           const listaCita = arrayLista;
           
           for (var i = 0; i < listaCita.length; i++) {
@@ -125,9 +127,11 @@ export default {
     },
 
     async obteneridPaciente() {
+      console.log(this.user)
       await axios
         .get("/Paciente/GetPacienteID?id="+this.user.myID)
         .then((res) => {
+          console.log("ENTRO")
          let idPaciente= res.data.id; 
          this.obtenerCitas(idPaciente);
         })
