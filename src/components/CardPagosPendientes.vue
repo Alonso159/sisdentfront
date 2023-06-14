@@ -27,7 +27,7 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="PagaCita()" >
+          <v-btn color="green darken-1" text @click="modificaUsuario()" href=/dashboard-management >
             Pagar
           </v-btn>
           <v-btn color="green darken-1" text @click="closeDialog()">
@@ -156,16 +156,17 @@ export default {
         .put("/Cita/UpdateCita?idCita=" + this.idCita + "&estado=2")
         .then((x) => {
           this.obtenerCitas();
-          this.modificaUsuario();
+         
         })
         .catch((err) => console.log(err));
     },
     async modificaUsuario(){
-      
+      this.PagaCita()
       console.log(this.user.myID)
       await axios
         .put("/UsuarioTemporal/IDtemporal?user=" + this.user.myID)
         .then((x) => {
+          this.$router.push(`dashboard-management`);
         })
         .catch((err) => console.log(err));
     },

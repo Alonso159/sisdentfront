@@ -211,14 +211,17 @@ export default {
       await axios
         .get("/Tratamiento/GetIDTratamiento?id="+this.id_tratamiento)
         .then((res) => {
+          this.complejidad=res.data.complejidad   
         })
         .catch((err) => console.log(err));
     },
     complejidadTratamiento(){
+      
       if(this.id_tratamiento!=null)
      { this.verificaTramiento()
        if(this.complejidad>=3) 
        {
+       
         this.cantidadTratamiento=1;
         return true;}}
     },

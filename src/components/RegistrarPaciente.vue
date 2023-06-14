@@ -76,7 +76,7 @@ import {
 } from "vuelidate/lib/validators";
 export default {
     name: "RegistrarActividad",
-    props: ["Actividad", "Actividad2"],
+    props: ["idTratamiento"],
     components: {},
     data() {
         return {
@@ -115,6 +115,7 @@ export default {
         },
     },
     async created() {
+        console.log(this.idTratamiento)
     },
     methods: {
     async guardarPaciente() {

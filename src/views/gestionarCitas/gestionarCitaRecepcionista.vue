@@ -104,6 +104,7 @@
       <v-dialog persistent v-model="dialogoRegistrar" max-width="600px">
       <RegistrarPaciente
         v-if="dialogoRegistrar"
+        :idTratamiento="selectedEvent.id"
         @close-dialog-Registrar="closeDialogRegistrar()"
       >
       </RegistrarPaciente>
@@ -127,6 +128,7 @@ export default {
       focus: '',
       eventos: [],
       doctores: [],
+      idTratamiento:"",
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
       selectedEvent: {},
@@ -241,7 +243,7 @@ export default {
         evento.fecha_cita = this.listaCita[i].fecha_cita.split("T")[0];
         evento.hora = this.listaCita[i].fecha_cita.split("T")[1];
        let idTratamiento=this.listaCita[i].ids_tratamiento[0]
-     
+    
         await axios
         .get("/Tratamiento/GetIDTratamiento?id=" +idTratamiento)
         .then((res) => {

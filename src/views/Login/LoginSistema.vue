@@ -154,6 +154,7 @@ export default {
       let idPaciente=y.data.id
       console.log(idPaciente)
       this.paciente.datos_generales.nombre=modelTemporal.password;
+      this.paciente.datos_generales.nombre=modelTemporal.password;
       this.crearPaciente(idPaciente);
       console.log({ modelTemporal });// Agrega esta línea para mostrar el objeto modelTemporal en la consola
       this.logIn(modelTemporal); // Agrega esta línea para iniciar sesión con el objeto modelTemporal
