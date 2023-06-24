@@ -66,11 +66,6 @@
           document.head.appendChild(link3);
         },
         loadScripts() {
-    
-          const script2 = document.createElement('script');
-          script2.src = '../../assets/js/app/pincel.js';
-          document.head.appendChild(script2);
-          // eval(script2.textContent);
 
           const script3 = document.createElement('script');
           script3.src = '../../assets/js/app/odontograma.js';
