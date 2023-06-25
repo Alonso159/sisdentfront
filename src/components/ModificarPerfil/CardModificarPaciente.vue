@@ -12,23 +12,23 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="6">
-              <v-text-field v-model="form.datos_generales.nombre" label="Nombre" :rules="nameRules" required></v-text-field>
+              <v-text-field v-model="form.datos_generales.nombre" label="Nombre"  required></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field v-model="form.datos_generales.apellido_paterno" label="Apellido Paterno" :rules="nameRules" required></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" md="6">
-              <v-text-field v-model="form.datos_generales.apellido_materno" label="Apellido Materno" :rules="nameRules" required></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-text-field v-model="form.datos_generales.telefono" label="Teléfono" :rules="phoneRules" required></v-text-field>
+              <v-text-field v-model="form.datos_generales.apellido_paterno" label="Apellido Paterno"  required></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="6">
-              <v-text-field v-model="form.datos_generales.dni" label="DNI" :rules="dniRules" required></v-text-field>
+              <v-text-field v-model="form.datos_generales.apellido_materno" label="Apellido Materno"  required></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="form.datos_generales.telefono" label="Teléfono"  required></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="form.datos_generales.dni" label="DNI"  required></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
               <v-text-field v-model="form.datos_generales.fecha_nacimiento" label="Fecha de Nacimiento" type="date" required></v-text-field>
@@ -112,7 +112,6 @@
     editar(){
       axios.put("/Paciente/PutModificarPerfil",this.form)
       .then(data => {
-        console.log(data)
       })
   }
   },
@@ -137,7 +136,6 @@
             this.form.datos_generales.edad=datos.data.datos_generales.edad;
             this.form.datos_generales.hijos=datos.data.datos_generales.hijos;
             this.form.datos_generales.ocupacion=datos.data.datos_generales.ocupacion;
-            console.log(this.form);
       })
     },
     computed:{

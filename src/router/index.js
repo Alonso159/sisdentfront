@@ -46,6 +46,11 @@ const routes = [
         component: () => import("@/components/GestionarCitas"),
       },
       {
+        path: "/components/HistoriaClinica/odontograma.js",
+        name: "/components/HistoriaClinica/odontograma.js",
+        component: () => import("@/components/HistoriaClinica/odontograma.js"),
+      },
+      {
         path: "historiaClinica",
         name: "historiaClinica",
         component: () => import("@/views/HistoriaClinica.vue"),

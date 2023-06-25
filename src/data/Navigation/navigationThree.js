@@ -150,6 +150,7 @@ const itemsPacienteTemp = [
     icon: "mdi-tooth",
     href: "/dashboard-management",
   },  
+
 ];
 const itemsPaciente = [
   {
@@ -157,6 +158,12 @@ const itemsPaciente = [
     title: "Inicio",
     icon: "mdi-tooth",
     href: "/dashboard-management",
+  },
+  {
+    divider: "Odontograma",
+    title: "Inicio",
+    icon: "mdi-tooth",
+    href: "/components/HistoriaClinica/odontograma.js",
   },
   {
     divider: "Principal",

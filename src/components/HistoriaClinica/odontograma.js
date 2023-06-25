@@ -1,4 +1,3 @@
-console.log('odonto');
 document.addEventListener('DOMContentLoaded', () => {
 
     const camada1 = document.querySelector('#camada1Odontograma')
@@ -13,8 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const camada4 = document.querySelector('#camada4Odontograma')
     const contexto4 = camada4.getContext('2d')
 
-    const camadaPincel = document.querySelector('#camadaPincel')
-    const contextoPincel = camadaPincel.getContext('2d')
+
 
     const modal = new bootstrap.Modal(document.getElementById('modal'))
 
@@ -775,20 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Redimensiona o canvas do pincel e seu conteúdo proporcionalmente ao tamanho da janela.
      */
-    const resizeCanvasPincel = () => {
-        camadaPincel.width = window.innerWidth - 25
-        const altura = (camadaPincel.width * alturaTelaReferencia) / tamanhoTelaReferencia
-        camadaPincel.height = altura
 
-        const dataImage = localStorage.getItem('desenho')
-
-        desenho = new Image();
-        desenho.src = dataImage;
-        desenho.onload = function() {
-            contextoPincel.clearRect(0, 0, camadaPincel.width, camadaPincel.height)
-            contextoPincel.drawImage(desenho, 0, 0, camadaPincel.width, camadaPincel.height);
-        }
-    }
 
     /**
      * Dá o start no odontograma, Desenhando a estrutura, carregando os dados, etc.
@@ -836,7 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
         numeroDentes.inferior.forEach((numero, index) => numeroDenteXOrdemExibicaoDente[numero] = index + 16)
 
         resizeCanvas()
-        resizeCanvasPincel()
+
     }
 
     /**
@@ -880,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener("resize", () => {
         resizeCanvas()
-        resizeCanvasPincel()
+
     })
 
     iniciaOdontograma()

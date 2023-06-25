@@ -166,7 +166,6 @@ export default {
       await axios
         .put("/UsuarioTemporal/IDtemporal?user=" + this.user.myID)
         .then((x) => {
-          this.$router.push(`dashboard-management`);
         })
         .catch((err) => console.log(err));
     },

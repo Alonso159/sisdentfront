@@ -67,11 +67,8 @@
         await axios
           .get("/Cita/GetCitasAtendidas?id_paciente="+idPaciente)
           .then((x) => {
-            console.log("NUEVA LISTA MEDICO")
-            console.log(x.data)
             const listaCita = x.data;
             for (var i = 0; i < listaCita.length; i++) {
-                console.log(x.data[i].fecha_cita)
                 listaCita[i].dia=x.data[i].fecha_cita.split("T")[0];
               listaCita[i].fecha_cita = x.data[i].fecha_cita.split("T")[1];
             listaCita[i].fecha_cita = listaCita[i].fecha_cita.split("Z")[0];
