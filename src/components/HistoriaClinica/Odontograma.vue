@@ -1,133 +1,121 @@
 <template>
-      
-    <div class="odonto-cont">
-        
-        <div id="canva-group">
-            <canvas id="camada1Odontograma"></canvas>
-            <canvas id="camada2Odontograma"></canvas>
-            <canvas id="camada3Odontograma"></canvas>
-            <canvas id="camada4Odontograma"></canvas>
-
-        </div>
-        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Adicionar procedimento</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <v-card height:10px class="card" style="margin: 10px auto 0; width: 100%">
+        <v-row>
+                <div class="odonto-cont"> 
+                    <div id="canva-group">
+                        <canvas id="camada1Odontograma"></canvas>
+                        <canvas id="camada2Odontograma"></canvas>
+                        <canvas id="camada3Odontograma"></canvas>
+                        <canvas id="camada4Odontograma"></canvas>
+            
                     </div>
-                    <div class="modal-body">
-                        <div class="form-row">
-                            <input type="hidden" id="procedimentosRemovidos" th:field="*{procedimentosRemovidos}">
-                            <div id="procedimentosDiv"></div>
-                            <div class="form-group col-md-12">
-                                <label for="nomeProcedimento">Nome</label>
-                                <i data-type="info" class="fas fa-info-circle fa-1x text-info"
-                                    onclick="toast_message('.','info')" style="margin-left: 5px; cursor: pointer;"></i>
-                                <select class="form-control" id="nomeProcedimento">
-                                    <option selected value="">-- Selecione uma opção --</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-12" id="colOutroProcedimento">
-                                <label for="outroProcedimento">Outro procedimento</label>
-                                <i style="margin-left:5px;cursor: pointer;"
-                                    class="alerta fas fa-info-circle fa-1x text-info" data-type="info"
-                                    onclick="mensagens('.','info')"></i>
-                                <input id="outroProcedimento" class="form-control" type="text">
-                            </div>
-                            <div class="form-group col-12">
-                                <label for="exampleColorInput" class="form-label">Cor</label>
-                                <i style="margin-left:5px;cursor: pointer;"
-                                    class="alerta fas fa-info-circle fa-1x text-info" data-type="info"
-                                    onclick="mensagens('.','info')"></i>
-                                <input type="color" id="cor" disabled class="form-control form-control-color"
-                                    value="#563d7c" title="Choose your color">
-                            </div>
-                            <div class="form-group col-12">
-                                <label for="informacoesAdicionais">Informações adicionais</label>
-                                <i style="margin-left:5px;cursor: pointer;"
-                                    class="alerta fas fa-info-circle fa-1x text-info" data-type="info"
-                                    onclick="mensagens('.','info')"></i>
-                                <textarea rows="5" id="informacoesAdicionais" maxlength="5000"
-                                    class="form-control"></textarea>
-                            </div>
-                            <div class="form-group col-md-1 d-inline mt-2" style="text-align: center; margin: auto;">
-                                <a id="botaoAdicionar" class="form-control btn-sigsaude btnCorNovo">
-                                    <i class="fas fa-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <div class="panel panel-default">
-                                    <div class="table-responsive">
-                                        <table class="table display dataTable table-bordered table-striped"
-                                            id="tabelaTestesEspecificosForm">
-                                            <thead>
-                                                <tr>
-                                                    <th>NOME</th>
-                                                    <th>COR</th>
-                                                    <th>INFORMAÇÕES ADICIONAIS</th>
-                                                    <th class="text-center">AÇÕES</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="bodyProcedimentos">
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel">Adicionar procedimento</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-row">
+                                        <input type="hidden" id="procedimentosRemovidos" th:field="*{procedimentosRemovidos}">
+                                        <div id="procedimentosDiv"></div>
+                                        <div class="form-group col-md-12">
+                                            <label for="nomeProcedimento">Nome</label>
+                                            <i data-type="info" class="fas fa-info-circle fa-1x text-info"
+                                                onclick="toast_message('.','info')" style="margin-left: 5px; cursor: pointer;"></i>
+                                            <select class="form-control" id="nomeProcedimento">
+                                                <option selected value="">-- Selecione uma opção --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-12" id="colOutroProcedimento">
+                                            <label for="outroProcedimento">Outro procedimento</label>
+                                            <i style="margin-left:5px;cursor: pointer;"
+                                                class="alerta fas fa-info-circle fa-1x text-info" data-type="info"
+                                                onclick="mensagens('.','info')"></i>
+                                            <input id="outroProcedimento" class="form-control" type="text">
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <label for="exampleColorInput" class="form-label">Cor</label>
+                                            <i style="margin-left:5px;cursor: pointer;"
+                                                class="alerta fas fa-info-circle fa-1x text-info" data-type="info"
+                                                onclick="mensagens('.','info')"></i>
+                                            <input type="color" id="cor" disabled class="form-control form-control-color"
+                                                value="#563d7c" title="Choose your color">
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <label for="informacoesAdicionais">Informações adicionais</label>
+                                            <i style="margin-left:5px;cursor: pointer;"
+                                                class="alerta fas fa-info-circle fa-1x text-info" data-type="info"
+                                                onclick="mensagens('.','info')"></i>
+                                            <textarea rows="5" id="informacoesAdicionais" maxlength="5000"
+                                                class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group col-md-1 d-inline mt-2" style="text-align: center; margin: auto;">
+                                            <a id="botaoAdicionar" class="form-control btn-sigsaude btnCorNovo">
+                                                <i class="fas fa-plus"></i>
+                                            </a>
+                                        </div>
                                     </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <div class="panel panel-default">
+                                                <div class="table-responsive">
+                                                    <table class="table display dataTable table-bordered table-striped"
+                                                        id="tabelaTestesEspecificosForm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>NOME</th>
+                                                                <th>COR</th>
+                                                                <th>INFORMAÇÕES ADICIONAIS</th>
+                                                                <th class="text-center">AÇÕES</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodyProcedimentos">
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            
+                    <div class="modal fade" id="configuracoesFerramenta" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="configuracoesFerramenta" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <v-dialog persistent v-model="dialogoRegistrarActoMedico" max-width="450px">
-      <VisualizarHorario
-        v-if="dialogoRegistrarActoMedico"
-        :Horario="Horario"
-        :Cita="Cita"
-        @close-dialog-Registrar="closeDialogRegistrar()"
-        @actualiza-turnos="obtieneTurnosporMedico()"
-      >
-      </VisualizarHorario>
-    </v-dialog>
-    </div>
-    
+        </v-row>
+    </v-card> 
 </template>
 
 <script>
-import localStyles from '../../assets/css/styleodo.css';
-//import localScript from '../../assets/js/app/pincel.js';
-import localScript2 from '../../assets/js/app/odontograma.js';
-import { BModal, VBModal } from 'bootstrap-vue'
+
 import { Modal } from 'bootstrap';
 import 'bootstrap';
 import axios from "axios";
@@ -206,7 +194,10 @@ export default {
         margemXEntreDentes: 8,
         margemYEntreDentes: 200
     }
-   
+
+
+
+
     const tamanhoTelaReferencia = 1895
     const alturaTelaReferencia = 872
 
@@ -398,11 +389,11 @@ export default {
      * @param   {Number} ordemExibicaoDente      Parâmetro obrigatório
      * @param   {Number} face                    Parâmetro obrigatório
      */
-    const marcarSecao = (contexto, f, face) => {
+    const marcarSecao = (contexto, ordemExibicaoDente, face) => {
         contexto.lineWidth = 2
         let cor_linha = 'orange';
         let posicaoY = 0
-
+        
         if (ordemExibicaoDente < 17) posicaoY = posicoesPadrao.posicaoYInicialDente;
         else {
             ordemExibicaoDente -= 16;
@@ -1062,7 +1053,9 @@ export default {
         },
        
         
-    },
+    }
+    ,
+
 };
 </script>
 
@@ -1088,7 +1081,7 @@ export default {
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
     transition: .5s;
-    height: 100%;
+    height: 1050%;
     /* background: var(--backgound); */
 }
 
