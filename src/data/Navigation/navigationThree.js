@@ -166,12 +166,6 @@ const itemsPaciente = [
     href: "/dashboard-management",
   },
   {
-    divider: "Odontograma",
-    title: "Inicio",
-    icon: "mdi-tooth",
-    href: "/components/HistoriaClinica/odontograma.js",
-  },
-  {
     divider: "Principal",
     title: "Modificiar Mi Perfil",
     icon: "mdi-tooth",
