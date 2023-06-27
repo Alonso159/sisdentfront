@@ -51,6 +51,11 @@ const routes = [
         component: () => import("@/components/HistoriaClinica/odontograma.js"),
       },
       {
+        path: "ActoMedico/:id",
+        name: "ActoMedico",
+        component: () => import("@/components/ActoMedico/ActoMedico.vue"),
+      },
+      {
         path: "historiaClinica",
         name: "historiaClinica",
         component: () => import("@/views/HistoriaClinica.vue"),

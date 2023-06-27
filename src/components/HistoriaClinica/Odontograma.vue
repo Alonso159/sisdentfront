@@ -125,7 +125,6 @@ export default {
   },
   data(){
     return{
-        escondeModal:modal.hide(),
         listaTratamiento:[],
         dialogoRegistrarActoMedico: false,
     }
@@ -151,19 +150,18 @@ export default {
         for(var i=0;i<cantidadTratamientos;i++){ 
             var color=""
             if(res.data[i].descripcion=="Curación Simple") {color="#FA8072"}
-            if(res.data[i].descripcion=="Blanqueamiento Dental") {color="#FA8072"}
-            if(res.data[i].descripcion=="Carillas Dentales") {color="#FA8072"}
-            if(res.data[i].descripcion=="Resinas dentales") {color="#FA8072"}
-            if(res.data[i].descripcion=="Consulta") {color="#FA8072"}
-            if(res.data[i].descripcion=="Profilaxis") {color="#FA8072"}
-            if(res.data[i].descripcion=="Dentaduras Removibles") {color="#FA8072"}
-            if(res.data[i].descripcion=="Destartraje") {color="#FA8072"}
+            if(res.data[i].descripcion=="Blanqueamiento Dental") {color="#FFFFFF"}
+            if(res.data[i].descripcion=="Carillas Dentales") {color="#FF0000"}
+            if(res.data[i].descripcion=="Resinas dentales") {color="#FFFF00"}
+            if(res.data[i].descripcion=="Consulta") {color="#000000"}
+            if(res.data[i].descripcion=="Profilaxis") {color="#0000FF"}
+            if(res.data[i].descripcion=="Dentaduras Removibles") {color="#FFC0CB"}
+            if(res.data[i].descripcion=="Destartraje") {color="#8B0000"}
             if(res.data[i].descripcion=="Curación Media") {color="#FA8072"}
-            if(res.data[i].descripcion=="Curación Grande") {color="#FA8072"}     
+            if(res.data[i].descripcion=="Curación Grande") {color="#008000"}     
             listaTratamientos.push({nome:this.listaTratamiento[i].descripcion,cor:color})  
         }
             this.listaTratamiento=listaTratamientos;
-            console.log({listaTratamientos})
         })
         .catch((err) => console.log(err));
 
@@ -227,17 +225,7 @@ export default {
 
     const tamanhoTelaReferencia = 1895
     const alturaTelaReferencia = 872
-    var tratamientos=[]
-    var cantidadTratamientos=this.listaTratamiento.length
-    console.log({cantidadTratamientos})
-    for (var i=0;i<cantidadTratamientos;i++){
-        var tratamiento={nome:"",cor:""}    
-        tratamiento.nome=this.listaTratamiento[i].nome
-        tratamiento.cor=this.listaTratamiento[i].cor
-        tratamientos.push(tratamiento)
-      
-    }
-    console.log(tratamientos)
+    
     const itensProcedimento = [{
         nome: 'Blanqueamiento Dental',
         cor: '#008000'
@@ -882,7 +870,7 @@ export default {
      * "Redimensiona los lienzos del odontograma y su contenido proporcionalmente al tamaño de la ventana."
      */
     const resizeCanvas = () => {
-        if (window.innerWidth >= 800) {
+        if (window.innerWidth >= 100) {
             document.querySelector("#canva-group").style.display = 'display'
         } else {
             alert("TELA MUITO PEQUENA! Acesse o odontrograma através de um dispositivo com uma tela maior!")
@@ -988,7 +976,6 @@ export default {
         const options = this.listaTratamiento.map(problema => {
             return `\n<option value='${problema.nome}'>${problema.nome}</option>`
         })
-        console.log({options})
         document.querySelector("#nombreProcedimiento").innerHTML += options
 
         document.querySelector("#nombreProcedimiento").addEventListener('change', (event) => {

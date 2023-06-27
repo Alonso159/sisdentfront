@@ -68,8 +68,10 @@
    
     <v-dialog width="800px" v-model="cargaPago" persistent>
       <v-card height="600px">
-        <v-card-title class="justify-center">Pago cita</v-card-title>
-          <CardPagar>
+        <v-card-title class="justify-center">Pagar Cita</v-card-title>
+          <CardPagar
+          :objetoCita=citaRegistrada>
+            
           </CardPagar>
       </v-card>
     </v-dialog>
@@ -104,6 +106,7 @@ export default {
       dialogoRegistrar: false,
       cargaRegistro: false,
       cargaPago: false,
+      citaRegistrada:{costo:"",fecha:"",tratamiento:"",duracion:""},
     };
   },
   watch: {
@@ -127,7 +130,6 @@ export default {
         this.Cita.fecha_cita = new Date(
           "" + splite1 + "T0" + this.hora + ":00:00"
         );
-       console.log(this.hora)
       }
     },
     closeDialog() {
@@ -161,7 +163,6 @@ export default {
         let variable = fechaHoy - condicionFecha;
         let numeroDias = 7 - variable;
         let nuevafecha = moment(hoy).add(numeroDias, "day");
-        x.data[i].fecha_cita=nuevafecha
         this.cambiodeHoras(nuevafecha);
         let fechaPaciente = new Date(this.Cita.fecha_cita).toISOString();
         this.fechaCita = fechaPaciente.split("T")[0];
@@ -187,6 +188,16 @@ export default {
       try {
         const res = await axios.post("/Cita/RegistrarCita", this.Cita);
         let infoTurno = res.data;
+        this.citaRegistrada.costo=res.data.costo
+        this.citaRegistrada.duracion=res.data.duracion
+        this.citaRegistrada.id=res.data.id
+        this.obtieneTratamiento(res.data.tratamiento[0]);
+        let nuevafecha = moment(res.data.fecha_cita).subtract(5, "hours");
+        
+        var fechaNueva= new Date(nuevafecha._d).toISOString()
+        this.citaRegistrada.fecha= fechaNueva.split("T")[1]
+        this.citaRegistrada.fecha= this.citaRegistrada.fecha.split("Z")[0];
+        this.citaRegistrada.fecha= this.citaRegistrada.fecha.split(".")[0];
         let HoraTurno = new Date(infoTurno.fecha_cita).getHours();
         let turno = {
           id_medico: infoTurno.id_medico,
@@ -225,9 +236,16 @@ export default {
         console.log(err);
       }
     },
-    async RegistraCita() {
-      
-    },
+    async obtieneTratamiento(idTratamiento){
+          
+          await axios
+          .get("/Tratamiento/GetIDTratamiento?id="+idTratamiento)
+          .then((x) => {
+           this.citaRegistrada.tratamiento=x.data.descripcion
+          })
+          .catch((err) => console.log(err));
+
+    }
   },
   computed: {},
   validations() {

@@ -7,11 +7,6 @@
       </v-col>
       <v-col cols="48" md="48" lg="32">
         <div class="home-columns">
-          <CardCitasAtendidas v-if="['4', '5'].includes(user.rol)" :user="user" />
-        </div>
-      </v-col>
-      <v-col cols="48" md="48" lg="32">
-        <div class="home-columns">
           <Odontograma v-if="['4', '5'].includes(user.rol)" :user="user" />
         </div>
       </v-col>

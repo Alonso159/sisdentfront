@@ -1,49 +1,100 @@
 <template>
-  <v-card height:10px class="card pagar--ahora" style="margin: 10px auto 0; width: 100%">
-     <v-data-table expand-icon="$expand" :headers="headers" :items="listaCitaMedico" :search="search" class="elevation-1">
-      <template v-slot:item.estado_cita="{ item }">
-        <v-chip :color="getColor(item.estado_cita)" dark>
-          {{ item.estado_cita }}
-        </v-chip>
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-row>
-          <v-btn color="info" small dark :disabled="verificaEstado(item.estado_cita)" class="ml-4"
-            @click="abrePago(item.id, item.fecha_cita,item.estado_cita)" @click.stop="dialog = true">
-            <v-icon left> mdi-file-eye </v-icon>
-            <span>Pagar</span>
-          </v-btn>
-          <v-btn color="info" small dark class="ml-4" @click="abrirModalVisualizarReunion(item.cronograma.id)">
-            <v-icon left> mdi-file-eye </v-icon>
-            <span>Visualizar</span>
-          </v-btn>
-        </v-row>
-      </template>
-    </v-data-table>
-    <v-dialog v-model="dialog" max-width="370">
-      <v-card>
-        <v-card-title class="text-h5">
-          Su cita destinada para el {{ fechaCita }}
-        </v-card-title>
+  <v-card>
+    <v-card-title class="justify-center">Resumen Pago</v-card-title>
+    <div class="container-Actividad">
+      <v-form>
+        <v-col cols="12">
+          <v-text-field
+            disable
+            v-model.trim="this.objetoCita.tratamiento"
+            label="Nombre del tratamiento "
+            outlined
+            color="#009900"
+          ></v-text-field>
+        </v-col>
+        
+        
+        <v-col cols="12">
+          <v-text-field
+          disable
+          v-model.trim="this.objetoCita.costo"
+            label="Costo "
+            outlined
+            color="#009900"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+          disable
+            v-model.trim="this.objetoCita.fecha"
+            label="Hora "
+            outlined
+            color="#009900"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+          disable
+            v-model.trim="this.objetoCita.duracion"
+            label="Duracion "
+            outlined
+            color="#009900"
+          ></v-text-field>
+        </v-col>
+        <v-divider class="divider-custom"></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="PagaCita()" href=/dashboard-management>
-            Pagar
-          </v-btn>
-          <v-btn color="green darken-1" text @click="closeDialog()" >
-            Cancelar
-          </v-btn>
+          <v-col cols="6" sm="6" md="3">
+            <v-btn
+              small
+              block
+              class="mr-4"
+              color="success"
+              elevation="1"
+              @click="modificaUsuario()"
+              href=/dashboard-management
+              >Pagar Ahora</v-btn
+            >
+          </v-col>
+          <v-col cols="6" sm="6" md="3">
+            <v-btn
+              small
+              block
+              class="mr-4"
+              color="success"
+              elevation="1"
+              href=/dashboard-management
+              >Pagar Despues</v-btn
+            >
+          </v-col>
+          
         </v-card-actions>
+      </v-form>
+    </div>
+    <v-dialog width="450px" v-model="cargaRegistro" persistent>
+      <v-card height="300px">
+        <v-card-title class="justify-center">Registrando Modulo</v-card-title>
+        <div>
+          <v-progress-circular
+            style="display: block; margin: 40px auto"
+            :size="90"
+            :width="9"
+            color="blue"
+            indeterminate
+          ></v-progress-circular>
+        </div>
+        <v-card-subtitle
+          class="justify-center"
+          style="font-weight: bold; text-align: center"
+          >En unos momentos finalizaremos...</v-card-subtitle
+        >
       </v-card>
     </v-dialog>
-
   </v-card>
 </template>
 
 <script>
 
-import moment from "moment";
-import "moment/locale/es";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 //import CardCita from "@/components/GestionarCitas/CardCita.vue";
@@ -51,6 +102,7 @@ import axios from "axios";
 
 export default {
   name: "CardPagos_Pendientes",
+  props: ["objetoCita"],
   components: {
    // CardCita, 
   },
@@ -61,11 +113,11 @@ export default {
   data: () => ({
     dialogReservarCita: false,
     listaCitas: [],
-    hoy: moment().format("L").replaceAll("/", "-"),
-    fecha: "",
+    actividad:{},
+
     search: "",
     
-      fechaCita: "",
+   
       headers: [
         { text: "Tratamiento", value: "tratamiento" },
         { text: "Dia", value:"dia"},
@@ -73,7 +125,7 @@ export default {
         { text: "Costo", value: "costo"},
         { text: "Acciones", value: "actions", sortable: false },
       ],
-      idCita:"",
+      
       dialog: false,
       dialogoRegistrar: false,
       dialogoactualizacion: false,
@@ -82,8 +134,8 @@ export default {
       estadoCita:"",
   }),
   async created() {
-    this.fecha = moment(this.hoy, "DD-MM-YYYY").format();
-    await this.obteneridPaciente();
+    console.log(this.objetoCita)
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
   },
   methods: {
       ...mapActions("Citas", ["setListaCitaMedico"]),
@@ -93,95 +145,28 @@ export default {
     closeDialogPago_Pendiente() {
       this.closeDialogPago_Pendiente = false;
     },
-    Pago_Pendiente() {
-      this.$router.push(`PagosPendientes`);
-    },
-    async obtenerCitas(idPaciente) {
-      await axios
-        .get("/Cita/GetPagos_Pendientes?idPaciente="+idPaciente)
-        .then((x) => {
-
-          const largoX = x.data.length;
-          
-          console.log("NUEVA LISTA MEDICO")
-          console.log(x.data[1]);
-          
-
-          let arrayLista = [];
-          if(x.data.lenght>1)
-          {arrayLista.push(x.data.pop());}
-          else {arrayLista.push(x.data)}
-          const listaCita = arrayLista;
-          
-          for (var i = 0; i < listaCita.length; i++) {
-              console.log(x.data[i].fecha_cita)
-              listaCita[i].dia=x.data[i].fecha_cita.split("T")[0];
-            listaCita[i].fecha_cita = x.data[i].fecha_cita.split("T")[1];
-          listaCita[i].fecha_cita = listaCita[i].fecha_cita.split("Z")[0];
-          
-          }
-          this.setListaCitaMedico(listaCita);
-
-        })
-        .catch((err) => console.log(err));
-    },
-
-    async obteneridPaciente() {
-      console.log(this.user)
-      await axios
-        .get("/Paciente/GetPacienteID?id="+this.user.myID)
-        .then((res) => {
-          console.log("ENTRO")
-         let idPaciente= res.data.id; 
-         this.obtenerCitas(idPaciente);
-        })
-        .catch((err) => console.log(err));
-    },
-    getColor(estadoCita) {
-      if (estadoCita == "Sin Pagar") {
-        return "yellow";
-      } else if (estadoCita == "Pagada") {
-        return "green";
-      } else {
-        return "grey";
-      }
-    },
-    verificaEstado(estadoCita) {
-    
-      if (estadoCita == "Sin Pagar") {
-        return false;
-      } else {
-        return true;
-      }
-    },
-    estadoActual(array) {
-      if (array === "listo") {
-        return false;
-      } else {
-        return true;
-      }
-    },
-    abrePago(id, fecha_cita) {
-      
-      this.fechaCita = fecha_cita;
-      this.dialog = true;
-      this.idCita=id;
-    },
-    async PagaCita() {
-      
-      this.dialog = false;
-      this.cargaRegistro = true;
-      
-      await axios
-        .put("/Cita/UpdateCita?idCita="+this.idCita+"&estado=2")
-        .then((x) => {
-          this.obtenerCitas();
-        })
-        .catch((err) => console.log(err));
-    },
     closeDialog(){
       this.dialog=false
+    },
+    async PagaCita() {
 
+  this.dialog = false;
+  this.cargaRegistro = true;
+
+await axios
+  .put("/Cita/UpdateCita?idCita=" + this.objetoCita.id + "&estado=2")
+  .then((x) => {
+  })
+  .catch((err) => console.log(err));
+},
+    async modificaUsuario(){
+      this.PagaCita()
+      console.log(this.user.myID)
+      await axios
+        .put("/UsuarioTemporal/temporalrol?user=" + this.user.myID)
+        .then((x) => {
+        })
+        .catch((err) => console.log(err));
     },
 
 

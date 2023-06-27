@@ -8,10 +8,10 @@
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-row>
-            <v-btn color="info" small dark :disabled="verificaEstado(item.estado_cita)" class="ml-4"
-              @click="abreInicioCita(item.id, item.fecha_cita,item.estado_cita)" @click.stop="dialog = true">
+            <v-btn color="info" dark 
+              @click="abreInicioCita(item.id_paciente)">
               <v-icon left> mdi-file-eye </v-icon>
-              <span>Iniciar Cita</span>
+              <span>Iniciar</span>
             </v-btn>
             <v-btn color="info" small dark class="ml-4" @click="abrirModalVisualizarReunion(item.id)">
               <v-icon left> mdi-file-eye </v-icon>
@@ -20,43 +20,17 @@
           </v-row>
         </template>
       </v-data-table>
-      
-      <v-dialog v-model="dialog" max-width="370">
-        <v-card>
-          <v-card-title class="text-h5">
-            Su cita destinada para el {{ fechaCita }}
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text @click="PagaCita()">
-              Pagar
-            </v-btn>
-            <v-btn color="green darken-1" text @click="closeDialog()">
-              Cancelar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog persistent v-model="dialogodetalle" max-width="1000px">
-        <VisualizarCronograma
-          v-if="dialogodetalle"
-          :Actividad="Actividad"
-          :SubModulo="SubModulo"
-          :Cronograma="Cronograma"
-          @close-dialog-detalle="closeDialogDetalle()"
-        >
-        </VisualizarCronograma>
-      </v-dialog>
     </v-card>
   </template>
   
   <script>
   import axios from "axios";
   import { mapGetters, mapActions } from "vuex";
-  import Odontograma from "@/components/ActoMedico/ActoOdontograma.vue";
+  import ActoMedico from "@/components/ActoMedico/ActoMedico.vue";
+  import moment from "moment";
   export default {
     name: "GestionarCronograma",
-    components: {},
+    components: {ActoMedico},
     data() {
       return {
         search: "",
@@ -84,11 +58,11 @@
       ...mapActions("Citas", ["setListaCitaMedico"]),
       //obtener los citas listados
       async obtenerCitas() {
+        var Hoy = moment();
+      var Fecha = Hoy.format('DD-MM-YYYY');
         await axios
-          .get("/Cita/GetCitasxMedico?id_medico="+this.user.myID)
+          .get("/Cita/GetCitaxMedico_Dia?id_medico=63742e3c57e81730d4862a35&dia=04-07-2023")
           .then((x) => {
-            console.log("NUEVA LISTA MEDICO")
-            console.log(x.data)
             const listaCita = x.data;
             for (var i = 0; i < listaCita.length; i++) {
               listaCita[i].fecha_cita = x.data[i].fecha_cita.split("T")[1];
@@ -97,6 +71,11 @@
             this.setListaCitaMedico(listaCita);
           })
           .catch((err) => console.log(err));
+      },
+      closeDialogDetalle(){
+        this.dialogodetalle=false
+
+
       },
       getColor(estadoCita) {
         if (estadoCita == "Sin Pagar") {
@@ -109,7 +88,7 @@
       },
       verificaEstado(estadoCita) {
       
-        if (estadoCita == "Sin Pagar") {
+        if (estadoCita == "En espera") {
           return false;
         } else {
           return true;
@@ -122,13 +101,11 @@
           return true;
         }
       },
-      abreInicioCita(id, fecha_cita) {
-        
-        this.fechaCita = fecha_cita;
-        this.dialog = true;
-        this.idCita=id;
-      
-        // this.$router.push(`pagar`);
+      abreInicioCita(id_paciente) { 
+        this.idPaciente=id_paciente
+      this.$router.push({ path:'/ActoMedico/'+this.idPaciente+''});
+     
+      this.dialogodetalle = true;
       },
     },
     computed: {

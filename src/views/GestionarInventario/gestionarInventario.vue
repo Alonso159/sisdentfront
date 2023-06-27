@@ -44,10 +44,7 @@
           </v-row>
           
           <v-dialog persistent v-model="abrirModalVisualizar" max-width="320px">
-      <VisualizarModal
-        v-if="abrirModalVisualizar"
-      >
-      </VisualizarModal>
+      
     </v-dialog>
         </template>
       </v-data-table>
@@ -57,12 +54,12 @@
   <script>
   import axios from "axios";
   import { mapGetters, mapActions } from "vuex";
-  import VisualizarModal from '@/components/GestionarInventario/AgregarMateriales.vue';
+  
   export default {
     name: "GestionarInventario",
     //name: "abrirModalVisualizar",
     components: {
-      VisualizarModal,
+   
     },
     data() {
       return {

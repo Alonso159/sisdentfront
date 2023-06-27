@@ -120,9 +120,7 @@ import { Modal } from 'bootstrap';
 import 'bootstrap';
 import axios from "axios";
 export default {
-    metaInfo: {
-    title: 'Historia Clinica',
-  },
+
   data(){
     return{
         escondeModal:modal.hide(),
