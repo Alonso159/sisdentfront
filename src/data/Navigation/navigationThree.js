@@ -132,6 +132,12 @@ const itemsAsistente = [
     href: "/ModificarPerfil",
   },
   {
+    divider: "Principal",
+    title: "Gestionar Inventario",
+    icon: "mdi-tooth",
+    href: "/gestionarInventario",
+  },
+  {
     title: "Consultar Citas",
     icon: "mdi-tooth",
     href: "/gestionarPrescripción",

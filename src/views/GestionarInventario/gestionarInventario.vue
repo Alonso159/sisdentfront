@@ -29,19 +29,26 @@
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-row>
-            <v-btn color="info" small dark class="ml-4" @click="abrirModalVisualizar(item.inventario.id)">
+            <v-btn color="info" small dark class="ml-4" @click="abrirVisualizar(item.inventario.id)">
               <v-icon left> mdi-file-eye </v-icon>
-              <span>Visualizar</span>
+              <span>Agregar</span>
             </v-btn>
             <v-btn color="primary" small dark class="ml-4" @click="abrirModalModificar(item.inventario.id)">
               <v-icon left> mdi-file-eye </v-icon>
-              <span>Modificar</span>
+              <span>Quitar</span>
             </v-btn>
-            <v-btn color="error" small dark class="ml-4" @click="abrirModalEliminar(item.inventario.id)">
+            <!-- <v-btn color="error" small dark class="ml-4" @click="abrirModalEliminar(item.inventario.id)">
               <v-icon left> mdi-file-eye </v-icon>
               <span>Eliminar</span>
-            </v-btn>
+            </v-btn> -->
           </v-row>
+          
+          <v-dialog persistent v-model="abrirModalVisualizar" max-width="320px">
+      <VisualizarModal
+        v-if="abrirModalVisualizar"
+      >
+      </VisualizarModal>
+    </v-dialog>
         </template>
       </v-data-table>
     </v-card>
@@ -50,9 +57,13 @@
   <script>
   import axios from "axios";
   import { mapGetters, mapActions } from "vuex";
+  import VisualizarModal from '@/components/GestionarInventario/AgregarMateriales.vue';
   export default {
     name: "GestionarInventario",
-    components: {},
+    //name: "abrirModalVisualizar",
+    components: {
+      VisualizarModal,
+    },
     data() {
       return {
         search: "",
@@ -62,6 +73,7 @@
           { text: "Reservado", value: "reservado" },
           { text: "Stock", value: "stock" },
           { text: "Estado", value: "estado"},
+          {text:"Acciones",value: "actions", sorteable: false},
         ],
         idCita:"",
         dialog: false,
@@ -69,6 +81,7 @@
         dialogoactualizacion: false,
         dialogocambio: false,
         dialogodetalle: false,
+        abrirModalVisualizar: false,
         estadoCita:"",
       };
     },
@@ -107,6 +120,16 @@
           return true;
         }
       },
+      async abrirVisualizar() {
+     
+      //await axios
+        this.abrirDialogo();
+    },
+      async abrirDialogo() {
+      console.log(item.inventario.id);
+      this.abrirModalVisualizar = !this.abrirModalVisualizar;
+      //this.inventario = this.inventario;
+    },
       estadoActual(array) {
         if (array === "listo") {
           return false;
@@ -146,4 +169,3 @@
     margin: 200 px;
   }
   </style>
-  
