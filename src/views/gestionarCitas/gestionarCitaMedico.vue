@@ -9,17 +9,18 @@
         <template v-slot:[`item.actions`]="{ item }">
           <v-row>
             <v-btn color="info" small dark :disabled="verificaEstado(item.estado_cita)" class="ml-4"
-              @click="abrePago(item.id, item.fecha_cita,item.estado_cita)" @click.stop="dialog = true">
+              @click="abreInicioCita(item.id, item.fecha_cita,item.estado_cita)" @click.stop="dialog = true">
               <v-icon left> mdi-file-eye </v-icon>
-              <span>Pagar</span>
+              <span>Iniciar Cita</span>
             </v-btn>
-            <v-btn color="info" small dark class="ml-4" @click="abrirModalVisualizarReunion(item.cronograma.id)">
+            <v-btn color="info" small dark class="ml-4" @click="abrirModalVisualizarReunion(item.id)">
               <v-icon left> mdi-file-eye </v-icon>
               <span>Visualizar</span>
             </v-btn>
           </v-row>
         </template>
       </v-data-table>
+      
       <v-dialog v-model="dialog" max-width="370">
         <v-card>
           <v-card-title class="text-h5">
@@ -36,12 +37,23 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog persistent v-model="dialogodetalle" max-width="1000px">
+        <VisualizarCronograma
+          v-if="dialogodetalle"
+          :Actividad="Actividad"
+          :SubModulo="SubModulo"
+          :Cronograma="Cronograma"
+          @close-dialog-detalle="closeDialogDetalle()"
+        >
+        </VisualizarCronograma>
+      </v-dialog>
     </v-card>
   </template>
   
   <script>
   import axios from "axios";
   import { mapGetters, mapActions } from "vuex";
+  import Odontograma from "@/components/ActoMedico/ActoOdontograma.vue";
   export default {
     name: "GestionarCronograma",
     components: {},
@@ -73,7 +85,7 @@
       //obtener los citas listados
       async obtenerCitas() {
         await axios
-          .get("/Cita/GetCitasxMedico?id_medico=6340f2a9dfe765c0e853e443")
+          .get("/Cita/GetCitasxMedico?id_medico="+this.user.myID)
           .then((x) => {
             console.log("NUEVA LISTA MEDICO")
             console.log(x.data)
@@ -110,25 +122,13 @@
           return true;
         }
       },
-      abrePago(id, fecha_cita) {
+      abreInicioCita(id, fecha_cita) {
         
         this.fechaCita = fecha_cita;
         this.dialog = true;
         this.idCita=id;
       
         // this.$router.push(`pagar`);
-      },
-      async PagaCita() {
-        
-        this.dialog = false;
-        this.cargaRegistro = true;
-        
-        await axios
-          .put("/Cita/UpdateCita?idCita="+this.idCita+"&estado=2")
-          .then((x) => {
-            this.obtenerCitas();
-          })
-          .catch((err) => console.log(err));
       },
     },
     computed: {

@@ -80,7 +80,7 @@ const itemsMedico = [
   {
     title: "Consultar Citas",
     icon: "mdi-tooth",
-    href: "/gestionarPrescripción",
+    href: "/visualizarCitas",
   },
   {
     title: "Modificar Perfil",

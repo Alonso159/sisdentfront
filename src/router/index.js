@@ -24,8 +24,8 @@ const routes = [
       },
      
       {
-        path: "gestionarCitaMedico",
-        name: "gestionarCitaMedico",
+        path: "visualizarCitas",
+        name: "visualizarCitas",
         component: () => import("@/views/gestionarCitas/gestionarCitaMedico"),
       },
       {

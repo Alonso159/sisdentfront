@@ -13,7 +13,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel">Adicionar procedimento</h5>
+                                    <h5 class="modal-title" id="modalLabel">Procedimientos</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -21,11 +21,11 @@
                                         <input type="hidden" id="procedimentosRemovidos" th:field="*{procedimentosRemovidos}">
                                         <div id="procedimentosDiv"></div>
                                         <div class="form-group col-md-12">
-                                            <label for="nomeProcedimento">Nome</label>
+                                            <label for="nombreProcedimiento">Descripcion</label>
                                             <i data-type="info" class="fas fa-info-circle fa-1x text-info"
                                                 onclick="toast_message('.','info')" style="margin-left: 5px; cursor: pointer;"></i>
-                                            <select class="form-control" id="nomeProcedimento">
-                                                <option selected value="">-- Selecione uma opção --</option>
+                                            <select class="form-control" id="nombreProcedimiento">
+                                                <option selected value="">-- Seleccione un tratamiento --</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-12" id="colOutroProcedimento">
@@ -36,7 +36,7 @@
                                             <input id="outroProcedimento" class="form-control" type="text">
                                         </div>
                                         <div class="form-group col-12">
-                                            <label for="exampleColorInput" class="form-label">Cor</label>
+                                            <label for="exampleColorInput" class="form-label">Color</label>
                                             <i style="margin-left:5px;cursor: pointer;"
                                                 class="alerta fas fa-info-circle fa-1x text-info" data-type="info"
                                                 onclick="mensagens('.','info')"></i>
@@ -44,7 +44,7 @@
                                                 value="#563d7c" title="Choose your color">
                                         </div>
                                         <div class="form-group col-12">
-                                            <label for="informacoesAdicionais">Informações adicionais</label>
+                                            <label for="informacoesAdicionais">Informacion adicional</label>
                                             <i style="margin-left:5px;cursor: pointer;"
                                                 class="alerta fas fa-info-circle fa-1x text-info" data-type="info"
                                                 onclick="mensagens('.','info')"></i>
@@ -65,10 +65,10 @@
                                                         id="tabelaTestesEspecificosForm">
                                                         <thead>
                                                             <tr>
-                                                                <th>NOME</th>
-                                                                <th>COR</th>
-                                                                <th>INFORMAÇÕES ADICIONAIS</th>
-                                                                <th class="text-center">AÇÕES</th>
+                                                                <th>DESCRIPCION</th>
+                                                                <th>COLOR</th>
+                                                                <th>INFORMACION ADICIONAL</th>
+                                                                <th class="text-center">ACCIONES</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="bodyProcedimentos">
@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -125,28 +125,51 @@ export default {
   },
   data(){
     return{
+        escondeModal:modal.hide(),
         listaTratamiento:[],
         dialogoRegistrarActoMedico: false,
     }
   },
-    created() {
+    async created() {
+    await this.obtieneTratamientos();
+    await this.loadScripts();
         this.loadStyles();
-        this.obtieneTratamientos();
     },
-    mounted(){
-        this.loadScripts();
+    async mounted(){
+        
     },
     methods: {
+
+        //////Trae los tratamientos y les asigna color por su descripcion
        async obtieneTratamientos(){
         await axios
         .get("/Tratamiento/GetAllTratamiento")
         .then((res) => {
-          this.listaTratamiento = res.data;
+        var listaTratamientos=[];
+        this.listaTratamiento=res.data
+        var cantidadTratamientos=this.listaTratamiento.length
+        for(var i=0;i<cantidadTratamientos;i++){ 
+            var color=""
+            if(res.data[i].descripcion=="Curación Simple") {color="#FA8072"}
+            if(res.data[i].descripcion=="Blanqueamiento Dental") {color="#FA8072"}
+            if(res.data[i].descripcion=="Carillas Dentales") {color="#FA8072"}
+            if(res.data[i].descripcion=="Resinas dentales") {color="#FA8072"}
+            if(res.data[i].descripcion=="Consulta") {color="#FA8072"}
+            if(res.data[i].descripcion=="Profilaxis") {color="#FA8072"}
+            if(res.data[i].descripcion=="Dentaduras Removibles") {color="#FA8072"}
+            if(res.data[i].descripcion=="Destartraje") {color="#FA8072"}
+            if(res.data[i].descripcion=="Curación Media") {color="#FA8072"}
+            if(res.data[i].descripcion=="Curación Grande") {color="#FA8072"}     
+            listaTratamientos.push({nome:this.listaTratamiento[i].descripcion,cor:color})  
+        }
+            this.listaTratamiento=listaTratamientos;
+            console.log({listaTratamientos})
         })
         .catch((err) => console.log(err));
+
        },
        async abrirDialogo() {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        
       this.dialogoRegistrar = !this.dialogoRegistrar;
       
 
@@ -172,7 +195,11 @@ export default {
            
     
         },
+        escondeModal(){
+            modal.hide()
+        },
         loadScripts(){
+            
     const camada1 = document.querySelector('#camada1Odontograma')
     const contexto1 = camada1.getContext('2d')
 
@@ -200,9 +227,19 @@ export default {
 
     const tamanhoTelaReferencia = 1895
     const alturaTelaReferencia = 872
-
+    var tratamientos=[]
+    var cantidadTratamientos=this.listaTratamiento.length
+    console.log({cantidadTratamientos})
+    for (var i=0;i<cantidadTratamientos;i++){
+        var tratamiento={nome:"",cor:""}    
+        tratamiento.nome=this.listaTratamiento[i].nome
+        tratamiento.cor=this.listaTratamiento[i].cor
+        tratamientos.push(tratamiento)
+      
+    }
+    console.log(tratamientos)
     const itensProcedimento = [{
-        nome: 'Lesão branca ativa de cárie',
+        nome: 'Blanqueamiento Dental',
         cor: '#008000'
     }, {
         nome: 'Lesão branca inativa de cárie',
@@ -228,9 +265,6 @@ export default {
     }, {
         nome: 'Limpar seção',
         cor: '#FFFFFF'
-    }, {
-        nome: 'Outro',
-        cor: '#008080'
     }]
 
     let procedimentos = []
@@ -513,6 +547,7 @@ export default {
 
         if (procedimento.faceDente) modal.show()
         atualizaTabela()
+        modal.hide()
     }
 
     const atualizaTabela = () => {
@@ -528,7 +563,7 @@ export default {
                         <input type="color" disabled class="form-control form-control-color" value="${item.cor}">
                     </td>
                     <td>
-                        ${item.informacoesAdicionais || 'NÃO INFORMADO'}
+                        ${item.informacoesAdicionais || ''}
                     </td>
                     <td>
                         <a onclick="apagar('${item.nome}', ${item.numeroDente}, ${item.faceDente})" class="btn btn-danger">
@@ -854,18 +889,10 @@ export default {
             document.querySelector("#canva-group").style.display = 'none'
         }
 
-        camada1.width = camada2.width = camada3.width = camada4.width = window.innerWidth - 25
+        camada1.width = camada2.width = camada3.width = camada4.width = window.innerWidth - 200
         const altura = (camada1.width * alturaTelaReferencia) / tamanhoTelaReferencia
         camada1.height = camada2.height = camada3.height = camada4.height = altura
-
-        let valoresBase = {
-            x: (camada1.width * 24) / tamanhoTelaReferencia,
-            y: (camada1.width * 20) / tamanhoTelaReferencia,
-            largura: (camada1.width * 70) / tamanhoTelaReferencia,
-            altura: (camada1.width * 150) / tamanhoTelaReferencia
-        }
-
-      
+        
         posicoesPadrao.margemXEntreDentes = (camada1.width * 8) / tamanhoTelaReferencia
         posicoesPadrao.margemYEntreDentes = (camada1.width * 200) / tamanhoTelaReferencia
         posicoesPadrao.posicaoYInicialDente = (camada1.width * 180) / tamanhoTelaReferencia
@@ -958,15 +985,16 @@ export default {
      * Inicia el odontograma, dibujando la estructura, cargando los datos, etc.
      */
     const iniciaOdontograma = () => {
-        const options = itensProcedimento.map(problema => {
+        const options = this.listaTratamiento.map(problema => {
             return `\n<option value='${problema.nome}'>${problema.nome}</option>`
         })
-        document.querySelector("#nomeProcedimento").innerHTML += options
+        console.log({options})
+        document.querySelector("#nombreProcedimiento").innerHTML += options
 
-        document.querySelector("#nomeProcedimento").addEventListener('change', (event) => {
-            let procedimento = document.querySelector("#nomeProcedimento")
+        document.querySelector("#nombreProcedimiento").addEventListener('change', (event) => {
+            let procedimento = document.querySelector("#nombreProcedimiento")
             if (procedimento.value !== '') {
-                procedimento = itensProcedimento.find(problemaAtual => problemaAtual.nome === procedimento.value)
+                procedimento = this.listaTratamiento.find(problemaAtual => problemaAtual.nome === procedimento.value)
                 document.querySelector("#cor").value = procedimento.cor
                 if (procedimento.nome === 'Outro') {
                     document.querySelector("#cor").disabled = false
@@ -981,10 +1009,10 @@ export default {
             }
         })
 
-        document.querySelector("#nomeProcedimento").dispatchEvent(new Event('change'))
+        document.querySelector("#nombreProcedimiento").dispatchEvent(new Event('change'))
 
         document.querySelector("#botaoAdicionar").onclick = (event) => {
-            procedimento.nome = document.querySelector("#nomeProcedimento").value
+            procedimento.nome = document.querySelector("#nombreProcedimiento").value
             procedimento.cor = document.querySelector("#cor").value
             procedimento.informacoesAdicionais = document.querySelector("#informacoesAdicionais").value
 
@@ -1105,7 +1133,6 @@ export default {
 
 canvas {
     position: absolute;
-    border: 1px solid #9C9898;
     margin: 10px;
 }
 
